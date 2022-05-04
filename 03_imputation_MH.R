@@ -11,9 +11,17 @@ cleaned_full_df_used <- cleaned_full_df[cleaned_full_df$survey_nr %in% c("2005_2
                                                                          "2011_2012","2013_2014","2015_2016",
                                                                          "2017_2018"),]
 
+# in the missing_true vector, TRUE means missing values across ALL depression indicators
+missing_true <- rowSums(is.na(cleaned_full_df[,(ncol(cleaned_full_df)-8):ncol(cleaned_full_df)])) == 9
+# in the nonmissing_true vector, TRUE means not completely missing values across depression indicators (so there can be missing values, but not for all indicators)
+nonmissing_true <- !missing_true
+
+# observations that have some depression data
+dep_nonmissing <- cleaned_full_df[nonmissing_true,]
+
 # calculate average missingness in data
-(sum(is.na(cleaned_full_df))/prod(dim(cleaned_full_df)))*100
-# it is 13.9%, which we round up to 15% - so we will make 15 imputed copies
+(sum(is.na(dep_nonmissing))/prod(dim(dep_nonmissing)))*100
+# it is 0.6%, we will only impute one copy
 
 # load data per survey (loop)
 for (i in levels(cleaned_full_df$survey_nr)) {
@@ -29,15 +37,15 @@ for (i in levels(cleaned_full_df$survey_nr)) {
   SDMVSTRA <- full_df$SDMVSTRA
   full_df$SDMVSTRA <- NULL
   
-  # imputation: 5 copies, 5 iterations, predictive mean matching algorithm
-  imputation_object <- mice(full_df, method = "rf", m = 15, maxit = 5, seed = 64370)
+  # imputation: 1 copy, 5 iterations, predictive mean matching algorithm
+  imputation_object <- mice(full_df, method = "rf", m = 1, maxit = 5, seed = 35670)
   
   # investigate convergence visually
   # imputation_object$method #those variables with no missing have "" as method - they are still used for imputation
   # plot(imputation_object) #plots look OK
   
   
-  for (j in 1:15) {
+  for (j in 1) {
     
     # extract imputed datasets
     imputed <- complete(imputation_object, j)
