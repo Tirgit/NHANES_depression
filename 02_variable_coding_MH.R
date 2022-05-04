@@ -157,6 +157,7 @@ full_df$work_status <- revalue(full_df$work_status, c("1"="Working",
                                                       "4"="Not working"))
 table(full_df$work_status, useNA = "always")
 
+full_df$DPQ100 <- NULL
 
 
 saveRDS(full_df, "cleaned_full_df.rds")
