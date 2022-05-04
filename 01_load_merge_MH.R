@@ -6,8 +6,11 @@ library(foreign)
 library(dplyr)
 
 # LOAD AND MERGE ALL NECESSARY FILES PER SURVEY
-# DPQ only available from 2005
-# income is separate file from 2007
+# DPQ only available from 2005, in the MEC sample
+# depression: eligible participants are the mobile exam center (MEC) participants
+# MEC 2-year exam weight is used
+# income info is in separate file from 2007 (but annual household income is in the demo file for all years)
+
 
 ######################################
 ########## NHANES 2005-2006 ##########
@@ -24,7 +27,7 @@ dep_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DPQ_",letter,".XP
 ## DEMOGRAPHICS
 download.file(demo_file, tf <- tempfile(), mode="wb")
 loaded_file <- foreign::read.xport(tf)
-keep_vars <- c("SEQN", "SDMVPSU", "SDMVSTRA", "SDDSRVYR",  "RIAGENDR", "RIDAGEYR", 
+keep_vars <- c("SEQN", "WTMEC2YR", "SDMVPSU", "SDMVSTRA", "SDDSRVYR",  "RIAGENDR", "RIDAGEYR", 
                "RIDRETH1",  "DMDEDUC2", "INDHHINC")
 demo <- loaded_file[,keep_vars]
 
@@ -47,7 +50,7 @@ full_2005_2006 <- demo %>%
   
 
 ## RENAME VARIABLES
-colnames(full_2005_2006) <- c("SEQN","SDMVPSU", "SDMVSTRA" , "survey_nr",  "gender", "age", "ethnicity", 
+colnames(full_2005_2006) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "survey_nr",  "gender", "age", "ethnicity", 
                               "education", "ann_household_income", 
                               "work_status",
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
@@ -69,7 +72,7 @@ dep_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DPQ_",letter,".XP
 ## DEMOGRAPHICS
 download.file(demo_file, tf <- tempfile(), mode="wb")
 loaded_file <- foreign::read.xport(tf)
-keep_vars <- c("SEQN", "SDMVPSU", "SDMVSTRA", "SDDSRVYR",  "RIAGENDR", "RIDAGEYR", 
+keep_vars <- c("SEQN", "WTMEC2YR", "SDMVPSU", "SDMVSTRA", "SDDSRVYR",  "RIAGENDR", "RIDAGEYR", 
                "RIDRETH1",  "DMDEDUC2", "INDHHIN2")
 demo <- loaded_file[,keep_vars]
 
@@ -91,7 +94,7 @@ full_2007_2008 <- demo %>%
   full_join(depression,  by = "SEQN")  
 
 ## RENAME VARIABLES
-colnames(full_2007_2008) <- c("SEQN","SDMVPSU", "SDMVSTRA" , "survey_nr",  "gender", "age", "ethnicity", 
+colnames(full_2007_2008) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "survey_nr",  "gender", "age", "ethnicity", 
                               "education", "ann_household_income", 
                               "work_status",
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
@@ -113,7 +116,7 @@ dep_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DPQ_",letter,".XP
 ## DEMOGRAPHICS
 download.file(demo_file, tf <- tempfile(), mode="wb")
 loaded_file <- foreign::read.xport(tf)
-keep_vars <- c("SEQN", "SDMVPSU", "SDMVSTRA", "SDDSRVYR",  "RIAGENDR", "RIDAGEYR", 
+keep_vars <- c("SEQN", "WTMEC2YR", "SDMVPSU", "SDMVSTRA", "SDDSRVYR",  "RIAGENDR", "RIDAGEYR", 
                "RIDRETH1",  "DMDEDUC2", "INDHHIN2")
 demo <- loaded_file[,keep_vars]
 
@@ -134,7 +137,7 @@ full_2009_2010 <- demo %>%
   full_join(depression,  by = "SEQN")  
 
 ## RENAME VARIABLES
-colnames(full_2009_2010) <- c("SEQN","SDMVPSU", "SDMVSTRA" , "survey_nr",  "gender", "age", "ethnicity", 
+colnames(full_2009_2010) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "survey_nr",  "gender", "age", "ethnicity", 
                               "education", "ann_household_income", 
                               "work_status",
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
@@ -156,7 +159,7 @@ dep_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DPQ_",letter,".XP
 ## DEMOGRAPHICS
 download.file(demo_file, tf <- tempfile(), mode="wb")
 loaded_file <- foreign::read.xport(tf)
-keep_vars <- c("SEQN", "SDMVPSU", "SDMVSTRA", "SDDSRVYR",  "RIAGENDR", "RIDAGEYR", 
+keep_vars <- c("SEQN", "WTMEC2YR", "SDMVPSU", "SDMVSTRA", "SDDSRVYR",  "RIAGENDR", "RIDAGEYR", 
                "RIDRETH1",  "DMDEDUC2", "INDHHIN2")
 demo <- loaded_file[,keep_vars]
 
@@ -177,7 +180,7 @@ full_2011_2012 <- demo %>%
   full_join(depression,  by = "SEQN")   
 
 ## RENAME VARIABLES
-colnames(full_2011_2012) <- c("SEQN","SDMVPSU", "SDMVSTRA" , "survey_nr",  "gender", "age", "ethnicity", 
+colnames(full_2011_2012) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "survey_nr",  "gender", "age", "ethnicity", 
                               "education", "ann_household_income", 
                               "work_status",
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
@@ -199,7 +202,7 @@ dep_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DPQ_",letter,".XP
 ## DEMOGRAPHICS
 download.file(demo_file, tf <- tempfile(), mode="wb")
 loaded_file <- foreign::read.xport(tf)
-keep_vars <- c("SEQN", "SDMVPSU", "SDMVSTRA", "SDDSRVYR",  "RIAGENDR", "RIDAGEYR", 
+keep_vars <- c("SEQN", "WTMEC2YR", "SDMVPSU", "SDMVSTRA", "SDDSRVYR",  "RIAGENDR", "RIDAGEYR", 
                "RIDRETH1",  "DMDEDUC2", "INDHHIN2")
 demo <- loaded_file[,keep_vars]
 
@@ -220,7 +223,7 @@ full_2013_2014 <- demo %>%
   full_join(depression,  by = "SEQN")  
 
 ## RENAME VARIABLES
-colnames(full_2013_2014) <- c("SEQN","SDMVPSU", "SDMVSTRA" , "survey_nr",  "gender", "age", "ethnicity", 
+colnames(full_2013_2014) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "survey_nr",  "gender", "age", "ethnicity", 
                               "education", "ann_household_income", 
                               "work_status",
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
@@ -242,7 +245,7 @@ dep_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DPQ_",letter,".XP
 ## DEMOGRAPHICS
 download.file(demo_file, tf <- tempfile(), mode="wb")
 loaded_file <- foreign::read.xport(tf)
-keep_vars <- c("SEQN", "SDMVPSU", "SDMVSTRA", "SDDSRVYR",  "RIAGENDR", "RIDAGEYR", 
+keep_vars <- c("SEQN", "WTMEC2YR", "SDMVPSU", "SDMVSTRA", "SDDSRVYR",  "RIAGENDR", "RIDAGEYR", 
                "RIDRETH1",  "DMDEDUC2", "INDHHIN2")
 demo <- loaded_file[,keep_vars]
 
@@ -264,7 +267,7 @@ full_2015_2016 <- demo %>%
 
 
 ## RENAME VARIABLES
-colnames(full_2015_2016) <- c("SEQN","SDMVPSU", "SDMVSTRA" , "survey_nr",  "gender", "age", "ethnicity", 
+colnames(full_2015_2016) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "survey_nr",  "gender", "age", "ethnicity", 
                               "education", "ann_household_income", 
                               "work_status",
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
@@ -286,7 +289,7 @@ dep_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DPQ_",letter,".XP
 ## DEMOGRAPHICS
 download.file(demo_file, tf <- tempfile(), mode="wb")
 loaded_file <- foreign::read.xport(tf)
-keep_vars <- c("SEQN", "SDMVPSU", "SDMVSTRA", "SDDSRVYR",  "RIAGENDR", "RIDAGEYR", 
+keep_vars <- c("SEQN", "WTMEC2YR", "SDMVPSU", "SDMVSTRA", "SDDSRVYR",  "RIAGENDR", "RIDAGEYR", 
                "RIDRETH1",  "DMDEDUC2", "INDHHIN2")
 demo <- loaded_file[,keep_vars]
 
@@ -308,7 +311,7 @@ full_2017_2018 <- demo %>%
 
 
 ## RENAME VARIABLES
-colnames(full_2017_2018) <- c("SEQN","SDMVPSU", "SDMVSTRA" , "survey_nr",  "gender", "age", "ethnicity", 
+colnames(full_2017_2018) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "survey_nr",  "gender", "age", "ethnicity", 
                               "education", "ann_household_income", 
                               "work_status",
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
