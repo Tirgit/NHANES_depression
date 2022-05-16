@@ -45,37 +45,46 @@ occ <- loaded_file[,keep_vars]
 
 ## DEPRESSION
 download.file(dep_file, tf <- tempfile(), mode="wb")
-depression <- foreign::read.xport(tf)
+loaded_file <- foreign::read.xport(tf)
+keep_vars <- c("SEQN", "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
+               "DPQ060", "DPQ070", "DPQ080", "DPQ090")
+depression <- loaded_file[,keep_vars]
 
 ## MEDICAL QUESTIONNARIE
 download.file(mcq_file, tf <- tempfile(), mode="wb")
+loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "MCQ010", "MCQ160A", "MCQ160D", "MCQ160F")
-medical <- foreign::read.xport(tf)
+medical <- loaded_file[,keep_vars]
 
 ## DIABETES
 download.file(diab_file, tf <- tempfile(), mode="wb")
+loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "DIQ010")
-diabetes <- foreign::read.xport(tf)
+diabetes <- loaded_file[,keep_vars]
 
 ## BLOOD PRESSURE
 download.file(bp_file, tf <- tempfile(), mode="wb")
+loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "BPQ020")
-bloodpressure <- foreign::read.xport(tf)
+bloodpressure <- loaded_file[,keep_vars]
 
 ## BMI
 download.file(bmi_file, tf <- tempfile(), mode="wb")
+loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "BMXBMI")
-bmi <- foreign::read.xport(tf)
+bmi <- loaded_file[,keep_vars]
 
 ## SMOKING
 download.file(smoking_file, tf <- tempfile(), mode="wb")
+loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "SMQ040")
-smoking <- foreign::read.xport(tf)
+smoking <- loaded_file[,keep_vars]
 
 ## ALCOHOL
 download.file(alcohol_file, tf <- tempfile(), mode="wb")
+loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "ALQ130")
-alcohol <- foreign::read.xport(tf)
+alcohol <- loaded_file[,keep_vars]
 
 
 ## MERGE ALL BY SEQN
@@ -96,11 +105,11 @@ colnames(full_2005_2006) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "s
                               "citizen", "household_size", "family_PIR", 
                               "work_status",
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
-                              "DPQ060", "DPQ070", "DPQ080", "DPQ090", "DPQ100",
+                              "DPQ060", "DPQ070", "DPQ080", "DPQ090",
                               "asthma", "arthritis", "angina", "stroke",
                               "diabetes", "hypertension", "BMI", "smoking", "alcohol")
 
-rm(demo_file, occ_file, dep_file, mcq_file, diab_file, bp_file, bmi_file, smoking_file, alcohol_file,
+rm(demo_file, occ_file, dep_file, mcq_file, diab_file, bp_file, bmi_file, smoking_file, alcohol_file, loaded_file,
   demo, occ, depression, medical, diabetes, bloodpressure, bmi, smoking, alcohol)
 
 
@@ -137,37 +146,46 @@ occ <- loaded_file[,keep_vars]
 
 ## DEPRESSION
 download.file(dep_file, tf <- tempfile(), mode="wb")
-depression <- foreign::read.xport(tf)
+loaded_file <- foreign::read.xport(tf)
+keep_vars <- c("SEQN", "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
+               "DPQ060", "DPQ070", "DPQ080", "DPQ090")
+depression <- loaded_file[,keep_vars]
 
 ## MEDICAL QUESTIONNARIE
 download.file(mcq_file, tf <- tempfile(), mode="wb")
+loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "MCQ010", "MCQ160A", "MCQ160D", "MCQ160F")
-medical <- foreign::read.xport(tf)
+medical <- loaded_file[,keep_vars]
 
 ## DIABETES
 download.file(diab_file, tf <- tempfile(), mode="wb")
+loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "DIQ010")
-diabetes <- foreign::read.xport(tf)
+diabetes <- loaded_file[,keep_vars]
 
 ## BLOOD PRESSURE
 download.file(bp_file, tf <- tempfile(), mode="wb")
+loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "BPQ020")
-bloodpressure <- foreign::read.xport(tf)
+bloodpressure <- loaded_file[,keep_vars]
 
 ## BMI
 download.file(bmi_file, tf <- tempfile(), mode="wb")
+loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "BMXBMI")
-bmi <- foreign::read.xport(tf)
+bmi <- loaded_file[,keep_vars]
 
 ## SMOKING
 download.file(smoking_file, tf <- tempfile(), mode="wb")
+loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "SMQ040")
-smoking <- foreign::read.xport(tf)
+smoking <- loaded_file[,keep_vars]
 
 ## ALCOHOL
 download.file(alcohol_file, tf <- tempfile(), mode="wb")
+loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "ALQ130")
-alcohol <- foreign::read.xport(tf)
+alcohol <- loaded_file[,keep_vars]
 
 
 ## MERGE ALL BY SEQN
@@ -188,11 +206,12 @@ colnames(full_2007_2008) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "s
                               "citizen", "household_size", "family_PIR", 
                               "work_status",
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
-                              "DPQ060", "DPQ070", "DPQ080", "DPQ090", "DPQ100",
+                              "DPQ060", "DPQ070", "DPQ080", "DPQ090",
                               "asthma", "arthritis", "angina", "stroke",
                               "diabetes", "hypertension", "BMI", "smoking", "alcohol")
 
-rm(demo, occ, depression)
+rm(demo_file, occ_file, dep_file, mcq_file, diab_file, bp_file, bmi_file, smoking_file, alcohol_file, loaded_file,
+   demo, occ, depression, medical, diabetes, bloodpressure, bmi, smoking, alcohol)
 
 ######################################
 ########## NHANES 2009-2010 ##########
@@ -227,37 +246,46 @@ occ <- loaded_file[,keep_vars]
 
 ## DEPRESSION
 download.file(dep_file, tf <- tempfile(), mode="wb")
-depression <- foreign::read.xport(tf)
+loaded_file <- foreign::read.xport(tf)
+keep_vars <- c("SEQN", "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
+               "DPQ060", "DPQ070", "DPQ080", "DPQ090")
+depression <- loaded_file[,keep_vars]
 
 ## MEDICAL QUESTIONNARIE
 download.file(mcq_file, tf <- tempfile(), mode="wb")
+loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "MCQ010", "MCQ160A", "MCQ160D", "MCQ160F")
-medical <- foreign::read.xport(tf)
+medical <- loaded_file[,keep_vars]
 
 ## DIABETES
 download.file(diab_file, tf <- tempfile(), mode="wb")
+loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "DIQ010")
-diabetes <- foreign::read.xport(tf)
+diabetes <- loaded_file[,keep_vars]
 
 ## BLOOD PRESSURE
 download.file(bp_file, tf <- tempfile(), mode="wb")
+loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "BPQ020")
-bloodpressure <- foreign::read.xport(tf)
+bloodpressure <- loaded_file[,keep_vars]
 
 ## BMI
 download.file(bmi_file, tf <- tempfile(), mode="wb")
+loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "BMXBMI")
-bmi <- foreign::read.xport(tf)
+bmi <- loaded_file[,keep_vars]
 
 ## SMOKING
 download.file(smoking_file, tf <- tempfile(), mode="wb")
+loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "SMQ040")
-smoking <- foreign::read.xport(tf)
+smoking <- loaded_file[,keep_vars]
 
 ## ALCOHOL
 download.file(alcohol_file, tf <- tempfile(), mode="wb")
+loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "ALQ130")
-alcohol <- foreign::read.xport(tf)
+alcohol <- loaded_file[,keep_vars]
 
 
 ## MERGE ALL BY SEQN
@@ -277,11 +305,12 @@ colnames(full_2009_2010) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "s
                               "marital", "citizen", "household_size", "family_PIR", 
                               "work_status",
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
-                              "DPQ060", "DPQ070", "DPQ080", "DPQ090", "DPQ100",
+                              "DPQ060", "DPQ070", "DPQ080", "DPQ090",
                               "asthma", "arthritis", "angina", "stroke",
                               "diabetes", "hypertension", "BMI", "smoking", "alcohol")
 
-rm(demo, occ, depression)
+rm(demo_file, occ_file, dep_file, mcq_file, diab_file, bp_file, bmi_file, smoking_file, alcohol_file, loaded_file,
+   demo, occ, depression, medical, diabetes, bloodpressure, bmi, smoking, alcohol)
 
 
 ######################################
@@ -317,37 +346,46 @@ occ <- loaded_file[,keep_vars]
 
 ## DEPRESSION
 download.file(dep_file, tf <- tempfile(), mode="wb")
-depression <- foreign::read.xport(tf)
+loaded_file <- foreign::read.xport(tf)
+keep_vars <- c("SEQN", "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
+               "DPQ060", "DPQ070", "DPQ080", "DPQ090")
+depression <- loaded_file[,keep_vars]
 
 ## MEDICAL QUESTIONNARIE
 download.file(mcq_file, tf <- tempfile(), mode="wb")
+loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "MCQ010", "MCQ160a", "MCQ160d", "MCQ160f")
-medical <- foreign::read.xport(tf)
+medical <- loaded_file[,keep_vars]
 
 ## DIABETES
 download.file(diab_file, tf <- tempfile(), mode="wb")
+loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "DIQ010")
-diabetes <- foreign::read.xport(tf)
+diabetes <- loaded_file[,keep_vars]
 
 ## BLOOD PRESSURE
 download.file(bp_file, tf <- tempfile(), mode="wb")
+loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "BPQ020")
-bloodpressure <- foreign::read.xport(tf)
+bloodpressure <- loaded_file[,keep_vars]
 
 ## BMI
 download.file(bmi_file, tf <- tempfile(), mode="wb")
+loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "BMXBMI")
-bmi <- foreign::read.xport(tf)
+bmi <- loaded_file[,keep_vars]
 
 ## SMOKING
 download.file(smoking_file, tf <- tempfile(), mode="wb")
+loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "SMQ040")
-smoking <- foreign::read.xport(tf)
+smoking <- loaded_file[,keep_vars]
 
 ## ALCOHOL
 download.file(alcohol_file, tf <- tempfile(), mode="wb")
+loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "ALQ130")
-alcohol <- foreign::read.xport(tf)
+alcohol <- loaded_file[,keep_vars]
 
 
 ## MERGE ALL BY SEQN
@@ -367,11 +405,12 @@ colnames(full_2011_2012) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "s
                               "marital", "citizen", "household_size", "family_PIR", 
                               "work_status",
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
-                              "DPQ060", "DPQ070", "DPQ080", "DPQ090", "DPQ100",
+                              "DPQ060", "DPQ070", "DPQ080", "DPQ090",
                               "asthma", "arthritis", "angina", "stroke",
                               "diabetes", "hypertension", "BMI", "smoking", "alcohol")
 
-rm(demo, occ, depression)
+rm(demo_file, occ_file, dep_file, mcq_file, diab_file, bp_file, bmi_file, smoking_file, alcohol_file, loaded_file,
+   demo, occ, depression, medical, diabetes, bloodpressure, bmi, smoking, alcohol)
 
 ######################################
 ########## NHANES 2013-2014 ##########
@@ -406,37 +445,46 @@ occ <- loaded_file[,keep_vars]
 
 ## DEPRESSION
 download.file(dep_file, tf <- tempfile(), mode="wb")
-depression <- foreign::read.xport(tf)
+loaded_file <- foreign::read.xport(tf)
+keep_vars <- c("SEQN", "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
+               "DPQ060", "DPQ070", "DPQ080", "DPQ090")
+depression <- loaded_file[,keep_vars]
 
 ## MEDICAL QUESTIONNARIE
 download.file(mcq_file, tf <- tempfile(), mode="wb")
+loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "MCQ010", "MCQ160a", "MCQ160d", "MCQ160f")
-medical <- foreign::read.xport(tf)
+medical <- loaded_file[,keep_vars]
 
 ## DIABETES
 download.file(diab_file, tf <- tempfile(), mode="wb")
+loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "DIQ010")
-diabetes <- foreign::read.xport(tf)
+diabetes <- loaded_file[,keep_vars]
 
 ## BLOOD PRESSURE
 download.file(bp_file, tf <- tempfile(), mode="wb")
+loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "BPQ020")
-bloodpressure <- foreign::read.xport(tf)
+bloodpressure <- loaded_file[,keep_vars]
 
 ## BMI
 download.file(bmi_file, tf <- tempfile(), mode="wb")
+loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "BMXBMI")
-bmi <- foreign::read.xport(tf)
+bmi <- loaded_file[,keep_vars]
 
 ## SMOKING
 download.file(smoking_file, tf <- tempfile(), mode="wb")
+loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "SMQ040")
-smoking <- foreign::read.xport(tf)
+smoking <- loaded_file[,keep_vars]
 
 ## ALCOHOL
 download.file(alcohol_file, tf <- tempfile(), mode="wb")
+loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "ALQ130")
-alcohol <- foreign::read.xport(tf)
+alcohol <- loaded_file[,keep_vars]
 
 
 ## MERGE ALL BY SEQN
@@ -456,11 +504,12 @@ colnames(full_2013_2014) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "s
                               "marital", "citizen", "household_size", "family_PIR", 
                               "work_status",
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
-                              "DPQ060", "DPQ070", "DPQ080", "DPQ090", "DPQ100",
+                              "DPQ060", "DPQ070", "DPQ080", "DPQ090",
                               "asthma", "arthritis", "angina", "stroke",
                               "diabetes", "hypertension", "BMI", "smoking", "alcohol")
 
-rm(demo, occ, depression)
+rm(demo_file, occ_file, dep_file, mcq_file, diab_file, bp_file, bmi_file, smoking_file, alcohol_file, loaded_file,
+   demo, occ, depression, medical, diabetes, bloodpressure, bmi, smoking, alcohol)
 
 ######################################
 ########## NHANES 2015-2016 ##########
@@ -495,37 +544,46 @@ occ <- loaded_file[,keep_vars]
 
 ## DEPRESSION
 download.file(dep_file, tf <- tempfile(), mode="wb")
-depression <- foreign::read.xport(tf)
+loaded_file <- foreign::read.xport(tf)
+keep_vars <- c("SEQN", "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
+               "DPQ060", "DPQ070", "DPQ080", "DPQ090")
+depression <- loaded_file[,keep_vars]
 
 ## MEDICAL QUESTIONNARIE
 download.file(mcq_file, tf <- tempfile(), mode="wb")
+loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "MCQ010", "MCQ160a", "MCQ160d", "MCQ160f")
-medical <- foreign::read.xport(tf)
+medical <- loaded_file[,keep_vars]
 
 ## DIABETES
 download.file(diab_file, tf <- tempfile(), mode="wb")
+loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "DIQ010")
-diabetes <- foreign::read.xport(tf)
+diabetes <- loaded_file[,keep_vars]
 
 ## BLOOD PRESSURE
 download.file(bp_file, tf <- tempfile(), mode="wb")
+loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "BPQ020")
-bloodpressure <- foreign::read.xport(tf)
+bloodpressure <- loaded_file[,keep_vars]
 
 ## BMI
 download.file(bmi_file, tf <- tempfile(), mode="wb")
+loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "BMXBMI")
-bmi <- foreign::read.xport(tf)
+bmi <- loaded_file[,keep_vars]
 
 ## SMOKING
 download.file(smoking_file, tf <- tempfile(), mode="wb")
+loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "SMQ040")
-smoking <- foreign::read.xport(tf)
+smoking <- loaded_file[,keep_vars]
 
 ## ALCOHOL
 download.file(alcohol_file, tf <- tempfile(), mode="wb")
+loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "ALQ130")
-alcohol <- foreign::read.xport(tf)
+alcohol <- loaded_file[,keep_vars]
 
 
 ## MERGE ALL BY SEQN
@@ -546,11 +604,12 @@ colnames(full_2015_2016) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "s
                               "marital", "citizen", "household_size", "family_PIR", 
                               "work_status",
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
-                              "DPQ060", "DPQ070", "DPQ080", "DPQ090", "DPQ100",
+                              "DPQ060", "DPQ070", "DPQ080", "DPQ090",
                               "asthma", "arthritis", "angina", "stroke",
                               "diabetes", "hypertension", "BMI", "smoking", "alcohol")
 
-rm(demo, occ, depression)
+rm(demo_file, occ_file, dep_file, mcq_file, diab_file, bp_file, bmi_file, smoking_file, alcohol_file, loaded_file,
+   demo, occ, depression, medical, diabetes, bloodpressure, bmi, smoking, alcohol)
 
 ######################################
 ########## NHANES 2017-2018 ##########
@@ -585,37 +644,46 @@ occ <- loaded_file[,keep_vars]
 
 ## DEPRESSION
 download.file(dep_file, tf <- tempfile(), mode="wb")
-depression <- foreign::read.xport(tf)
+loaded_file <- foreign::read.xport(tf)
+keep_vars <- c("SEQN", "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
+               "DPQ060", "DPQ070", "DPQ080", "DPQ090")
+depression <- loaded_file[,keep_vars]
 
 ## MEDICAL QUESTIONNARIE
 download.file(mcq_file, tf <- tempfile(), mode="wb")
+loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "MCQ010", "MCQ160a", "MCQ160d", "MCQ160f")
-medical <- foreign::read.xport(tf)
+medical <- loaded_file[,keep_vars]
 
 ## DIABETES
 download.file(diab_file, tf <- tempfile(), mode="wb")
+loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "DIQ010")
-diabetes <- foreign::read.xport(tf)
+diabetes <- loaded_file[,keep_vars]
 
 ## BLOOD PRESSURE
 download.file(bp_file, tf <- tempfile(), mode="wb")
+loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "BPQ020")
-bloodpressure <- foreign::read.xport(tf)
+bloodpressure <- loaded_file[,keep_vars]
 
 ## BMI
 download.file(bmi_file, tf <- tempfile(), mode="wb")
+loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "BMXBMI")
-bmi <- foreign::read.xport(tf)
+bmi <- loaded_file[,keep_vars]
 
 ## SMOKING
 download.file(smoking_file, tf <- tempfile(), mode="wb")
+loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "SMQ040")
-smoking <- foreign::read.xport(tf)
+smoking <- loaded_file[,keep_vars]
 
 ## ALCOHOL
 download.file(alcohol_file, tf <- tempfile(), mode="wb")
+loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "ALQ130")
-alcohol <- foreign::read.xport(tf)
+alcohol <- loaded_file[,keep_vars]
 
 
 ## MERGE ALL BY SEQN
@@ -636,11 +704,12 @@ colnames(full_2017_2018) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "s
                               "marital", "citizen", "household_size", "family_PIR", 
                               "work_status",
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
-                              "DPQ060", "DPQ070", "DPQ080", "DPQ090", "DPQ100",
+                              "DPQ060", "DPQ070", "DPQ080", "DPQ090",
                               "asthma", "arthritis", "angina", "stroke",
                               "diabetes", "hypertension", "BMI", "smoking", "alcohol")
 
-rm(demo, occ, depression)
+rm(demo_file, occ_file, dep_file, mcq_file, diab_file, bp_file, bmi_file, smoking_file, alcohol_file, loaded_file,
+   demo, occ, depression, medical, diabetes, bloodpressure, bmi, smoking, alcohol)
 
 
 full_df <- rbind(full_2005_2006,
