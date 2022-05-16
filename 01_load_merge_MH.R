@@ -24,6 +24,10 @@ occ_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/OCQ_",letter,".XP
 dep_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DPQ_",letter,".XPT")
 mcq_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/MCQ_",letter,".XPT")
 diab_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DIQ_",letter,".XPT")
+bp_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/BPQ_",letter,".XPT")
+bmi_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/BMX_",letter,".XPT")
+smoking_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/SMQ_",letter,".XPT")
+alcohol_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/ALQ_",letter,".XPT")
 
 
 ## DEMOGRAPHICS
@@ -53,13 +57,37 @@ download.file(diab_file, tf <- tempfile(), mode="wb")
 keep_vars <- c("SEQN", "DIQ010")
 diabetes <- foreign::read.xport(tf)
 
+## BLOOD PRESSURE
+download.file(bp_file, tf <- tempfile(), mode="wb")
+keep_vars <- c("SEQN", "BPQ020")
+bloodpressure <- foreign::read.xport(tf)
+
+## BMI
+download.file(bmi_file, tf <- tempfile(), mode="wb")
+keep_vars <- c("SEQN", "BMXBMI")
+bmi <- foreign::read.xport(tf)
+
+## SMOKING
+download.file(smoking_file, tf <- tempfile(), mode="wb")
+keep_vars <- c("SEQN", "SMQ040")
+smoking <- foreign::read.xport(tf)
+
+## ALCOHOL
+download.file(alcohol_file, tf <- tempfile(), mode="wb")
+keep_vars <- c("SEQN", "ALQ130")
+alcohol <- foreign::read.xport(tf)
+
 
 ## MERGE ALL BY SEQN
 full_2005_2006 <- demo %>% 
   full_join(occ,  by = "SEQN") %>%
   full_join(depression,  by = "SEQN") %>%
-  full_join(medical,  by = "SEQN")  %>%
-  full_join(diabetes,  by = "SEQN")
+  full_join(medical,  by = "SEQN") %>%
+  full_join(diabetes,  by = "SEQN") %>%
+  full_join(bloodpressure,  by = "SEQN") %>%
+  full_join(bmi,  by = "SEQN") %>%
+  full_join(smoking,  by = "SEQN") %>%
+  full_join(alcohol,  by = "SEQN")
   
 
 ## RENAME VARIABLES
@@ -70,9 +98,11 @@ colnames(full_2005_2006) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "s
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
                               "DPQ060", "DPQ070", "DPQ080", "DPQ090", "DPQ100",
                               "asthma", "arthritis", "angina", "stroke",
-                              "diabetes")
+                              "diabetes", "hypertension", "BMI", "smoking", "alcohol")
 
-rm(demo, occ, depression)
+rm(demo_file, occ_file, dep_file, mcq_file, diab_file, bp_file, bmi_file, smoking_file, alcohol_file,
+  demo, occ, depression, medical, diabetes, bloodpressure, bmi, smoking, alcohol)
+
 
 ######################################
 ########## NHANES 2007-2008 ##########
@@ -86,6 +116,10 @@ occ_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/OCQ_",letter,".XP
 dep_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DPQ_",letter,".XPT")
 mcq_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/MCQ_",letter,".XPT")
 diab_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DIQ_",letter,".XPT")
+bp_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/BPQ_",letter,".XPT")
+bmi_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/BMX_",letter,".XPT")
+smoking_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/SMQ_",letter,".XPT")
+alcohol_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/ALQ_",letter,".XPT")
 
 
 ## DEMOGRAPHICS
@@ -115,13 +149,37 @@ download.file(diab_file, tf <- tempfile(), mode="wb")
 keep_vars <- c("SEQN", "DIQ010")
 diabetes <- foreign::read.xport(tf)
 
+## BLOOD PRESSURE
+download.file(bp_file, tf <- tempfile(), mode="wb")
+keep_vars <- c("SEQN", "BPQ020")
+bloodpressure <- foreign::read.xport(tf)
+
+## BMI
+download.file(bmi_file, tf <- tempfile(), mode="wb")
+keep_vars <- c("SEQN", "BMXBMI")
+bmi <- foreign::read.xport(tf)
+
+## SMOKING
+download.file(smoking_file, tf <- tempfile(), mode="wb")
+keep_vars <- c("SEQN", "SMQ040")
+smoking <- foreign::read.xport(tf)
+
+## ALCOHOL
+download.file(alcohol_file, tf <- tempfile(), mode="wb")
+keep_vars <- c("SEQN", "ALQ130")
+alcohol <- foreign::read.xport(tf)
+
 
 ## MERGE ALL BY SEQN
 full_2007_2008 <- demo %>% 
   full_join(occ,  by = "SEQN") %>%
   full_join(depression,  by = "SEQN") %>%
   full_join(medical,  by = "SEQN") %>%
-  full_join(diabetes,  by = "SEQN")
+  full_join(diabetes,  by = "SEQN") %>%
+  full_join(bloodpressure,  by = "SEQN") %>%
+  full_join(bmi,  by = "SEQN") %>%
+  full_join(smoking,  by = "SEQN") %>%
+  full_join(alcohol,  by = "SEQN")
   
 
 ## RENAME VARIABLES
@@ -132,7 +190,7 @@ colnames(full_2007_2008) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "s
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
                               "DPQ060", "DPQ070", "DPQ080", "DPQ090", "DPQ100",
                               "asthma", "arthritis", "angina", "stroke",
-                              "diabetes")
+                              "diabetes", "hypertension", "BMI", "smoking", "alcohol")
 
 rm(demo, occ, depression)
 
@@ -147,6 +205,11 @@ occ_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/OCQ_",letter,".XP
 dep_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DPQ_",letter,".XPT")
 mcq_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/MCQ_",letter,".XPT")
 diab_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DIQ_",letter,".XPT")
+bp_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/BPQ_",letter,".XPT")
+bmi_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/BMX_",letter,".XPT")
+smoking_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/SMQ_",letter,".XPT")
+alcohol_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/ALQ_",letter,".XPT")
+
 
 
 ## DEMOGRAPHICS
@@ -176,13 +239,37 @@ download.file(diab_file, tf <- tempfile(), mode="wb")
 keep_vars <- c("SEQN", "DIQ010")
 diabetes <- foreign::read.xport(tf)
 
+## BLOOD PRESSURE
+download.file(bp_file, tf <- tempfile(), mode="wb")
+keep_vars <- c("SEQN", "BPQ020")
+bloodpressure <- foreign::read.xport(tf)
+
+## BMI
+download.file(bmi_file, tf <- tempfile(), mode="wb")
+keep_vars <- c("SEQN", "BMXBMI")
+bmi <- foreign::read.xport(tf)
+
+## SMOKING
+download.file(smoking_file, tf <- tempfile(), mode="wb")
+keep_vars <- c("SEQN", "SMQ040")
+smoking <- foreign::read.xport(tf)
+
+## ALCOHOL
+download.file(alcohol_file, tf <- tempfile(), mode="wb")
+keep_vars <- c("SEQN", "ALQ130")
+alcohol <- foreign::read.xport(tf)
+
 
 ## MERGE ALL BY SEQN
 full_2009_2010 <- demo %>% 
   full_join(occ,  by = "SEQN") %>%
   full_join(depression,  by = "SEQN") %>%
   full_join(medical,  by = "SEQN") %>%
-  full_join(diabetes,  by = "SEQN")
+  full_join(diabetes,  by = "SEQN") %>%
+  full_join(bloodpressure,  by = "SEQN") %>%
+  full_join(bmi,  by = "SEQN") %>%
+  full_join(smoking,  by = "SEQN") %>%
+  full_join(alcohol,  by = "SEQN")
 
 ## RENAME VARIABLES
 colnames(full_2009_2010) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "survey_nr",  "gender", "age", "ethnicity", 
@@ -192,7 +279,7 @@ colnames(full_2009_2010) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "s
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
                               "DPQ060", "DPQ070", "DPQ080", "DPQ090", "DPQ100",
                               "asthma", "arthritis", "angina", "stroke",
-                              "diabetes")
+                              "diabetes", "hypertension", "BMI", "smoking", "alcohol")
 
 rm(demo, occ, depression)
 
@@ -208,6 +295,11 @@ occ_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/OCQ_",letter,".XP
 dep_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DPQ_",letter,".XPT")
 mcq_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/MCQ_",letter,".XPT")
 diab_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DIQ_",letter,".XPT")
+bp_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/BPQ_",letter,".XPT")
+bmi_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/BMX_",letter,".XPT")
+smoking_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/SMQ_",letter,".XPT")
+alcohol_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/ALQ_",letter,".XPT")
+
 
 
 ## DEMOGRAPHICS
@@ -237,13 +329,37 @@ download.file(diab_file, tf <- tempfile(), mode="wb")
 keep_vars <- c("SEQN", "DIQ010")
 diabetes <- foreign::read.xport(tf)
 
+## BLOOD PRESSURE
+download.file(bp_file, tf <- tempfile(), mode="wb")
+keep_vars <- c("SEQN", "BPQ020")
+bloodpressure <- foreign::read.xport(tf)
+
+## BMI
+download.file(bmi_file, tf <- tempfile(), mode="wb")
+keep_vars <- c("SEQN", "BMXBMI")
+bmi <- foreign::read.xport(tf)
+
+## SMOKING
+download.file(smoking_file, tf <- tempfile(), mode="wb")
+keep_vars <- c("SEQN", "SMQ040")
+smoking <- foreign::read.xport(tf)
+
+## ALCOHOL
+download.file(alcohol_file, tf <- tempfile(), mode="wb")
+keep_vars <- c("SEQN", "ALQ130")
+alcohol <- foreign::read.xport(tf)
+
 
 ## MERGE ALL BY SEQN
 full_2011_2012 <- demo %>% 
   full_join(occ,  by = "SEQN") %>%
   full_join(depression,  by = "SEQN") %>%
   full_join(medical,  by = "SEQN") %>%
-  full_join(diabetes,  by = "SEQN") 
+  full_join(diabetes,  by = "SEQN") %>%
+  full_join(bloodpressure,  by = "SEQN") %>%
+  full_join(bmi,  by = "SEQN") %>%
+  full_join(smoking,  by = "SEQN") %>%
+  full_join(alcohol,  by = "SEQN")
 
 ## RENAME VARIABLES
 colnames(full_2011_2012) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "survey_nr",  "gender", "age", "ethnicity", 
@@ -253,7 +369,7 @@ colnames(full_2011_2012) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "s
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
                               "DPQ060", "DPQ070", "DPQ080", "DPQ090", "DPQ100",
                               "asthma", "arthritis", "angina", "stroke",
-                              "diabetes")
+                              "diabetes", "hypertension", "BMI", "smoking", "alcohol")
 
 rm(demo, occ, depression)
 
@@ -268,6 +384,11 @@ occ_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/OCQ_",letter,".XP
 dep_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DPQ_",letter,".XPT")
 mcq_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/MCQ_",letter,".XPT")
 diab_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DIQ_",letter,".XPT")
+bp_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/BPQ_",letter,".XPT")
+bmi_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/BMX_",letter,".XPT")
+smoking_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/SMQ_",letter,".XPT")
+alcohol_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/ALQ_",letter,".XPT")
+
 
 
 ## DEMOGRAPHICS
@@ -297,13 +418,37 @@ download.file(diab_file, tf <- tempfile(), mode="wb")
 keep_vars <- c("SEQN", "DIQ010")
 diabetes <- foreign::read.xport(tf)
 
+## BLOOD PRESSURE
+download.file(bp_file, tf <- tempfile(), mode="wb")
+keep_vars <- c("SEQN", "BPQ020")
+bloodpressure <- foreign::read.xport(tf)
+
+## BMI
+download.file(bmi_file, tf <- tempfile(), mode="wb")
+keep_vars <- c("SEQN", "BMXBMI")
+bmi <- foreign::read.xport(tf)
+
+## SMOKING
+download.file(smoking_file, tf <- tempfile(), mode="wb")
+keep_vars <- c("SEQN", "SMQ040")
+smoking <- foreign::read.xport(tf)
+
+## ALCOHOL
+download.file(alcohol_file, tf <- tempfile(), mode="wb")
+keep_vars <- c("SEQN", "ALQ130")
+alcohol <- foreign::read.xport(tf)
+
 
 ## MERGE ALL BY SEQN
 full_2013_2014 <- demo %>% 
   full_join(occ,  by = "SEQN") %>%
   full_join(depression,  by = "SEQN") %>%
   full_join(medical,  by = "SEQN") %>%
-  full_join(diabetes,  by = "SEQN")
+  full_join(diabetes,  by = "SEQN") %>%
+  full_join(bloodpressure,  by = "SEQN") %>%
+  full_join(bmi,  by = "SEQN") %>%
+  full_join(smoking,  by = "SEQN") %>%
+  full_join(alcohol,  by = "SEQN")
 
 ## RENAME VARIABLES
 colnames(full_2013_2014) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "survey_nr",  "gender", "age", "ethnicity", 
@@ -313,7 +458,7 @@ colnames(full_2013_2014) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "s
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
                               "DPQ060", "DPQ070", "DPQ080", "DPQ090", "DPQ100",
                               "asthma", "arthritis", "angina", "stroke",
-                              "diabetes")
+                              "diabetes", "hypertension", "BMI", "smoking", "alcohol")
 
 rm(demo, occ, depression)
 
@@ -328,6 +473,11 @@ occ_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/OCQ_",letter,".XP
 dep_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DPQ_",letter,".XPT")
 mcq_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/MCQ_",letter,".XPT")
 diab_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DIQ_",letter,".XPT")
+bp_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/BPQ_",letter,".XPT")
+bmi_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/BMX_",letter,".XPT")
+smoking_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/SMQ_",letter,".XPT")
+alcohol_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/ALQ_",letter,".XPT")
+
 
 
 ## DEMOGRAPHICS
@@ -357,13 +507,37 @@ download.file(diab_file, tf <- tempfile(), mode="wb")
 keep_vars <- c("SEQN", "DIQ010")
 diabetes <- foreign::read.xport(tf)
 
+## BLOOD PRESSURE
+download.file(bp_file, tf <- tempfile(), mode="wb")
+keep_vars <- c("SEQN", "BPQ020")
+bloodpressure <- foreign::read.xport(tf)
+
+## BMI
+download.file(bmi_file, tf <- tempfile(), mode="wb")
+keep_vars <- c("SEQN", "BMXBMI")
+bmi <- foreign::read.xport(tf)
+
+## SMOKING
+download.file(smoking_file, tf <- tempfile(), mode="wb")
+keep_vars <- c("SEQN", "SMQ040")
+smoking <- foreign::read.xport(tf)
+
+## ALCOHOL
+download.file(alcohol_file, tf <- tempfile(), mode="wb")
+keep_vars <- c("SEQN", "ALQ130")
+alcohol <- foreign::read.xport(tf)
+
 
 ## MERGE ALL BY SEQN
 full_2015_2016 <- demo %>% 
   full_join(occ,  by = "SEQN") %>%
   full_join(depression,  by = "SEQN") %>%
   full_join(medical,  by = "SEQN") %>%
-  full_join(diabetes,  by = "SEQN")
+  full_join(diabetes,  by = "SEQN") %>%
+  full_join(bloodpressure,  by = "SEQN") %>%
+  full_join(bmi,  by = "SEQN") %>%
+  full_join(smoking,  by = "SEQN") %>%
+  full_join(alcohol,  by = "SEQN")
 
 
 ## RENAME VARIABLES
@@ -374,7 +548,7 @@ colnames(full_2015_2016) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "s
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
                               "DPQ060", "DPQ070", "DPQ080", "DPQ090", "DPQ100",
                               "asthma", "arthritis", "angina", "stroke",
-                              "diabetes")
+                              "diabetes", "hypertension", "BMI", "smoking", "alcohol")
 
 rm(demo, occ, depression)
 
@@ -389,6 +563,11 @@ occ_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/OCQ_",letter,".XP
 dep_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DPQ_",letter,".XPT")
 mcq_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/MCQ_",letter,".XPT")
 diab_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DIQ_",letter,".XPT")
+bp_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/BPQ_",letter,".XPT")
+bmi_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/BMX_",letter,".XPT")
+smoking_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/SMQ_",letter,".XPT")
+alcohol_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/ALQ_",letter,".XPT")
+
 
 
 ## DEMOGRAPHICS
@@ -418,13 +597,37 @@ download.file(diab_file, tf <- tempfile(), mode="wb")
 keep_vars <- c("SEQN", "DIQ010")
 diabetes <- foreign::read.xport(tf)
 
+## BLOOD PRESSURE
+download.file(bp_file, tf <- tempfile(), mode="wb")
+keep_vars <- c("SEQN", "BPQ020")
+bloodpressure <- foreign::read.xport(tf)
+
+## BMI
+download.file(bmi_file, tf <- tempfile(), mode="wb")
+keep_vars <- c("SEQN", "BMXBMI")
+bmi <- foreign::read.xport(tf)
+
+## SMOKING
+download.file(smoking_file, tf <- tempfile(), mode="wb")
+keep_vars <- c("SEQN", "SMQ040")
+smoking <- foreign::read.xport(tf)
+
+## ALCOHOL
+download.file(alcohol_file, tf <- tempfile(), mode="wb")
+keep_vars <- c("SEQN", "ALQ130")
+alcohol <- foreign::read.xport(tf)
+
 
 ## MERGE ALL BY SEQN
 full_2017_2018 <- demo %>% 
   full_join(occ,  by = "SEQN") %>%
   full_join(depression,  by = "SEQN") %>%
   full_join(medical,  by = "SEQN") %>%
-  full_join(diabetes,  by = "SEQN")
+  full_join(diabetes,  by = "SEQN") %>%
+  full_join(bloodpressure,  by = "SEQN") %>%
+  full_join(bmi,  by = "SEQN") %>%
+  full_join(smoking,  by = "SEQN") %>%
+  full_join(alcohol,  by = "SEQN")
 
 
 ## RENAME VARIABLES
@@ -435,7 +638,7 @@ colnames(full_2017_2018) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "s
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
                               "DPQ060", "DPQ070", "DPQ080", "DPQ090", "DPQ100",
                               "asthma", "arthritis", "angina", "stroke",
-                              "diabetes")
+                              "diabetes", "hypertension", "BMI", "smoking", "alcohol")
 
 rm(demo, occ, depression)
 
