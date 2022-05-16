@@ -28,7 +28,7 @@ dep_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DPQ_",letter,".XP
 download.file(demo_file, tf <- tempfile(), mode="wb")
 loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "WTMEC2YR", "SDMVPSU", "SDMVSTRA", "SDDSRVYR",  "RIAGENDR", "RIDAGEYR", 
-               "RIDRETH1",  "DMDEDUC2", "INDHHINC")
+               "RIDRETH1",  "DMDEDUC2", "DMDEDUC3", "INDHHINC", "DMDMARTL", "DMDCITZN", "DMDHHSIZ", "INDFMPIR")
 demo <- loaded_file[,keep_vars]
 
 ## OCCUPATION
@@ -51,7 +51,8 @@ full_2005_2006 <- demo %>%
 
 ## RENAME VARIABLES
 colnames(full_2005_2006) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "survey_nr",  "gender", "age", "ethnicity", 
-                              "education", "ann_household_income", 
+                              "education", "education_young", "ann_household_income", "marital", 
+                              "citizen", "household_size", "family_PIR", 
                               "work_status",
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
                               "DPQ060", "DPQ070", "DPQ080", "DPQ090", "DPQ100")
@@ -73,7 +74,7 @@ dep_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DPQ_",letter,".XP
 download.file(demo_file, tf <- tempfile(), mode="wb")
 loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "WTMEC2YR", "SDMVPSU", "SDMVSTRA", "SDDSRVYR",  "RIAGENDR", "RIDAGEYR", 
-               "RIDRETH1",  "DMDEDUC2", "INDHHIN2")
+               "RIDRETH1",  "DMDEDUC2", "DMDEDUC3", "INDHHIN2", "DMDMARTL", "DMDCITZN", "DMDHHSIZ", "INDFMPIR")
 demo <- loaded_file[,keep_vars]
 
 ## OCCUPATION
@@ -95,7 +96,8 @@ full_2007_2008 <- demo %>%
 
 ## RENAME VARIABLES
 colnames(full_2007_2008) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "survey_nr",  "gender", "age", "ethnicity", 
-                              "education", "ann_household_income", 
+                              "education", "education_young", "ann_household_income", "marital", 
+                              "citizen", "household_size", "family_PIR", 
                               "work_status",
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
                               "DPQ060", "DPQ070", "DPQ080", "DPQ090", "DPQ100")
@@ -117,7 +119,7 @@ dep_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DPQ_",letter,".XP
 download.file(demo_file, tf <- tempfile(), mode="wb")
 loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "WTMEC2YR", "SDMVPSU", "SDMVSTRA", "SDDSRVYR",  "RIAGENDR", "RIDAGEYR", 
-               "RIDRETH1",  "DMDEDUC2", "INDHHIN2")
+               "RIDRETH1",  "DMDEDUC2", "DMDEDUC3", "INDHHIN2", "DMDMARTL", "DMDCITZN", "DMDHHSIZ", "INDFMPIR")
 demo <- loaded_file[,keep_vars]
 
 ## OCCUPATION
@@ -138,7 +140,8 @@ full_2009_2010 <- demo %>%
 
 ## RENAME VARIABLES
 colnames(full_2009_2010) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "survey_nr",  "gender", "age", "ethnicity", 
-                              "education", "ann_household_income", 
+                              "education", "education_young", "ann_household_income", 
+                              "marital", "citizen", "household_size", "family_PIR", 
                               "work_status",
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
                               "DPQ060", "DPQ070", "DPQ080", "DPQ090", "DPQ100")
@@ -160,7 +163,7 @@ dep_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DPQ_",letter,".XP
 download.file(demo_file, tf <- tempfile(), mode="wb")
 loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "WTMEC2YR", "SDMVPSU", "SDMVSTRA", "SDDSRVYR",  "RIAGENDR", "RIDAGEYR", 
-               "RIDRETH1",  "DMDEDUC2", "INDHHIN2")
+               "RIDRETH1",  "DMDEDUC2", "DMDEDUC3", "INDHHIN2", "DMDMARTL", "DMDCITZN", "DMDHHSIZ", "INDFMPIR")
 demo <- loaded_file[,keep_vars]
 
 ## OCCUPATION
@@ -181,7 +184,8 @@ full_2011_2012 <- demo %>%
 
 ## RENAME VARIABLES
 colnames(full_2011_2012) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "survey_nr",  "gender", "age", "ethnicity", 
-                              "education", "ann_household_income", 
+                              "education", "education_young", "ann_household_income", 
+                              "marital", "citizen", "household_size", "family_PIR", 
                               "work_status",
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
                               "DPQ060", "DPQ070", "DPQ080", "DPQ090", "DPQ100")
@@ -203,7 +207,7 @@ dep_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DPQ_",letter,".XP
 download.file(demo_file, tf <- tempfile(), mode="wb")
 loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "WTMEC2YR", "SDMVPSU", "SDMVSTRA", "SDDSRVYR",  "RIAGENDR", "RIDAGEYR", 
-               "RIDRETH1",  "DMDEDUC2", "INDHHIN2")
+               "RIDRETH1",  "DMDEDUC2", "DMDEDUC3", "INDHHIN2", "DMDMARTL", "DMDCITZN", "DMDHHSIZ", "INDFMPIR")
 demo <- loaded_file[,keep_vars]
 
 ## OCCUPATION
@@ -224,7 +228,8 @@ full_2013_2014 <- demo %>%
 
 ## RENAME VARIABLES
 colnames(full_2013_2014) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "survey_nr",  "gender", "age", "ethnicity", 
-                              "education", "ann_household_income", 
+                              "education", "education_young", "ann_household_income", 
+                              "marital", "citizen", "household_size", "family_PIR", 
                               "work_status",
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
                               "DPQ060", "DPQ070", "DPQ080", "DPQ090", "DPQ100")
@@ -246,7 +251,7 @@ dep_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DPQ_",letter,".XP
 download.file(demo_file, tf <- tempfile(), mode="wb")
 loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "WTMEC2YR", "SDMVPSU", "SDMVSTRA", "SDDSRVYR",  "RIAGENDR", "RIDAGEYR", 
-               "RIDRETH1",  "DMDEDUC2", "INDHHIN2")
+               "RIDRETH1",  "DMDEDUC2", "DMDEDUC3", "INDHHIN2", "DMDMARTL", "DMDCITZN", "DMDHHSIZ", "INDFMPIR")
 demo <- loaded_file[,keep_vars]
 
 ## OCCUPATION
@@ -268,7 +273,8 @@ full_2015_2016 <- demo %>%
 
 ## RENAME VARIABLES
 colnames(full_2015_2016) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "survey_nr",  "gender", "age", "ethnicity", 
-                              "education", "ann_household_income", 
+                              "education", "education_young", "ann_household_income", 
+                              "marital", "citizen", "household_size", "family_PIR", 
                               "work_status",
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
                               "DPQ060", "DPQ070", "DPQ080", "DPQ090", "DPQ100")
@@ -290,7 +296,7 @@ dep_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DPQ_",letter,".XP
 download.file(demo_file, tf <- tempfile(), mode="wb")
 loaded_file <- foreign::read.xport(tf)
 keep_vars <- c("SEQN", "WTMEC2YR", "SDMVPSU", "SDMVSTRA", "SDDSRVYR",  "RIAGENDR", "RIDAGEYR", 
-               "RIDRETH1",  "DMDEDUC2", "INDHHIN2")
+               "RIDRETH1",  "DMDEDUC2", "DMDEDUC3", "INDHHIN2", "DMDMARTL", "DMDCITZN", "DMDHHSIZ", "INDFMPIR")
 demo <- loaded_file[,keep_vars]
 
 ## OCCUPATION
@@ -312,7 +318,8 @@ full_2017_2018 <- demo %>%
 
 ## RENAME VARIABLES
 colnames(full_2017_2018) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "survey_nr",  "gender", "age", "ethnicity", 
-                              "education", "ann_household_income", 
+                              "education", "education_young", "ann_household_income", 
+                              "marital", "citizen", "household_size", "family_PIR", 
                               "work_status",
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
                               "DPQ060", "DPQ070", "DPQ080", "DPQ090", "DPQ100")

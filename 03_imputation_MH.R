@@ -50,9 +50,6 @@ for (i in levels(cleaned_full_df$survey_nr)) {
     # extract imputed datasets
     imputed <- complete(imputation_object, j)
     
-    # removal of not needed variables
-    imputed$ever_lipid_meds <- NULL
-    
     # re-merge ID 
     imputed_df <- as.data.frame(cbind(SEQN, SDMVPSU, SDMVSTRA, imputed))
     
