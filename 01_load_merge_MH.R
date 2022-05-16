@@ -354,7 +354,7 @@ depression <- loaded_file[,keep_vars]
 ## MEDICAL QUESTIONNARIE
 download.file(mcq_file, tf <- tempfile(), mode="wb")
 loaded_file <- foreign::read.xport(tf)
-keep_vars <- c("SEQN", "MCQ010", "MCQ160a", "MCQ160d", "MCQ160f")
+keep_vars <- c("SEQN", "MCQ010", "MCQ160A", "MCQ160D", "MCQ160F")
 medical <- loaded_file[,keep_vars]
 
 ## DIABETES
@@ -453,7 +453,7 @@ depression <- loaded_file[,keep_vars]
 ## MEDICAL QUESTIONNARIE
 download.file(mcq_file, tf <- tempfile(), mode="wb")
 loaded_file <- foreign::read.xport(tf)
-keep_vars <- c("SEQN", "MCQ010", "MCQ160a", "MCQ160d", "MCQ160f")
+keep_vars <- c("SEQN", "MCQ010", "MCQ160A", "MCQ160D", "MCQ160F")
 medical <- loaded_file[,keep_vars]
 
 ## DIABETES
@@ -552,7 +552,7 @@ depression <- loaded_file[,keep_vars]
 ## MEDICAL QUESTIONNARIE
 download.file(mcq_file, tf <- tempfile(), mode="wb")
 loaded_file <- foreign::read.xport(tf)
-keep_vars <- c("SEQN", "MCQ010", "MCQ160a", "MCQ160d", "MCQ160f")
+keep_vars <- c("SEQN", "MCQ010", "MCQ160A", "MCQ160D", "MCQ160F")
 medical <- loaded_file[,keep_vars]
 
 ## DIABETES
@@ -652,7 +652,7 @@ depression <- loaded_file[,keep_vars]
 ## MEDICAL QUESTIONNARIE
 download.file(mcq_file, tf <- tempfile(), mode="wb")
 loaded_file <- foreign::read.xport(tf)
-keep_vars <- c("SEQN", "MCQ010", "MCQ160a", "MCQ160d", "MCQ160f")
+keep_vars <- c("SEQN", "MCQ010", "MCQ160A", "MCQ160D", "MCQ160F")
 medical <- loaded_file[,keep_vars]
 
 ## DIABETES
