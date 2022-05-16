@@ -117,6 +117,36 @@ full_df$education <- revalue(full_df$education, c("1"="<9 grade",
 table(full_df$education, useNA = "always")
 
 
+########################################
+####### education in <19 yrs old #######
+########################################
+table(full_df$education_young, useNA = "always")
+# setting those who refused and don't know to missing
+full_df$education_young[full_df$education_young == 77] <- NA
+full_df$education_young[full_df$education_young == 99] <- NA
+full_df$education_young <- as.factor(full_df$education_young)
+full_df$education_young <- revalue(full_df$education_young, c("0"="never attended",
+                                                              "1"="1 grade",
+                                                              "2"="2 grade",
+                                                              "3"="3 grade",
+                                                              "4"="4 grade",
+                                                              "5"="5 grade",
+                                                              "6"="6 grade",
+                                                              "7"="7 grade",
+                                                              "8"="8 grade",
+                                                              "9"="9 grade",
+                                                              "10"="10 grade",
+                                                              "11"="11 grade",
+                                                              "12"="12 grade",
+                                                              "13"="High School Graduate",
+                                                              "14"="GED",
+                                                              "15"="More than high school",
+                                                              "55"="<5 grade",
+                                                              "66"="<9 grade"))
+table(full_df$education_young, useNA = "always")
+
+
+
 ######################
 ####### income #######
 ######################
@@ -157,12 +187,169 @@ full_df$work_status <- revalue(full_df$work_status, c("1"="Working",
                                                       "4"="Not working"))
 table(full_df$work_status, useNA = "always")
 
-full_df$DPQ100 <- NULL
+
+###########################
+##### marital status ######
+###########################
+table(full_df$marital, useNA = "always")
+# setting those who refused and don't know to missing
+full_df$marital[full_df$marital == 77] <- NA
+full_df$marital[full_df$marital == 99] <- NA
+full_df$marital <- as.factor(full_df$marital)
+full_df$marital <- revalue(full_df$marital, c("1"="Married",
+                                              "2"="Widowed",
+                                              "3"="Divorced",
+                                              "4"="Separated",
+                                              "5"="Never married",
+                                              "6"="Living with partner"))
+table(full_df$marital, useNA = "always")
 
 
+###########################
+####### citizenship #######
+###########################
+table(full_df$citizen, useNA = "always")
+# setting those who refused and don't know to missing
+full_df$citizen[full_df$citizen == 7] <- NA
+full_df$citizen[full_df$citizen == 9] <- NA
+full_df$citizen <- as.factor(full_df$citizen)
+full_df$citizen <- revalue(full_df$citizen, c("1"="Citizen",
+                                              "2"="Not citizen"))
+table(full_df$citizen, useNA = "always")
+
+
+######################
+####### asthma #######
+######################
+table(full_df$asthma, useNA = "always")
+# setting those who refused and don't know to missing
+full_df$asthma[full_df$asthma == 7] <- NA
+full_df$asthma[full_df$asthma == 9] <- NA
+full_df$asthma <- as.factor(full_df$asthma)
+full_df$asthma <- revalue(full_df$asthma, c("1"="Yes",
+                                              "2"="No"))
+table(full_df$asthma, useNA = "always")
+
+
+#########################
+####### arthritis #######
+#########################
+table(full_df$arthritis, useNA = "always")
+# setting those who refused and don't know to missing
+full_df$arthritis[full_df$arthritis == 7] <- NA
+full_df$arthritis[full_df$arthritis == 9] <- NA
+full_df$arthritis <- as.factor(full_df$arthritis)
+full_df$arthritis <- revalue(full_df$arthritis, c("1"="Yes",
+                                            "2"="No"))
+table(full_df$arthritis, useNA = "always")
+
+
+########################
+######## angina ########
+########################
+table(full_df$angina, useNA = "always")
+# setting those who refused and don't know to missing
+full_df$angina[full_df$angina == 7] <- NA
+full_df$angina[full_df$angina == 9] <- NA
+full_df$angina <- as.factor(full_df$angina)
+full_df$angina <- revalue(full_df$angina, c("1"="Yes",
+                                                  "2"="No"))
+table(full_df$angina, useNA = "always")
+
+
+########################
+######## stroke ########
+########################
+table(full_df$stroke, useNA = "always")
+# setting those who refused and don't know to missing
+full_df$stroke[full_df$stroke == 7] <- NA
+full_df$stroke[full_df$stroke == 9] <- NA
+full_df$stroke <- as.factor(full_df$stroke)
+full_df$stroke <- revalue(full_df$stroke, c("1"="Yes",
+                                            "2"="No"))
+table(full_df$stroke, useNA = "always")
+
+##########################
+######## diabetes ########
+##########################
+table(full_df$diabetes, useNA = "always")
+# setting those who refused and don't know to missing
+full_df$diabetes[full_df$diabetes == 7] <- NA
+full_df$diabetes[full_df$diabetes == 9] <- NA
+full_df$diabetes <- as.factor(full_df$diabetes)
+full_df$diabetes <- revalue(full_df$diabetes, c("1"="Yes",
+                                            "2"="No",
+                                            "3"="Borderline"))
+table(full_df$diabetes, useNA = "always")
+
+
+##############################
+######## hypertension ########
+##############################
+table(full_df$hypertension, useNA = "always")
+# setting those who refused and don't know to missing
+full_df$hypertension[full_df$hypertension == 7] <- NA
+full_df$hypertension[full_df$hypertension == 9] <- NA
+full_df$hypertension <- as.factor(full_df$hypertension)
+full_df$hypertension <- revalue(full_df$hypertension, c("1"="Yes",
+                                                "2"="No"))
+table(full_df$hypertension, useNA = "always")
+
+#########################
+######## smoking ########
+#########################
+# 1 = Every day
+# 2 = Some days
+# 3 = Not at all
+# 7 = Refused
+# 9 = Don't know
+table(full_df$smoking, useNA = "always")
+full_df$smoking[full_df$smoking == 7] <- NA
+full_df$smoking[full_df$smoking == 9] <- NA
+# recode so that 1 = smoker, 2 = nonsmoker
+full_df$smoking[full_df$smoking == 2] <- 1
+table(full_df$smoking, useNA = "always")
+full_df$smoking[full_df$smoking == 3] <- 2
+full_df$smoking <- as.factor(full_df$smoking)
+full_df$smoking <- revalue(full_df$smoking, c("1"="smoker",
+                                              "2"="non-smoker"))
+table(full_df$smoking, useNA = "always")
+
+
+#########################
+######## alcohol ########
+#########################
+table(full_df$alcohol, useNA = "always")
+# setting those who refused and don't know to missing
+full_df$alcohol[full_df$alcohol == 777] <- NA
+full_df$alcohol[full_df$alcohol == 999] <- NA
+# probably we should categorize
+# full_df$alcohol <- as.factor(full_df$alcohol)
+# full_df$alcohol <- revalue(full_df$alcohol, c("1"="Yes",
+#                                               "2"="No"))
+table(full_df$alcohol, useNA = "always")
+
+
+##############################
+####### household size #######
+##############################
+table(full_df$household_size, useNA = "always")
+
+####################################################
+####### family Poverty to Income Ratio (PIR) #######
+####################################################
+summary(full_df$family_PIR)
+
+###################
+####### BMI #######
+###################
+summary(full_df$BMI)
+
+
+# SAVE FULL FINAL DATASET 
 saveRDS(full_df, "cleaned_full_df.rds")
 
-# save data per survey - this is how we will impute missing data
+# SAVE DATA PER SURVEY - this is how we will impute missing data
 for (i in levels(full_df$survey_nr)) {
   
   filename <- paste0("full_",i,".rds")
