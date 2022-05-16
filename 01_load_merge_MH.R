@@ -22,6 +22,8 @@ letter <- "D"
 demo_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DEMO_",letter,".XPT")
 occ_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/OCQ_",letter,".XPT")
 dep_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DPQ_",letter,".XPT")
+mcq_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/MCQ_",letter,".XPT")
+diab_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DIQ_",letter,".XPT")
 
 
 ## DEMOGRAPHICS
@@ -41,12 +43,23 @@ occ <- loaded_file[,keep_vars]
 download.file(dep_file, tf <- tempfile(), mode="wb")
 depression <- foreign::read.xport(tf)
 
+## MEDICAL QUESTIONNARIE
+download.file(mcq_file, tf <- tempfile(), mode="wb")
+keep_vars <- c("SEQN", "MCQ010", "MCQ160A", "MCQ160D", "MCQ160F")
+medical <- foreign::read.xport(tf)
+
+## DIABETES
+download.file(diab_file, tf <- tempfile(), mode="wb")
+keep_vars <- c("SEQN", "DIQ010")
+diabetes <- foreign::read.xport(tf)
 
 
 ## MERGE ALL BY SEQN
 full_2005_2006 <- demo %>% 
   full_join(occ,  by = "SEQN") %>%
-  full_join(depression,  by = "SEQN")  
+  full_join(depression,  by = "SEQN") %>%
+  full_join(medical,  by = "SEQN")  %>%
+  full_join(diabetes,  by = "SEQN")
   
 
 ## RENAME VARIABLES
@@ -55,7 +68,9 @@ colnames(full_2005_2006) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "s
                               "citizen", "household_size", "family_PIR", 
                               "work_status",
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
-                              "DPQ060", "DPQ070", "DPQ080", "DPQ090", "DPQ100")
+                              "DPQ060", "DPQ070", "DPQ080", "DPQ090", "DPQ100",
+                              "asthma", "arthritis", "angina", "stroke",
+                              "diabetes")
 
 rm(demo, occ, depression)
 
@@ -69,6 +84,9 @@ letter <- "E"
 demo_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DEMO_",letter,".XPT")
 occ_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/OCQ_",letter,".XPT")
 dep_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DPQ_",letter,".XPT")
+mcq_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/MCQ_",letter,".XPT")
+diab_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DIQ_",letter,".XPT")
+
 
 ## DEMOGRAPHICS
 download.file(demo_file, tf <- tempfile(), mode="wb")
@@ -87,12 +105,24 @@ occ <- loaded_file[,keep_vars]
 download.file(dep_file, tf <- tempfile(), mode="wb")
 depression <- foreign::read.xport(tf)
 
+## MEDICAL QUESTIONNARIE
+download.file(mcq_file, tf <- tempfile(), mode="wb")
+keep_vars <- c("SEQN", "MCQ010", "MCQ160A", "MCQ160D", "MCQ160F")
+medical <- foreign::read.xport(tf)
+
+## DIABETES
+download.file(diab_file, tf <- tempfile(), mode="wb")
+keep_vars <- c("SEQN", "DIQ010")
+diabetes <- foreign::read.xport(tf)
 
 
 ## MERGE ALL BY SEQN
 full_2007_2008 <- demo %>% 
   full_join(occ,  by = "SEQN") %>%
-  full_join(depression,  by = "SEQN")  
+  full_join(depression,  by = "SEQN") %>%
+  full_join(medical,  by = "SEQN") %>%
+  full_join(diabetes,  by = "SEQN")
+  
 
 ## RENAME VARIABLES
 colnames(full_2007_2008) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "survey_nr",  "gender", "age", "ethnicity", 
@@ -100,7 +130,9 @@ colnames(full_2007_2008) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "s
                               "citizen", "household_size", "family_PIR", 
                               "work_status",
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
-                              "DPQ060", "DPQ070", "DPQ080", "DPQ090", "DPQ100")
+                              "DPQ060", "DPQ070", "DPQ080", "DPQ090", "DPQ100",
+                              "asthma", "arthritis", "angina", "stroke",
+                              "diabetes")
 
 rm(demo, occ, depression)
 
@@ -113,6 +145,8 @@ letter <- "F"
 demo_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DEMO_",letter,".XPT")
 occ_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/OCQ_",letter,".XPT")
 dep_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DPQ_",letter,".XPT")
+mcq_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/MCQ_",letter,".XPT")
+diab_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DIQ_",letter,".XPT")
 
 
 ## DEMOGRAPHICS
@@ -132,11 +166,23 @@ occ <- loaded_file[,keep_vars]
 download.file(dep_file, tf <- tempfile(), mode="wb")
 depression <- foreign::read.xport(tf)
 
+## MEDICAL QUESTIONNARIE
+download.file(mcq_file, tf <- tempfile(), mode="wb")
+keep_vars <- c("SEQN", "MCQ010", "MCQ160A", "MCQ160D", "MCQ160F")
+medical <- foreign::read.xport(tf)
+
+## DIABETES
+download.file(diab_file, tf <- tempfile(), mode="wb")
+keep_vars <- c("SEQN", "DIQ010")
+diabetes <- foreign::read.xport(tf)
+
 
 ## MERGE ALL BY SEQN
 full_2009_2010 <- demo %>% 
   full_join(occ,  by = "SEQN") %>%
-  full_join(depression,  by = "SEQN")  
+  full_join(depression,  by = "SEQN") %>%
+  full_join(medical,  by = "SEQN") %>%
+  full_join(diabetes,  by = "SEQN")
 
 ## RENAME VARIABLES
 colnames(full_2009_2010) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "survey_nr",  "gender", "age", "ethnicity", 
@@ -144,7 +190,9 @@ colnames(full_2009_2010) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "s
                               "marital", "citizen", "household_size", "family_PIR", 
                               "work_status",
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
-                              "DPQ060", "DPQ070", "DPQ080", "DPQ090", "DPQ100")
+                              "DPQ060", "DPQ070", "DPQ080", "DPQ090", "DPQ100",
+                              "asthma", "arthritis", "angina", "stroke",
+                              "diabetes")
 
 rm(demo, occ, depression)
 
@@ -158,6 +206,9 @@ letter <- "G"
 demo_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DEMO_",letter,".XPT")
 occ_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/OCQ_",letter,".XPT")
 dep_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DPQ_",letter,".XPT")
+mcq_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/MCQ_",letter,".XPT")
+diab_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DIQ_",letter,".XPT")
+
 
 ## DEMOGRAPHICS
 download.file(demo_file, tf <- tempfile(), mode="wb")
@@ -176,11 +227,23 @@ occ <- loaded_file[,keep_vars]
 download.file(dep_file, tf <- tempfile(), mode="wb")
 depression <- foreign::read.xport(tf)
 
+## MEDICAL QUESTIONNARIE
+download.file(mcq_file, tf <- tempfile(), mode="wb")
+keep_vars <- c("SEQN", "MCQ010", "MCQ160a", "MCQ160d", "MCQ160f")
+medical <- foreign::read.xport(tf)
+
+## DIABETES
+download.file(diab_file, tf <- tempfile(), mode="wb")
+keep_vars <- c("SEQN", "DIQ010")
+diabetes <- foreign::read.xport(tf)
+
 
 ## MERGE ALL BY SEQN
 full_2011_2012 <- demo %>% 
   full_join(occ,  by = "SEQN") %>%
-  full_join(depression,  by = "SEQN")   
+  full_join(depression,  by = "SEQN") %>%
+  full_join(medical,  by = "SEQN") %>%
+  full_join(diabetes,  by = "SEQN") 
 
 ## RENAME VARIABLES
 colnames(full_2011_2012) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "survey_nr",  "gender", "age", "ethnicity", 
@@ -188,7 +251,9 @@ colnames(full_2011_2012) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "s
                               "marital", "citizen", "household_size", "family_PIR", 
                               "work_status",
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
-                              "DPQ060", "DPQ070", "DPQ080", "DPQ090", "DPQ100")
+                              "DPQ060", "DPQ070", "DPQ080", "DPQ090", "DPQ100",
+                              "asthma", "arthritis", "angina", "stroke",
+                              "diabetes")
 
 rm(demo, occ, depression)
 
@@ -201,6 +266,8 @@ letter <- "H"
 demo_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DEMO_",letter,".XPT")
 occ_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/OCQ_",letter,".XPT")
 dep_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DPQ_",letter,".XPT")
+mcq_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/MCQ_",letter,".XPT")
+diab_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DIQ_",letter,".XPT")
 
 
 ## DEMOGRAPHICS
@@ -220,11 +287,23 @@ occ <- loaded_file[,keep_vars]
 download.file(dep_file, tf <- tempfile(), mode="wb")
 depression <- foreign::read.xport(tf)
 
+## MEDICAL QUESTIONNARIE
+download.file(mcq_file, tf <- tempfile(), mode="wb")
+keep_vars <- c("SEQN", "MCQ010", "MCQ160a", "MCQ160d", "MCQ160f")
+medical <- foreign::read.xport(tf)
+
+## DIABETES
+download.file(diab_file, tf <- tempfile(), mode="wb")
+keep_vars <- c("SEQN", "DIQ010")
+diabetes <- foreign::read.xport(tf)
+
 
 ## MERGE ALL BY SEQN
 full_2013_2014 <- demo %>% 
   full_join(occ,  by = "SEQN") %>%
-  full_join(depression,  by = "SEQN")  
+  full_join(depression,  by = "SEQN") %>%
+  full_join(medical,  by = "SEQN") %>%
+  full_join(diabetes,  by = "SEQN")
 
 ## RENAME VARIABLES
 colnames(full_2013_2014) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "survey_nr",  "gender", "age", "ethnicity", 
@@ -232,7 +311,9 @@ colnames(full_2013_2014) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "s
                               "marital", "citizen", "household_size", "family_PIR", 
                               "work_status",
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
-                              "DPQ060", "DPQ070", "DPQ080", "DPQ090", "DPQ100")
+                              "DPQ060", "DPQ070", "DPQ080", "DPQ090", "DPQ100",
+                              "asthma", "arthritis", "angina", "stroke",
+                              "diabetes")
 
 rm(demo, occ, depression)
 
@@ -245,6 +326,8 @@ letter <- "I"
 demo_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DEMO_",letter,".XPT")
 occ_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/OCQ_",letter,".XPT")
 dep_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DPQ_",letter,".XPT")
+mcq_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/MCQ_",letter,".XPT")
+diab_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DIQ_",letter,".XPT")
 
 
 ## DEMOGRAPHICS
@@ -264,11 +347,23 @@ occ <- loaded_file[,keep_vars]
 download.file(dep_file, tf <- tempfile(), mode="wb")
 depression <- foreign::read.xport(tf)
 
+## MEDICAL QUESTIONNARIE
+download.file(mcq_file, tf <- tempfile(), mode="wb")
+keep_vars <- c("SEQN", "MCQ010", "MCQ160a", "MCQ160d", "MCQ160f")
+medical <- foreign::read.xport(tf)
+
+## DIABETES
+download.file(diab_file, tf <- tempfile(), mode="wb")
+keep_vars <- c("SEQN", "DIQ010")
+diabetes <- foreign::read.xport(tf)
+
 
 ## MERGE ALL BY SEQN
 full_2015_2016 <- demo %>% 
   full_join(occ,  by = "SEQN") %>%
-  full_join(depression,  by = "SEQN")   
+  full_join(depression,  by = "SEQN") %>%
+  full_join(medical,  by = "SEQN") %>%
+  full_join(diabetes,  by = "SEQN")
 
 
 ## RENAME VARIABLES
@@ -277,7 +372,9 @@ colnames(full_2015_2016) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "s
                               "marital", "citizen", "household_size", "family_PIR", 
                               "work_status",
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
-                              "DPQ060", "DPQ070", "DPQ080", "DPQ090", "DPQ100")
+                              "DPQ060", "DPQ070", "DPQ080", "DPQ090", "DPQ100",
+                              "asthma", "arthritis", "angina", "stroke",
+                              "diabetes")
 
 rm(demo, occ, depression)
 
@@ -290,6 +387,8 @@ letter <- "J"
 demo_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DEMO_",letter,".XPT")
 occ_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/OCQ_",letter,".XPT")
 dep_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DPQ_",letter,".XPT")
+mcq_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/MCQ_",letter,".XPT")
+diab_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/",years,"/DIQ_",letter,".XPT")
 
 
 ## DEMOGRAPHICS
@@ -309,11 +408,23 @@ occ <- loaded_file[,keep_vars]
 download.file(dep_file, tf <- tempfile(), mode="wb")
 depression <- foreign::read.xport(tf)
 
+## MEDICAL QUESTIONNARIE
+download.file(mcq_file, tf <- tempfile(), mode="wb")
+keep_vars <- c("SEQN", "MCQ010", "MCQ160a", "MCQ160d", "MCQ160f")
+medical <- foreign::read.xport(tf)
+
+## DIABETES
+download.file(diab_file, tf <- tempfile(), mode="wb")
+keep_vars <- c("SEQN", "DIQ010")
+diabetes <- foreign::read.xport(tf)
+
 
 ## MERGE ALL BY SEQN
 full_2017_2018 <- demo %>% 
   full_join(occ,  by = "SEQN") %>%
-  full_join(depression,  by = "SEQN")   
+  full_join(depression,  by = "SEQN") %>%
+  full_join(medical,  by = "SEQN") %>%
+  full_join(diabetes,  by = "SEQN")
 
 
 ## RENAME VARIABLES
@@ -322,7 +433,9 @@ colnames(full_2017_2018) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "s
                               "marital", "citizen", "household_size", "family_PIR", 
                               "work_status",
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
-                              "DPQ060", "DPQ070", "DPQ080", "DPQ090", "DPQ100")
+                              "DPQ060", "DPQ070", "DPQ080", "DPQ090", "DPQ100",
+                              "asthma", "arthritis", "angina", "stroke",
+                              "diabetes")
 
 rm(demo, occ, depression)
 
