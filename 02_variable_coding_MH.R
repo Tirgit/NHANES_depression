@@ -189,6 +189,41 @@ table(full_df$work_status, useNA = "always")
 
 
 ###########################
+##### work situation ######
+###########################
+table(full_df$work_situation, useNA = "always")
+# setting those who refused and don't know to missing
+full_df$work_situation[full_df$work_situation == 77] <- NA
+full_df$work_situation[full_df$work_situation == 99] <- NA
+full_df$work_situation <- as.factor(full_df$work_situation)
+full_df$work_situation <- revalue(full_df$work_situation, c("1"="employee_private_company", 
+                                                      "2"="federal_gov_employee",
+                                                      "3"="state_gov_employee",
+                                                      "4"="local_gov_employee",
+                                                      "5"="self_employed",
+                                                      "6"="working_without_pay"))
+table(full_df$work_situation, useNA = "always")
+
+###################################
+##### reason for not working ######
+###################################
+table(full_df$reason_not_working, useNA = "always")
+# setting those who refused and don't know to missing
+full_df$reason_not_working[full_df$reason_not_working == 77] <- NA
+full_df$reason_not_working[full_df$reason_not_working == 99] <- NA
+full_df$reason_not_working <- as.factor(full_df$reason_not_working)
+full_df$reason_not_working <- revalue(full_df$reason_not_working, c("1"="caretaker", 
+                                                                    "2"="school",
+                                                                    "3"="retired",
+                                                                    "4"="health_reasons",
+                                                                    "5"="layoff",
+                                                                    "6"="disability",
+                                                                    "7"="other"))
+table(full_df$reason_not_working, useNA = "always")
+
+
+
+###########################
 ##### marital status ######
 ###########################
 table(full_df$marital, useNA = "always")
@@ -329,6 +364,55 @@ full_df$alcohol[full_df$alcohol == 999] <- NA
 #                                               "2"="No"))
 table(full_df$alcohol, useNA = "always")
 
+#############################################
+####### family Poverty index category #######
+#############################################
+table(full_df$family_pov_level, useNA = "always")
+# setting those who refused and don't know to missing
+full_df$family_pov_level[full_df$family_pov_level == 7] <- NA
+full_df$family_pov_level[full_df$family_pov_level == 9] <- NA
+full_df$family_pov_level <- as.factor(full_df$family_pov_level)
+full_df$family_pov_level <- revalue(full_df$family_pov_level, c("1"="<=1.3",
+                                              "2"="1.3-1.85",
+                                              "3"=">1.85"))
+table(full_df$family_pov_level, useNA = "always")
+
+###########################
+####### PA vigorous #######
+###########################
+summary(full_df$PA_vigorous, useNA = "always")
+# setting those who refused and don't know to missing
+full_df$PA_vigorous[full_df$PA_vigorous == 7777] <- NA
+full_df$PA_vigorous[full_df$PA_vigorous == 9999] <- NA
+summary(full_df$PA_vigorous, useNA = "always")
+
+###########################
+####### PA moderate #######
+###########################
+summary(full_df$PA_moderate, useNA = "always")
+# setting those who refused and don't know to missing
+full_df$PA_moderate[full_df$PA_moderate == 7777] <- NA
+full_df$PA_moderate[full_df$PA_moderate == 9999] <- NA
+summary(full_df$PA_moderate, useNA = "always")
+
+############################
+####### PA sedentary #######
+############################
+summary(full_df$PA_sedentary, useNA = "always")
+# setting those who refused and don't know to missing
+full_df$PA_sedentary[full_df$PA_sedentary == 7777] <- NA
+full_df$PA_sedentary[full_df$PA_sedentary == 9999] <- NA
+summary(full_df$PA_sedentary, useNA = "always")
+
+#################################
+####### PA transportation #######
+#################################
+summary(full_df$PA_transportation, useNA = "always")
+# setting those who refused and don't know to missing
+full_df$PA_transportation[full_df$PA_transportation == 7777] <- NA
+full_df$PA_transportation[full_df$PA_transportation == 9999] <- NA
+summary(full_df$PA_transportation, useNA = "always")
+
 
 ##############################
 ####### household size #######
@@ -340,10 +424,19 @@ table(full_df$household_size, useNA = "always")
 ####################################################
 summary(full_df$family_PIR)
 
+####################################
+####### family Poverty index #######
+####################################
+summary(full_df$family_pov_index)
+
 ###################
 ####### BMI #######
 ###################
 summary(full_df$BMI)
+
+
+
+
 
 
 # SAVE FULL FINAL DATASET 
