@@ -465,9 +465,31 @@ summary(full_df$BMI)
 #########################
 # 0 = No
 # 1 = Yes
-full_df$phq <- ifelse(full_df$DPQ010<=9 | full_df$DPQ020<=9 | full_df$DPQ030<=9 
-                           | full_df$DPQ040<=9 | full_df$DPQ050<=9 | full_df$DPQ060<=9 
-                           | full_df$DPQ070<=9 | full_df$DPQ080<=9 | full_df$DPQ090<=9, 1, 0)
+
+full_df$DPQ010[full_df$DPQ010 == 7] <- NA
+full_df$DPQ010[full_df$DPQ010 == 9] <- NA
+full_df$DPQ020[full_df$DPQ020 == 7] <- NA
+full_df$DPQ020[full_df$DPQ020 == 9] <- NA
+full_df$DPQ030[full_df$DPQ030 == 7] <- NA
+full_df$DPQ030[full_df$DPQ030 == 9] <- NA
+full_df$DPQ040[full_df$DPQ040 == 7] <- NA
+full_df$DPQ040[full_df$DPQ040 == 9] <- NA
+full_df$DPQ050[full_df$DPQ050 == 7] <- NA
+full_df$DPQ050[full_df$DPQ050 == 9] <- NA
+full_df$DPQ060[full_df$DPQ060 == 7] <- NA
+full_df$DPQ060[full_df$DPQ060 == 9] <- NA
+full_df$DPQ070[full_df$DPQ070 == 7] <- NA
+full_df$DPQ070[full_df$DPQ070 == 9] <- NA
+full_df$DPQ080[full_df$DPQ080 == 7] <- NA
+full_df$DPQ080[full_df$DPQ080 == 9] <- NA
+full_df$DPQ090[full_df$DPQ090 == 7] <- NA
+full_df$DPQ090[full_df$DPQ090 == 9] <- NA
+
+
+full_df$phq <- ifelse(full_df$DPQ010<=3 | full_df$DPQ020<=3 | full_df$DPQ030<=3 
+                           | full_df$DPQ040<=3 | full_df$DPQ050<=3 | full_df$DPQ060<=3 
+                           | full_df$DPQ070<=3 | full_df$DPQ080<=3 | full_df$DPQ090<=3, 1, 0)
+
 full_df$phq[is.na(full_df$phq)] <- 0
 
 table(full_df$phq, useNA = "always")
