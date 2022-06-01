@@ -435,6 +435,24 @@ summary(full_df$family_pov_index)
 ###################
 summary(full_df$BMI)
 
+#########################
+#### PHQ9 answers ######
+#########################
+# 0 = No
+# 1 = Yes
+full_df$phq <- ifelse(full_df$DPQ010<=9 | full_df$DPQ020<=9 | full_df$DPQ030<=9 
+                           | full_df$DPQ040<=9 | full_df$DPQ050<=9 | full_df$DPQ060<=9 
+                           | full_df$DPQ070<=9 | full_df$DPQ080<=9 | full_df$DPQ090<=9, 1, 0)
+full_df$phq[is.na(full_df$phq)] <- 0
+
+table(full_df$phq, useNA = "always")
+full_df$phq <- as.factor(full_df$phq)
+full_df$phq <- revalue(full_df$phq, c("0"="No", "1"="Yes"))
+table(full_df$phq, useNA = "always")
+
+
+# SAVE FULL FINAL DATASET 
+saveRDS(full_df, "cleaned_full_df.rds")
 
 
 # SAVE DATA PER SURVEY - this is how we will impute missing data
