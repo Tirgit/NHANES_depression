@@ -78,13 +78,13 @@ library(dplyr)
 # ## SMOKING
 # download.file(smoking_file, tf <- tempfile(), mode="wb")
 # loaded_file <- foreign::read.xport(tf)
-# keep_vars <- c("SEQN", "SMQ040")
+# keep_vars <- c("SEQN", "SMQ020", "SMQ040")
 # smoking <- loaded_file[,keep_vars]
 # 
 # ## ALCOHOL
 # download.file(alcohol_file, tf <- tempfile(), mode="wb")
 # loaded_file <- foreign::read.xport(tf)
-# keep_vars <- c("SEQN", "ALQ130")
+# keep_vars <- c("SEQN", "ALQ110", "ALQ130")
 # alcohol <- loaded_file[,keep_vars]
 # 
 # 
@@ -108,7 +108,7 @@ library(dplyr)
 #                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
 #                               "DPQ060", "DPQ070", "DPQ080", "DPQ090",
 #                               "asthma", "arthritis", "angina", "stroke",
-#                               "diabetes", "hypertension", "BMI", "smoking", "alcohol")
+#                               "diabetes", "hypertension", "BMI", "smoking_ever", "smoking_now", "alcohol_ever", "alcohol_quantity")
 # 
 # rm(demo_file, occ_file, dep_file, mcq_file, diab_file, bp_file, bmi_file, smoking_file, alcohol_file, loaded_file,
 #   demo, occ, depression, medical, diabetes, bloodpressure, bmi, smoking, alcohol)
@@ -188,13 +188,13 @@ bmi <- loaded_file[,keep_vars]
 ## SMOKING
 download.file(smoking_file, tf <- tempfile(), mode="wb")
 loaded_file <- foreign::read.xport(tf)
-keep_vars <- c("SEQN", "SMQ040")
+keep_vars <- c("SEQN", "SMQ020", "SMQ040")
 smoking <- loaded_file[,keep_vars]
 
 ## ALCOHOL
 download.file(alcohol_file, tf <- tempfile(), mode="wb")
 loaded_file <- foreign::read.xport(tf)
-keep_vars <- c("SEQN", "ALQ130")
+keep_vars <- c("SEQN", "ALQ110", "ALQ130")
 alcohol <- loaded_file[,keep_vars]
 
 ## PHYSICAL ACTIVITY
@@ -228,7 +228,7 @@ colnames(full_2007_2008) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "s
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
                               "DPQ060", "DPQ070", "DPQ080", "DPQ090",
                               "asthma", "arthritis", "angina", "stroke",
-                              "diabetes", "hypertension", "BMI", "smoking", "alcohol",
+                              "diabetes", "hypertension", "BMI", "smoking_ever", "smoking_now", "alcohol_ever", "alcohol_quantity",
                               "PA_vigorous", "PA_transportation", "PA_moderate", "PA_sedentary")
 
 rm(demo_file, occ_file, dep_file, mcq_file, diab_file, bp_file, bmi_file, smoking_file, alcohol_file, loaded_file,
@@ -306,13 +306,13 @@ bmi <- loaded_file[,keep_vars]
 ## SMOKING
 download.file(smoking_file, tf <- tempfile(), mode="wb")
 loaded_file <- foreign::read.xport(tf)
-keep_vars <- c("SEQN", "SMQ040")
+keep_vars <- c("SEQN", "SMQ020", "SMQ040")
 smoking <- loaded_file[,keep_vars]
 
 ## ALCOHOL
 download.file(alcohol_file, tf <- tempfile(), mode="wb")
 loaded_file <- foreign::read.xport(tf)
-keep_vars <- c("SEQN", "ALQ130")
+keep_vars <- c("SEQN", "ALQ110", "ALQ130")
 alcohol <- loaded_file[,keep_vars]
 
 ## PHYSICAL ACTIVITY
@@ -343,7 +343,7 @@ colnames(full_2009_2010) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "s
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
                               "DPQ060", "DPQ070", "DPQ080", "DPQ090",
                               "asthma", "arthritis", "angina", "stroke",
-                              "diabetes", "hypertension", "BMI", "smoking", "alcohol",
+                              "diabetes", "hypertension", "BMI", "smoking_ever", "smoking_now", "alcohol_ever", "alcohol_quantity",
                               "PA_vigorous", "PA_transportation", "PA_moderate", "PA_sedentary")
 
 rm(demo_file, occ_file, dep_file, mcq_file, diab_file, bp_file, bmi_file, smoking_file, alcohol_file, loaded_file,
@@ -423,13 +423,13 @@ bmi <- loaded_file[,keep_vars]
 ## SMOKING
 download.file(smoking_file, tf <- tempfile(), mode="wb")
 loaded_file <- foreign::read.xport(tf)
-keep_vars <- c("SEQN", "SMQ040")
+keep_vars <- c("SEQN", "SMQ020", "SMQ040")
 smoking <- loaded_file[,keep_vars]
 
 ## ALCOHOL
 download.file(alcohol_file, tf <- tempfile(), mode="wb")
 loaded_file <- foreign::read.xport(tf)
-keep_vars <- c("SEQN", "ALQ130")
+keep_vars <- c("SEQN", "ALQ110", "ALQ130")
 alcohol <- loaded_file[,keep_vars]
 
 ## PHYSICAL ACTIVITY
@@ -460,7 +460,7 @@ colnames(full_2011_2012) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "s
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
                               "DPQ060", "DPQ070", "DPQ080", "DPQ090",
                               "asthma", "arthritis", "angina", "stroke",
-                              "diabetes", "hypertension", "BMI", "smoking", "alcohol",
+                              "diabetes", "hypertension", "BMI", "smoking_ever", "smoking_now", "alcohol_ever", "alcohol_quantity",
                               "PA_vigorous", "PA_transportation", "PA_moderate", "PA_sedentary")
 
 rm(demo_file, occ_file, dep_file, mcq_file, diab_file, bp_file, bmi_file, smoking_file, alcohol_file, loaded_file,
@@ -539,13 +539,13 @@ bmi <- loaded_file[,keep_vars]
 ## SMOKING
 download.file(smoking_file, tf <- tempfile(), mode="wb")
 loaded_file <- foreign::read.xport(tf)
-keep_vars <- c("SEQN", "SMQ040")
+keep_vars <- c("SEQN", "SMQ020", "SMQ040")
 smoking <- loaded_file[,keep_vars]
 
 ## ALCOHOL
 download.file(alcohol_file, tf <- tempfile(), mode="wb")
 loaded_file <- foreign::read.xport(tf)
-keep_vars <- c("SEQN", "ALQ130")
+keep_vars <- c("SEQN", "ALQ110", "ALQ130")
 alcohol <- loaded_file[,keep_vars]
 
 ## PHYSICAL ACTIVITY
@@ -576,7 +576,7 @@ colnames(full_2013_2014) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "s
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
                               "DPQ060", "DPQ070", "DPQ080", "DPQ090",
                               "asthma", "arthritis", "angina", "stroke",
-                              "diabetes", "hypertension", "BMI", "smoking", "alcohol",
+                              "diabetes", "hypertension", "BMI", "smoking_ever", "smoking_now", "alcohol_ever", "alcohol_quantity",
                               "PA_vigorous", "PA_transportation", "PA_moderate", "PA_sedentary")
 
 rm(demo_file, occ_file, dep_file, mcq_file, diab_file, bp_file, bmi_file, smoking_file, alcohol_file, loaded_file,
@@ -655,13 +655,13 @@ bmi <- loaded_file[,keep_vars]
 ## SMOKING
 download.file(smoking_file, tf <- tempfile(), mode="wb")
 loaded_file <- foreign::read.xport(tf)
-keep_vars <- c("SEQN", "SMQ040")
+keep_vars <- c("SEQN", "SMQ020", "SMQ040")
 smoking <- loaded_file[,keep_vars]
 
 ## ALCOHOL
 download.file(alcohol_file, tf <- tempfile(), mode="wb")
 loaded_file <- foreign::read.xport(tf)
-keep_vars <- c("SEQN", "ALQ130")
+keep_vars <- c("SEQN", "ALQ110", "ALQ130")
 alcohol <- loaded_file[,keep_vars]
 
 ## PHYSICAL ACTIVITY
@@ -693,7 +693,7 @@ colnames(full_2015_2016) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "s
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
                               "DPQ060", "DPQ070", "DPQ080", "DPQ090",
                               "asthma", "arthritis", "angina", "stroke",
-                              "diabetes", "hypertension", "BMI", "smoking", "alcohol",
+                              "diabetes", "hypertension", "BMI", "smoking_ever", "smoking_now", "alcohol_ever", "alcohol_quantity",
                               "PA_vigorous", "PA_transportation", "PA_moderate", "PA_sedentary")
 
 rm(demo_file, occ_file, dep_file, mcq_file, diab_file, bp_file, bmi_file, smoking_file, alcohol_file, loaded_file,
@@ -772,13 +772,13 @@ bmi <- loaded_file[,keep_vars]
 ## SMOKING
 download.file(smoking_file, tf <- tempfile(), mode="wb")
 loaded_file <- foreign::read.xport(tf)
-keep_vars <- c("SEQN", "SMQ040")
+keep_vars <- c("SEQN", "SMQ020", "SMQ040")
 smoking <- loaded_file[,keep_vars]
 
 ## ALCOHOL
 download.file(alcohol_file, tf <- tempfile(), mode="wb")
 loaded_file <- foreign::read.xport(tf)
-keep_vars <- c("SEQN", "ALQ130")
+keep_vars <- c("SEQN", "ALQ111", "ALQ130")
 alcohol <- loaded_file[,keep_vars]
 
 ## PHYSICAL ACTIVITY
@@ -810,7 +810,7 @@ colnames(full_2017_2018) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "s
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
                               "DPQ060", "DPQ070", "DPQ080", "DPQ090",
                               "asthma", "arthritis", "angina", "stroke",
-                              "diabetes", "hypertension", "BMI", "smoking", "alcohol",
+                              "diabetes", "hypertension", "BMI", "smoking_ever", "smoking_now", "alcohol_ever", "alcohol_quantity",
                               "PA_vigorous", "PA_transportation", "PA_moderate", "PA_sedentary")
 
 rm(demo_file, occ_file, dep_file, mcq_file, diab_file, bp_file, bmi_file, smoking_file, alcohol_file, loaded_file,

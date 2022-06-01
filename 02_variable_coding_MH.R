@@ -334,36 +334,61 @@ table(full_df$hypertension, useNA = "always")
 #########################
 ######## smoking ########
 #########################
-# 1 = Every day
-# 2 = Some days
-# 3 = Not at all
-# 7 = Refused
-# 9 = Don't know
+table(full_df$smoking_ever, useNA = "always")
+# setting those who refused and don't know to missing
+full_df$smoking_ever[full_df$smoking_ever == 7] <- NA
+full_df$smoking_ever[full_df$smoking_ever == 9] <- NA
+table(full_df$smoking_now, useNA = "always")
+# setting those who refused and don't know to missing
+full_df$smoking_now[full_df$smoking_now == 7] <- NA
+full_df$smoking_now[full_df$smoking_now == 9] <- NA
+# create new variable called smoking
+# 1 = never smoked
+# 2 = ex smoker
+# 3 = sometimes smoker
+# 4 = current smoker
+full_df$smoking <- NA
+full_df$smoking[full_df$smoking_ever == 2] <- 1
+full_df$smoking[full_df$smoking_now == 3] <- 2
+full_df$smoking[full_df$smoking_now == 2] <- 3
+full_df$smoking[full_df$smoking_now == 1] <- 4
 table(full_df$smoking, useNA = "always")
-full_df$smoking[full_df$smoking == 7] <- NA
-full_df$smoking[full_df$smoking == 9] <- NA
-# recode so that 1 = smoker, 2 = nonsmoker
-full_df$smoking[full_df$smoking == 2] <- 1
-table(full_df$smoking, useNA = "always")
-full_df$smoking[full_df$smoking == 3] <- 2
 full_df$smoking <- as.factor(full_df$smoking)
-full_df$smoking <- revalue(full_df$smoking, c("1"="smoker",
-                                              "2"="non-smoker"))
+full_df$smoking <- revalue(full_df$smoking, c("1"="never-smoker",
+                                              "2"="ex-smoker",
+                                              "3"="sometimes-smoker",
+                                              "4"="current-smoker"))
 table(full_df$smoking, useNA = "always")
 
 
 #########################
 ######## alcohol ########
 #########################
-table(full_df$alcohol, useNA = "always")
+table(full_df$alcohol_ever, useNA = "always")
 # setting those who refused and don't know to missing
-full_df$alcohol[full_df$alcohol == 777] <- NA
-full_df$alcohol[full_df$alcohol == 999] <- NA
-# probably we should categorize
-# full_df$alcohol <- as.factor(full_df$alcohol)
-# full_df$alcohol <- revalue(full_df$alcohol, c("1"="Yes",
-#                                               "2"="No"))
+full_df$alcohol_ever[full_df$alcohol_ever == 7] <- NA
+full_df$alcohol_ever[full_df$alcohol_ever == 9] <- NA
+table(full_df$alcohol_quantity, useNA = "always")
+# setting those who refused and don't know to missing
+full_df$alcohol_quantity[full_df$alcohol_quantity == 777] <- NA
+full_df$alcohol_quantity[full_df$alcohol_quantity == 999] <- NA
+# create new variable called alcohol
+# 1 = never drinker
+# 2 = light drinker
+# 3 = heavy drinker
+full_df$alcohol <- NA
+full_df$alcohol[full_df$alcohol_ever == 2] <- 1
+full_df$alcohol[full_df$alcohol_quantity < 4 & full_df$gender == "female"] <- 2
+full_df$alcohol[full_df$alcohol_quantity < 5 & full_df$gender == "male"] <- 2
+full_df$alcohol[full_df$alcohol_quantity >=4 & full_df$gender == "female"] <- 3
+full_df$alcohol[full_df$alcohol_quantity >=5 & full_df$gender == "male"] <- 3
 table(full_df$alcohol, useNA = "always")
+full_df$alcohol <- as.factor(full_df$alcohol)
+full_df$alcohol <- revalue(full_df$alcohol, c("1"="never-drinker",
+                                              "2"="light-drinker",
+                                              "3"="heavy-drinker"))
+table(full_df$alcohol, useNA = "always")
+
 
 #############################################
 ####### family Poverty index category #######
@@ -451,11 +476,7 @@ full_df$phq <- revalue(full_df$phq, c("0"="No", "1"="Yes"))
 table(full_df$phq, useNA = "always")
 
 
-# SAVE FULL FINAL DATASET 
-saveRDS(full_df, "cleaned_full_df.rds")
-
-
-# SAVE DATA PER SURVEY - this is how we will impute missing data
+# SAVE DATA PER SURVEY
 for (i in levels(full_df$survey_nr)) {
   
   filename <- paste0("full_",i,".rds")
