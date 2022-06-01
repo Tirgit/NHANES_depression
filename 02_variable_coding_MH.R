@@ -4,6 +4,7 @@ setwd("~/GitHub/NHANES_depression/Data")
 # load necessary libraries
 library(plyr)
 library(dplyr)
+library(foreign)
 
 # load data
 full_df <- readRDS("full_df.rds")
@@ -436,12 +437,6 @@ summary(full_df$BMI)
 
 
 
-
-
-
-# SAVE FULL FINAL DATASET 
-saveRDS(full_df, "cleaned_full_df.rds")
-
 # SAVE DATA PER SURVEY - this is how we will impute missing data
 for (i in levels(full_df$survey_nr)) {
   
@@ -450,4 +445,17 @@ for (i in levels(full_df$survey_nr)) {
   saveRDS(survey_df, filename)
   
 }
+
+
+# RECALCULATING WEIGHTS FOR THE MERGED DATA
+
+n_surveys <- length(unique(full_df$survey_nr))
+full_df$survey_weight <- full_df$survey_weight/n_surveys
+
+# SAVE FULL FINAL DATASET 
+saveRDS(full_df, "cleaned_full_df.rds")
+
+# SAVE AS STATA FILE
+write.dta(full_df, "cleaned_full_df.dta")
+
 
