@@ -57,7 +57,7 @@ plot(aggl.clust.c,
      main = "Agglomerative, complete linkages")
 
 
-n_clusters <- 4
+n_clusters <- 3
 
 
 dendro <- as.dendrogram(aggl.clust.c)
@@ -69,7 +69,7 @@ dendro.col <- dendro %>%
   set("labels_cex", 0.5)
 ggd1 <- as.ggdend(dendro.col)
 p <- ggplot(ggd1, theme = theme_minimal()) +
-  labs(x = "Num. observations", y = "Height", title = "Dendrogram, k = 4")
+  labs(x = "Num. observations", y = "Height", title = "Dendrogram, k = 3")
 
 tiff("cluster_dendro.tiff", units="in", width=5, height=4, res=300, compression = 'lzw')
 p
