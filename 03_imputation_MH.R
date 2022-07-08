@@ -26,14 +26,14 @@ cleaned_full_df <- readRDS("cleaned_full_df.rds")
   full_df$SDMVSTRA <- NULL
   
   # imputation: 1 copy, 5 iterations, predictive mean matching algorithm
-  imputation_object <- mice(full_df, method = "rf", m = 1, maxit = 5, seed = 35670)
+  imputation_object <- mice(full_df, method = "rf", m = 15, maxit = 5, seed = 35670)
   
   # investigate convergence visually
   # imputation_object$method #those variables with no missing have "" as method - they are still used for imputation
   # plot(imputation_object) #plots look OK
   
   
-  for (j in 1) {
+  for (j in 1:15) {
     
     # extract imputed datasets
     imputed <- complete(imputation_object, j)

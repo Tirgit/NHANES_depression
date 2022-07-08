@@ -1,0 +1,167 @@
+# libraries
+library(cluster) 
+library(dendextend)
+library(ggplot2)
+library(ggdendro)
+library(fpc)
+library(dplyr)
+library(reshape2)
+library(gplots)
+library(FactoMineR)
+library(factoextra)
+library(ClustOfVar)
+
+# Depression questions
+
+# DPQ010 - Have little interest in doing things
+# DPQ020 - Feeling down, depressed, or hopeless
+# DPQ030 - Trouble sleeping or sleeping too much
+# DPQ040 - Feeling tired or having little energy
+# DPQ050 - Poor appetite or overeating
+# DPQ060 - Feeling bad about yourself
+# DPQ070 - Trouble concentrating on things
+# DPQ080 - Moving or speaking slowly or too fast
+# DPQ090 - Thought you would be better off dead
+
+# https://towardsdatascience.com/hierarchical-clustering-on-categorical-data-in-r-a27e578f2995
+
+# Set working directory
+setwd("~/GitHub/NHANES_depression/Data")
+
+# load imputed data
+df_imputed <- readRDS("clean_1.rds")
+
+# keep depressed PHQ-9 >= 10
+df$DPQ_total <- df$DPQ010 + df$DPQ020 + df$DPQ030 + 
+                df$DPQ040 + df$DPQ050 + df$DPQ060 + 
+                df$DPQ070 + df$DPQ080 + df$DPQ090
+
+df$depressed <- 0
+df$depressed[df$DPQ_total >= 10] <- 1
+table(df$depressed)
+
+
+# df$DPQ010 <- as.factor(df$DPQ010)
+# df$DPQ020 <- as.factor(df$DPQ020)
+# df$DPQ030 <- as.factor(df$DPQ030)
+# df$DPQ040 <- as.factor(df$DPQ040)
+# df$DPQ050 <- as.factor(df$DPQ050)
+# df$DPQ060 <- as.factor(df$DPQ060)
+# df$DPQ070 <- as.factor(df$DPQ070)
+# df$DPQ080 <- as.factor(df$DPQ080)
+# df$DPQ090 <- as.factor(df$DPQ090)
+
+
+# narrow down to depressed
+df_depressed <- df[df$depressed == 1,]
+colnames(df_depressed)
+
+# calculate Gower distance
+gower.dist <- daisy(df_depressed[,21:29], metric = c("gower"))
+# divisive.clust <- diana(as.matrix(gower.dist), diss = TRUE, keep.diss = TRUE)
+# plot(divisive.clust, main = "Divisive")
+
+
+# perform hierarchical clustering
+aggl.clust.c <- hclust(gower.dist, method = "complete")
+plot(aggl.clust.c,
+     main = "Agglomerative, complete linkages")
+
+
+n_clusters <- 3
+
+
+dendro <- as.dendrogram(aggl.clust.c)
+dendro.col <- dendro %>%
+  set("branches_k_color", k = n_clusters, value = c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")) %>%
+  set("branches_lwd", 0.6) %>%
+  set("labels_colors", 
+      value = c("darkslategray")) %>% 
+  set("labels_cex", 0.5)
+ggd1 <- as.ggdend(dendro.col)
+p <- ggplot(ggd1, theme = theme_minimal()) +
+  labs(x = "Num. observations", y = "Height", title = "Dendrogram, k = 3")
+
+tiff("cluster_dendro.tiff", units="in", width=5, height=4, res=300, compression = 'lzw')
+p
+dev.off()
+
+
+mycl <- cutree(aggl.clust.c, k=n_clusters)
+mycol <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+mycol <- mycol[as.vector(mycl)]
+
+tiff("cluster_heatmap.tiff", units="in", width=5, height=4, res=300, compression = 'lzw')
+heatmap(as.matrix(df_depressed[,21:29]), Rowv=as.dendrogram(aggl.clust.c), Colv=NA,
+        #col=colorpanel(40, "black","yellow","green"),
+        scale="column", RowSideColors=mycol) 
+dev.off()
+
+
+
+# MCA analysis
+
+# https://datascienceplus.com/using-mca-and-variable-clustering-in-r-for-insights-in-customer-attrition/
+# http://sthda.com/english/articles/31-principal-component-methods-in-r-practical-guide/114-mca-multiple-correspondence-analysis-in-r-essentials
+# https://machinelearnit.com/2018/01/22/acm-clustering/
+# http://sthda.com/english/articles/31-principal-component-methods-in-r-practical-guide/117-hcpc-hierarchical-clustering-on-principal-components-essentials#algorithm-of-the-hcpc-method
+
+df_depressed$DPQ010 <- as.factor(df_depressed$DPQ010)
+df_depressed$DPQ020 <- as.factor(df_depressed$DPQ020)
+df_depressed$DPQ030 <- as.factor(df_depressed$DPQ030)
+df_depressed$DPQ040 <- as.factor(df_depressed$DPQ040)
+df_depressed$DPQ050 <- as.factor(df_depressed$DPQ050)
+df_depressed$DPQ060 <- as.factor(df_depressed$DPQ060)
+df_depressed$DPQ070 <- as.factor(df_depressed$DPQ070)
+df_depressed$DPQ080 <- as.factor(df_depressed$DPQ080)
+df_depressed$DPQ090 <- as.factor(df_depressed$DPQ090)
+
+res.mca <- MCA(df_depressed[,21:29], graph=TRUE)
+fviz_mca_var(res.mca, repel=TRUE)
+eigenvalues <- get_eigenvalue(res.mca)
+head(round(eigenvalues, 2), 10)
+fviz_screeplot(res.mca)
+
+# run variable clustering excluding the target variable (churn) 
+variable_tree <- hclustvar(X.quali = df_depressed[,21:29])
+print(variable_tree)
+#plot the dendrogram of variable groups
+plot(variable_tree)
+
+# variables 
+var <- get_mca_var(res.mca)
+var$contrib
+fviz_contrib(res.mca, choice = "var", axes = 1)
+
+# individuals
+ind <- get_mca_ind(res.mca)
+ind
+
+fviz_mca_ind(res.mca, col.ind = "cos2", 
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+             repel = TRUE, # Avoid text overlapping (slow if many points)
+             ggtheme = theme_minimal())
+
+fviz_mca_ind(res.mca, 
+             label = "none", # hide individual labels
+             habillage = "DPQ090", # color by groups 
+             palette = c("#999999", "#E69F00", "#56B4E9", "#009E73"),
+             addEllipses = TRUE, ellipse.type = "confidence", 
+             ellipse.level = 0.95, alpha.ind = 0.25,
+             ggtheme = theme_minimal()) 
+
+fviz_ellipses(res.mca, c("DPQ010", "DPQ090"),
+              geom = "point")
+
+
+# clustering
+res.hcpc <- HCPC(res.mca, min = 3, nb.clust = -1, graph = TRUE)
+
+# Individuals facor map
+fviz_cluster(res.hcpc, geom = "point", main = "Factor map")
+
+# test variable differences
+res.hcpc$desc.var$test.chi2
+res.hcpc$desc.var$category
+
+
