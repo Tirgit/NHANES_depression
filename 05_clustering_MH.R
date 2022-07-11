@@ -23,13 +23,15 @@ library(ClustOfVar)
 # DPQ080 - Moving or speaking slowly or too fast
 # DPQ090 - Thought you would be better off dead
 
+# Depression Severity: 0-4 none, 5-9 mild, 10-14 moderate, 15-19 moderately severe, 20-27 severe.
+
 # https://towardsdatascience.com/hierarchical-clustering-on-categorical-data-in-r-a27e578f2995
 
 # Set working directory
 setwd("~/GitHub/NHANES_depression/Data")
 
 # load imputed data
-df_imputed <- readRDS("clean_1.rds")
+df <- readRDS("clean_1.rds")
 
 # keep depressed PHQ-9 >= 10
 df$DPQ_total <- df$DPQ010 + df$DPQ020 + df$DPQ030 + 
@@ -164,4 +166,46 @@ fviz_cluster(res.hcpc, geom = "point", main = "Factor map")
 res.hcpc$desc.var$test.chi2
 res.hcpc$desc.var$category
 
+# cluster vector
+DPQ_score <- df_depressed$DPQ_total
+cluster_membership <- res.hcpc$data.clust$clust
+df_depressed <- cbind(df_depressed, DPQ_score, cluster_membership)
+# Depression Severity: 0-4 none, 5-9 mild, 10-14 moderate, 15-19 moderately severe, 20-27 severe.
+df_depressed$depression_severity <- "moderate"
+df_depressed$depression_severity[df_depressed$DPQ_score >= 15] <- "moderate_severe"
+df_depressed$depression_severity[df_depressed$DPQ_score >= 20] <- "severe"
+
+
+table(df_depressed$DPQ_score, df_depressed$cluster_membership)
+table(df_depressed$depression_severity, df_depressed$cluster_membership, )
+
+
+table(df_depressed$DPQ_score, df_depressed$DPQ010)
+table(df_depressed$DPQ_score, df_depressed$DPQ020)
+table(df_depressed$DPQ_score, df_depressed$DPQ030)
+table(df_depressed$DPQ_score, df_depressed$DPQ040)
+table(df_depressed$DPQ_score, df_depressed$DPQ050)
+table(df_depressed$DPQ_score, df_depressed$DPQ060)
+table(df_depressed$DPQ_score, df_depressed$DPQ070)
+table(df_depressed$DPQ_score, df_depressed$DPQ080)
+table(df_depressed$DPQ_score, df_depressed$DPQ090)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# adding cluster info to the imputed clean files in loop
+DPQ_score <- df_depressed$DPQ_total
+cluster_membership <- res.hcpc$data.clust$clust
+df_depressed <- cbind(df_depressed, DPQ_score, cluster_membership)
 
