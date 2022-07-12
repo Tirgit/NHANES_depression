@@ -1,3 +1,7 @@
+# Set working directory
+setwd("~/GitHub/NHANES_depression/Data")
+
+
 # libraries
 library(cluster) 
 library(dendextend)
@@ -10,6 +14,7 @@ library(gplots)
 library(FactoMineR)
 library(factoextra)
 library(ClustOfVar)
+library(pheatmap)
 
 # Depression questions
 
@@ -59,49 +64,48 @@ df_depressed <- df[df$depressed == 1,]
 colnames(df_depressed)
 
 # calculate Gower distance
-gower.dist <- daisy(df_depressed[,21:29], metric = c("gower"))
+# gower.dist <- daisy(df_depressed[,21:29], metric = c("gower"))
 # divisive.clust <- diana(as.matrix(gower.dist), diss = TRUE, keep.diss = TRUE)
 # plot(divisive.clust, main = "Divisive")
 
 
 # perform hierarchical clustering
-aggl.clust.c <- hclust(gower.dist, method = "complete")
-plot(aggl.clust.c,
-     main = "Agglomerative, complete linkages")
+# aggl.clust.c <- hclust(gower.dist, method = "complete")
+# plot(aggl.clust.c,
+#     main = "Agglomerative, complete linkages")
 
 
-n_clusters <- 3
+# n_clusters <- 3
 
 
-dendro <- as.dendrogram(aggl.clust.c)
-dendro.col <- dendro %>%
-  set("branches_k_color", k = n_clusters, value = c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")) %>%
-  set("branches_lwd", 0.6) %>%
-  set("labels_colors", 
-      value = c("darkslategray")) %>% 
-  set("labels_cex", 0.5)
-ggd1 <- as.ggdend(dendro.col)
-p <- ggplot(ggd1, theme = theme_minimal()) +
-  labs(x = "Num. observations", y = "Height", title = "Dendrogram, k = 3")
+# dendro <- as.dendrogram(aggl.clust.c)
+# dendro.col <- dendro %>%
+#   set("branches_k_color", k = n_clusters, value = c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")) %>%
+#   set("branches_lwd", 0.6) %>%
+#   set("labels_colors", 
+#       value = c("darkslategray")) %>% 
+#   set("labels_cex", 0.5)
+# ggd1 <- as.ggdend(dendro.col)
+# p <- ggplot(ggd1, theme = theme_minimal()) +
+#   labs(x = "Num. observations", y = "Height", title = "Dendrogram, k = 3")
+# 
+# tiff("cluster_dendro.tiff", units="in", width=5, height=4, res=300, compression = 'lzw')
+# p
+# dev.off()
+# 
+# 
+# mycl <- cutree(aggl.clust.c, k=n_clusters)
+# mycol <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+# mycol <- mycol[as.vector(mycl)]
+# 
+# tiff("cluster_heatmap.tiff", units="in", width=5, height=4, res=300, compression = 'lzw')
+# heatmap(as.matrix(df_depressed[,21:29]), Rowv=as.dendrogram(aggl.clust.c), Colv=NA,
+#         #col=colorpanel(40, "black","yellow","green"),
+#         scale="column", RowSideColors=mycol) 
+# dev.off()
+# 
 
-tiff("cluster_dendro.tiff", units="in", width=5, height=4, res=300, compression = 'lzw')
-p
-dev.off()
-
-
-mycl <- cutree(aggl.clust.c, k=n_clusters)
-mycol <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
-mycol <- mycol[as.vector(mycl)]
-
-tiff("cluster_heatmap.tiff", units="in", width=5, height=4, res=300, compression = 'lzw')
-heatmap(as.matrix(df_depressed[,21:29]), Rowv=as.dendrogram(aggl.clust.c), Colv=NA,
-        #col=colorpanel(40, "black","yellow","green"),
-        scale="column", RowSideColors=mycol) 
-dev.off()
-
-
-
-# MCA analysis
+#### MCA ANALYSIS
 
 # https://datascienceplus.com/using-mca-and-variable-clustering-in-r-for-insights-in-customer-attrition/
 # http://sthda.com/english/articles/31-principal-component-methods-in-r-practical-guide/114-mca-multiple-correspondence-analysis-in-r-essentials
@@ -122,7 +126,11 @@ res.mca <- MCA(df_depressed[,21:29], graph=TRUE)
 fviz_mca_var(res.mca, repel=TRUE)
 eigenvalues <- get_eigenvalue(res.mca)
 head(round(eigenvalues, 2), 10)
-fviz_screeplot(res.mca)
+p <- fviz_screeplot(res.mca)
+
+tiff("H:/BACKUP/Projects/Joan_Aina_projects/NHANES_depression/PHQ_screeplot.tiff", units="in", width=5, height=4, res=300, compression = 'lzw')
+p
+dev.off()
 
 # run variable clustering excluding the target variable (churn) 
 variable_tree <- hclustvar(X.quali = df_depressed[,21:29])
@@ -160,7 +168,11 @@ fviz_ellipses(res.mca, c("DPQ010", "DPQ090"),
 res.hcpc <- HCPC(res.mca, min = 3, nb.clust = -1, graph = TRUE)
 
 # Individuals facor map
-fviz_cluster(res.hcpc, geom = "point", main = "Factor map")
+p <- fviz_cluster(res.hcpc, geom = "point", main = "Factor map")
+
+tiff("H:/BACKUP/Projects/Joan_Aina_projects/NHANES_depression/DPQ_clusters.tiff", units="in", width=5, height=4, res=300, compression = 'lzw')
+p
+dev.off()
 
 # test variable differences
 res.hcpc$desc.var$test.chi2
@@ -176,21 +188,47 @@ df_depressed$depression_severity[df_depressed$DPQ_score >= 15] <- "moderate_seve
 df_depressed$depression_severity[df_depressed$DPQ_score >= 20] <- "severe"
 
 
-table(df_depressed$DPQ_score, df_depressed$cluster_membership)
-table(df_depressed$depression_severity, df_depressed$cluster_membership, )
+x <- table(df_depressed$DPQ_score, df_depressed$cluster_membership)
+prop.table(x, margin = 1) #margin definition 1: by row, 2: by column 
+
+x <- table(df_depressed$depression_severity, df_depressed$cluster_membership)
+prop.table(x, margin = 1) #margin definition 1: by row, 2: by column 
+prop.table(x, margin = 2) #margin definition 1: by row, 2: by column 
+
+df_depressed$DPQ010_d <- ifelse(df_depressed$DPQ010 == 0, 0, 1)
+df_depressed$DPQ020_d <- ifelse(df_depressed$DPQ020 == 0, 0, 1)
+df_depressed$DPQ030_d <- ifelse(df_depressed$DPQ030 == 0, 0, 1)
+df_depressed$DPQ040_d <- ifelse(df_depressed$DPQ040 == 0, 0, 1)
+df_depressed$DPQ050_d <- ifelse(df_depressed$DPQ050 == 0, 0, 1)
+df_depressed$DPQ060_d <- ifelse(df_depressed$DPQ060 == 0, 0, 1)
+df_depressed$DPQ070_d <- ifelse(df_depressed$DPQ070 == 0, 0, 1)
+df_depressed$DPQ080_d <- ifelse(df_depressed$DPQ080 == 0, 0, 1)
+df_depressed$DPQ090_d <- ifelse(df_depressed$DPQ090 == 0, 0, 1)
+
+props <- cbind(
+prop.table(table(df_depressed$DPQ_score, df_depressed$DPQ010_d), 1)[,2],
+prop.table(table(df_depressed$DPQ_score, df_depressed$DPQ020_d), 1)[,2],
+prop.table(table(df_depressed$DPQ_score, df_depressed$DPQ030_d), 1)[,2],
+prop.table(table(df_depressed$DPQ_score, df_depressed$DPQ040_d), 1)[,2],
+prop.table(table(df_depressed$DPQ_score, df_depressed$DPQ050_d), 1)[,2],
+prop.table(table(df_depressed$DPQ_score, df_depressed$DPQ060_d), 1)[,2],
+prop.table(table(df_depressed$DPQ_score, df_depressed$DPQ070_d), 1)[,2],
+prop.table(table(df_depressed$DPQ_score, df_depressed$DPQ080_d), 1)[,2],
+prop.table(table(df_depressed$DPQ_score, df_depressed$DPQ090_d), 1)[,2]
+)
+colnames(props) <- c("DPQ10","DPQ20","DPQ30",
+                     "DPQ40","DPQ50","DPQ60",
+                     "DPQ70","DPQ80","DPQ90")
 
 
-table(df_depressed$DPQ_score, df_depressed$DPQ010)
-table(df_depressed$DPQ_score, df_depressed$DPQ020)
-table(df_depressed$DPQ_score, df_depressed$DPQ030)
-table(df_depressed$DPQ_score, df_depressed$DPQ040)
-table(df_depressed$DPQ_score, df_depressed$DPQ050)
-table(df_depressed$DPQ_score, df_depressed$DPQ060)
-table(df_depressed$DPQ_score, df_depressed$DPQ070)
-table(df_depressed$DPQ_score, df_depressed$DPQ080)
-table(df_depressed$DPQ_score, df_depressed$DPQ090)
+p <- pheatmap(props, cluster_rows = F, cluster_cols = F,
+         legend = F, annotation_names_row = T,
+         annotation_names_col = T, angle_col=45,
+         display_numbers = T)
 
-
+tiff("H:/BACKUP/Projects/Joan_Aina_projects/NHANES_depression/PHQ_DPQ_dich.tiff", units="in", width=5, height=4, res=300, compression = 'lzw')
+p
+dev.off()
 
 
 
