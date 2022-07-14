@@ -49,7 +49,6 @@ cleaned_full_df <- readRDS("cleaned_full_df.rds")
   }
 
 
-  write.dta(imputed_df, "imputed_1.dta")
-  
+
 
 

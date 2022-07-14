@@ -111,6 +111,8 @@ colnames(df_depressed)
 # http://sthda.com/english/articles/31-principal-component-methods-in-r-practical-guide/114-mca-multiple-correspondence-analysis-in-r-essentials
 # https://machinelearnit.com/2018/01/22/acm-clustering/
 # http://sthda.com/english/articles/31-principal-component-methods-in-r-practical-guide/117-hcpc-hierarchical-clustering-on-principal-components-essentials#algorithm-of-the-hcpc-method
+# http://www.sthda.com/english/articles/22-principal-component-methods-videos/74-hcpc-using-factominer-video/
+
 
 df_depressed$DPQ010 <- as.factor(df_depressed$DPQ010)
 df_depressed$DPQ020 <- as.factor(df_depressed$DPQ020)
@@ -165,7 +167,7 @@ fviz_ellipses(res.mca, c("DPQ010", "DPQ090"),
 
 
 # clustering
-res.hcpc <- HCPC(res.mca, min = 3, nb.clust = -1, graph = TRUE)
+res.hcpc <- HCPC(res.mca, min = 3, max = 10, nb.clust = -1, graph = TRUE)
 
 # Individuals facor map
 p <- fviz_cluster(res.hcpc, geom = "point", main = "Factor map")

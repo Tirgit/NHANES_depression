@@ -27,6 +27,9 @@ summary(full_df$survey_weight)
 full_df <- full_df[!is.na(full_df$survey_weight),]
 summary(full_df$survey_weight)
 
+sum(full_df$survey_weight == 0)
+
+full_df <- full_df[full_df$survey_weight != 0,]
 
 ######################
 ##### survey_nr ######
