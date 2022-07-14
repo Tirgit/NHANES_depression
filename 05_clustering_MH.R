@@ -140,6 +140,11 @@ print(variable_tree)
 #plot the dendrogram of variable groups
 plot(variable_tree)
 
+tiff("H:/BACKUP/Projects/Joan_Aina_projects/NHANES_depression/PHQ_variable_tree.tiff", units="in", width=5, height=4, res=300, compression = 'lzw')
+plot(variable_tree)
+dev.off()
+
+
 # variables 
 var <- get_mca_var(res.mca)
 var$contrib
@@ -191,11 +196,44 @@ df_depressed$depression_severity[df_depressed$DPQ_score >= 20] <- "severe"
 
 
 x <- table(df_depressed$DPQ_score, df_depressed$cluster_membership)
-prop.table(x, margin = 1) #margin definition 1: by row, 2: by column 
+props <- prop.table(x, margin = 1) #margin definition 1: by row, 2: by column 
+colnames(props) <- c("Cluster 1", "Cluster 2", "Cluster 3", "Cluster 4")
+
+p <- pheatmap(props, cluster_rows = F, cluster_cols = F,
+              legend = F, annotation_names_row = T,
+              annotation_names_col = T, angle_col=45,
+              display_numbers = T)
+
+tiff("H:/BACKUP/Projects/Joan_Aina_projects/NHANES_depression/cluster_PHQ.tiff", units="in", width=5, height=4, res=300, compression = 'lzw')
+p
+dev.off()
+
 
 x <- table(df_depressed$depression_severity, df_depressed$cluster_membership)
 prop.table(x, margin = 1) #margin definition 1: by row, 2: by column 
+colnames(props) <- c("Cluster 1", "Cluster 2", "Cluster 3", "Cluster 4")
+
+p <- pheatmap(props, cluster_rows = F, cluster_cols = F,
+              legend = F, annotation_names_row = T,
+              annotation_names_col = T, angle_col=45,
+              display_numbers = T)
+
+tiff("H:/BACKUP/Projects/Joan_Aina_projects/NHANES_depression/cluster_PHQ.tiff", units="in", width=5, height=4, res=300, compression = 'lzw')
+p
+dev.off()
+
 prop.table(x, margin = 2) #margin definition 1: by row, 2: by column 
+colnames(props) <- c("Cluster 1", "Cluster 2", "Cluster 3", "Cluster 4")
+
+p <- pheatmap(props, cluster_rows = F, cluster_cols = F,
+              legend = F, annotation_names_row = T,
+              annotation_names_col = T, angle_col=45,
+              display_numbers = T)
+
+tiff("H:/BACKUP/Projects/Joan_Aina_projects/NHANES_depression/cluster_PHQ.tiff", units="in", width=5, height=4, res=300, compression = 'lzw')
+p
+dev.off()
+
 
 df_depressed$DPQ010_d <- ifelse(df_depressed$DPQ010 == 0, 0, 1)
 df_depressed$DPQ020_d <- ifelse(df_depressed$DPQ020 == 0, 0, 1)
