@@ -519,7 +519,5 @@ full_df$survey_weight <- full_df$survey_weight/n_surveys
 # SAVE FULL FINAL DATASET 
 saveRDS(full_df, "cleaned_full_df.rds")
 
-# SAVE AS STATA FILE
-write.dta(full_df, "cleaned_full_df.dta")
 
 
