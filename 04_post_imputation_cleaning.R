@@ -24,7 +24,14 @@ for (j in 1:15) {
   df <- df_imputed[df_imputed$phq == "Yes",]
   df$phq <- NULL
   df[,21:29] <- dpq_rounded
+  df$DPQ_total <- df$DPQ010 + df$DPQ020 + df$DPQ030 + 
+    df$DPQ040 + df$DPQ050 + df$DPQ060 + 
+    df$DPQ070 + df$DPQ080 + df$DPQ090
+  df$depressed <- 0
+  df$depressed[df$DPQ_total >= 10] <- 1
+  table(df$depressed)
+  df_depressed <- df[df$depressed == 1,]
   filename <- paste0("clean_",j,".rds")
-  saveRDS(df, filename)
+  saveRDS(df_depressed, filename)
 }
 

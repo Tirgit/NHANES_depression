@@ -174,7 +174,7 @@ fviz_ellipses(res.mca, c("DPQ010", "DPQ090"),
 # clustering
 res.hcpc <- HCPC(res.mca, min = 3, max = 10, nb.clust = -1, graph = TRUE)
 
-# Individuals facor map
+# Individuals factor map
 p <- fviz_cluster(res.hcpc, geom = "point", main = "Factor map")
 
 tiff("H:/BACKUP/Projects/Joan_Aina_projects/NHANES_depression/DPQ_clusters.tiff", units="in", width=5, height=4, res=300, compression = 'lzw')
@@ -273,6 +273,32 @@ dev.off()
 
 
 
+props <- cbind(
+  prop.table(table(df_depressed$cluster_membership, df_depressed$DPQ010_d), 1)[,2],
+  prop.table(table(df_depressed$cluster_membership, df_depressed$DPQ020_d), 1)[,2],
+  prop.table(table(df_depressed$cluster_membership, df_depressed$DPQ030_d), 1)[,2],
+  prop.table(table(df_depressed$cluster_membership, df_depressed$DPQ040_d), 1)[,2],
+  prop.table(table(df_depressed$cluster_membership, df_depressed$DPQ050_d), 1)[,2],
+  prop.table(table(df_depressed$cluster_membership, df_depressed$DPQ060_d), 1)[,2],
+  prop.table(table(df_depressed$cluster_membership, df_depressed$DPQ070_d), 1)[,2],
+  prop.table(table(df_depressed$cluster_membership, df_depressed$DPQ080_d), 1)[,2],
+  prop.table(table(df_depressed$cluster_membership, df_depressed$DPQ090_d), 1)[,2]
+)
+colnames(props) <- c("DPQ10","DPQ20","DPQ30",
+                     "DPQ40","DPQ50","DPQ60",
+                     "DPQ70","DPQ80","DPQ90")
+
+
+p <- pheatmap(props, cluster_rows = F, cluster_cols = F,
+              legend = F, annotation_names_row = T,
+              annotation_names_col = T, angle_col=45,
+              display_numbers = T)
+
+tiff("H:/BACKUP/Projects/Joan_Aina_projects/NHANES_depression/cluster_DPQ_dich.tiff", units="in", width=5, height=4, res=300, compression = 'lzw')
+p
+dev.off()
+
+
 
 
 
@@ -283,7 +309,4 @@ dev.off()
 
 
 # adding cluster info to the imputed clean files in loop
-DPQ_score <- df_depressed$DPQ_total
-cluster_membership <- res.hcpc$data.clust$clust
-df_depressed <- cbind(df_depressed, DPQ_score, cluster_membership)
-
+df_depressed[,21:29]
