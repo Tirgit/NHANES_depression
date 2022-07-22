@@ -1,7 +1,6 @@
 # Set working directory
 setwd("~/GitHub/NHANES_depression/Data")
 
-
 # libraries
 library(cluster) 
 library(dendextend)
@@ -36,7 +35,7 @@ library(pheatmap)
 setwd("~/GitHub/NHANES_depression/Data")
 
 # load imputed data
-df <- readRDS("clean_1.rds")
+df <- readRDS("clean_5.rds")
 
 # keep depressed PHQ-9 >= 10
 df$DPQ_total <- df$DPQ010 + df$DPQ020 + df$DPQ030 + 

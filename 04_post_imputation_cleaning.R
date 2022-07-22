@@ -1,3 +1,6 @@
+# load libraries
+library(foreign)
+
 # Set working directory
 setwd("~/GitHub/NHANES_depression/Data")
 
@@ -33,5 +36,7 @@ for (j in 1:15) {
   df_depressed <- df[df$depressed == 1,]
   filename <- paste0("clean_",j,".rds")
   saveRDS(df_depressed, filename)
+  stata_filename <- paste0("clean_",j,".dta")
+  write.dta(df_depressed, stata_filename)
 }
 
