@@ -35,12 +35,13 @@ library(pheatmap)
 setwd("~/GitHub/NHANES_depression/Data")
 
 # load imputed data
-df <- readRDS("clean_5.rds")
-df_depressed <- df[df$depressed == 1,]
+df <- readRDS("clean_1.rds")
+df_depressed <- df[df$depressed == 1 & !is.na(df$depressed),]
+table(df_depressed$depressed, useNA = "always")
 
-df_mod <- df[df$DPQ_total >= 10 & df$DPQ_total <= 14,]
-df_modsev <- df[df$DPQ_total >= 15 & df$DPQ_total <= 19,]
-df_sev <-  df[df$DPQ_total >= 20,]
+df_mod <- df_depressed[df_depressed$DPQ_total >= 10 & df_depressed$DPQ_total <= 14,]
+df_modsev <- df_depressed[df_depressed$DPQ_total >= 15 & df_depressed$DPQ_total <= 19,]
+df_sev <-  df_depressed[df_depressed$DPQ_total >= 20,]
 
 #### MCA ANALYSIS, MODERATE
 
@@ -50,7 +51,6 @@ df_sev <-  df[df$DPQ_total >= 20,]
 # http://sthda.com/english/articles/31-principal-component-methods-in-r-practical-guide/117-hcpc-hierarchical-clustering-on-principal-components-essentials#algorithm-of-the-hcpc-method
 # http://www.sthda.com/english/articles/22-principal-component-methods-videos/74-hcpc-using-factominer-video/
 
-df_depressed <- df
 
 df_depressed$DPQ010 <- as.factor(df_depressed$DPQ010)
 df_depressed$DPQ020 <- as.factor(df_depressed$DPQ020)
@@ -115,12 +115,11 @@ res.hcpc$desc.var$test.chi2
 res.hcpc$desc.var$category
 
 # cluster vector
-DPQ_score <- df_depressed$DPQ_total
 cluster_membership <- res.hcpc$data.clust$clust
-df_depressed <- cbind(df_depressed, DPQ_score, cluster_membership)
+df_depressed <- cbind(df_depressed, cluster_membership)
 
 
-x <- table(df_depressed$DPQ_score, df_depressed$cluster_membership)
+x <- table(df_depressed$DPQ_total, df_depressed$cluster_membership)
 props <- prop.table(x, margin = 1) #margin definition 1: by row, 2: by column 
 colnames(props) <- c("Cluster 1", "Cluster 2", "Cluster 3", "Cluster 4")
 
@@ -135,9 +134,9 @@ dev.off()
 
 
 df_depressed$dep_category <- ""
-df_depressed$dep_category[df_depressed$DPQ_score >= 10 & df_depressed$DPQ_score <= 14] <- "Moderate depression"
-df_depressed$dep_category[df_depressed$DPQ_score >= 15 & df_depressed$DPQ_score <= 19] <- "Moderately severe depression"
-df_depressed$dep_category[df_depressed$DPQ_score >= 20] <- "Severe depression"
+df_depressed$dep_category[df_depressed$DPQ_total >= 10 & df_depressed$DPQ_total <= 14] <- "Moderate depression"
+df_depressed$dep_category[df_depressed$DPQ_total >= 15 & df_depressed$DPQ_total <= 19] <- "Moderately severe depression"
+df_depressed$dep_category[df_depressed$DPQ_total >= 20] <- "Severe depression"
 
 
 x <- table(df_depressed$dep_category, df_depressed$cluster_membership)
@@ -199,15 +198,15 @@ df_depressed$DPQ090_d <- ifelse(df_depressed$DPQ090 == 3, 1, 0)
 # df_depressed$DPQ090_d <- ifelse(df_depressed$DPQ090 == 0, 0, 1)
 
 # props <- cbind(
-# prop.table(table(df_depressed$DPQ_score, df_depressed$DPQ010_d), 1)[,2],
-# prop.table(table(df_depressed$DPQ_score, df_depressed$DPQ020_d), 1)[,2],
-# prop.table(table(df_depressed$DPQ_score, df_depressed$DPQ030_d), 1)[,2],
-# prop.table(table(df_depressed$DPQ_score, df_depressed$DPQ040_d), 1)[,2],
-# prop.table(table(df_depressed$DPQ_score, df_depressed$DPQ050_d), 1)[,2],
-# prop.table(table(df_depressed$DPQ_score, df_depressed$DPQ060_d), 1)[,2],
-# prop.table(table(df_depressed$DPQ_score, df_depressed$DPQ070_d), 1)[,2],
-# prop.table(table(df_depressed$DPQ_score, df_depressed$DPQ080_d), 1)[,2],
-# prop.table(table(df_depressed$DPQ_score, df_depressed$DPQ090_d), 1)[,2]
+# prop.table(table(df_depressed$DPQ_total, df_depressed$DPQ010_d), 1)[,2],
+# prop.table(table(df_depressed$DPQ_total, df_depressed$DPQ020_d), 1)[,2],
+# prop.table(table(df_depressed$DPQ_total, df_depressed$DPQ030_d), 1)[,2],
+# prop.table(table(df_depressed$DPQ_total, df_depressed$DPQ040_d), 1)[,2],
+# prop.table(table(df_depressed$DPQ_total, df_depressed$DPQ050_d), 1)[,2],
+# prop.table(table(df_depressed$DPQ_total, df_depressed$DPQ060_d), 1)[,2],
+# prop.table(table(df_depressed$DPQ_total, df_depressed$DPQ070_d), 1)[,2],
+# prop.table(table(df_depressed$DPQ_total, df_depressed$DPQ080_d), 1)[,2],
+# prop.table(table(df_depressed$DPQ_total, df_depressed$DPQ090_d), 1)[,2]
 # )
 # colnames(props) <- c("DPQ10","DPQ20","DPQ30",
 #                      "DPQ40","DPQ50","DPQ60",
@@ -250,11 +249,23 @@ tiff("H:/BACKUP/Projects/Joan_Aina_projects/NHANES_depression/cluster_DPQ.tiff",
 p
 dev.off()
 
+# loop to remerge with the rest of the individuals
 
+for (j in 1:15) {
+filename <- paste0("clean_",j,".rds")
+df <- readRDS(filename)
+df_excluded <- df[df$depressed == 0 | is.na(df$depressed),]
+df_excluded$cluster_membership <- NA
+df_excluded$dep_category <- NA
+var_exclude <- c("DPQ010_d","DPQ020_d","DPQ030_d","DPQ040_d",
+                 "DPQ050_d","DPQ060_d","DPQ070_d","DPQ080_d","DPQ090_d")
+df_depressed <- df_depressed[ , !names(df_depressed) %in% var_exclude]
 
-
-
-
-
+df_all <- rbind(df_depressed, df_excluded)
+filename <- paste0("cluster_merged_",j,".rds")
+saveRDS(df_all, filename)
+stata_filename <- paste0("cluster_merged_",j,".dta")
+write.dta(df_all, stata_filename)
+}
 
 
