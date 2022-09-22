@@ -36,6 +36,7 @@ setwd("~/GitHub/NHANES_depression/Data")
 
 # load imputed data
 df <- readRDS("clean_5.rds")
+df_depressed <- df[df$depressed == 1,]
 
 df_mod <- df[df$DPQ_total >= 10 & df$DPQ_total <= 14,]
 df_modsev <- df[df$DPQ_total >= 15 & df$DPQ_total <= 19,]
@@ -132,6 +133,37 @@ tiff("H:/BACKUP/Projects/Joan_Aina_projects/NHANES_depression/cluster_PHQ.tiff",
 p
 dev.off()
 
+
+df_depressed$dep_category <- ""
+df_depressed$dep_category[df_depressed$DPQ_score >= 10 & df_depressed$DPQ_score <= 14] <- "Moderate depression"
+df_depressed$dep_category[df_depressed$DPQ_score >= 15 & df_depressed$DPQ_score <= 19] <- "Moderately severe depression"
+df_depressed$dep_category[df_depressed$DPQ_score >= 20] <- "Severe depression"
+
+
+x <- table(df_depressed$dep_category, df_depressed$cluster_membership)
+props <- prop.table(x, margin = 1) #margin definition 1: by row, 2: by column 
+colnames(props) <- c("Cluster 1", "Cluster 2", "Cluster 3", "Cluster 4")
+
+p <- pheatmap(props, cluster_rows = F, cluster_cols = F,
+              legend = F, annotation_names_row = T,
+              annotation_names_col = T, angle_col=45,
+              display_numbers = T)
+
+tiff("H:/BACKUP/Projects/Joan_Aina_projects/NHANES_depression/cluster_deplevel_1.tiff", units="in", width=5, height=4, res=300, compression = 'lzw')
+p
+dev.off()
+
+props <- prop.table(x, margin = 2) #margin definition 1: by row, 2: by column 
+colnames(props) <- c("Cluster 1", "Cluster 2", "Cluster 3", "Cluster 4")
+
+p <- pheatmap(props, cluster_rows = F, cluster_cols = F,
+              legend = F, annotation_names_row = T,
+              annotation_names_col = T, angle_col=45,
+              display_numbers = T, number_format = "%.2f")
+
+tiff("H:/BACKUP/Projects/Joan_Aina_projects/NHANES_depression/cluster_deplevel_2.tiff", units="in", width=5, height=4, res=300, compression = 'lzw')
+p
+dev.off()
 
 # DICHOTOMIZE AS SCORE 3
 df_depressed$DPQ010_d <- ifelse(df_depressed$DPQ010 == 3, 1, 0)
