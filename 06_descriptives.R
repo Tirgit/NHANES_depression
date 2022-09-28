@@ -101,7 +101,7 @@ round(cat_survey,1)[24] # asthma: yes
 round(cat_survey,1)[26] # arthritis : yes
 round(cat_survey,1)[28] # angina : yes
 round(cat_survey,1)[30] # stroke : yes
-round(cat_survey,1)[32:34] # diabetes : yes, no, borderline
+round(cat_survey,1)[32] # diabetes : yes
 round(cat_survey,1)[35] # hypertension  : yes
 round(cat_survey,1)[37:40] # smoking
 round(cat_survey,1)[41:43] # alcohol
@@ -125,22 +125,21 @@ for (i in 1:15) {
   nhanes.y <- svydesign(data=df, id=~SDMVPSU, strata=~SDMVSTRA, weights=~survey_weight, nest=TRUE)
   
   # subsetting data
-  sub.y <- subset(nhanes.y, (df$cluster_membership == "1"))
+  sub.y <- subset(nhanes.y, (df$cluster_membership == "4"))
   
   # table creation
-  k <- tableone::svyCreateTableOne(vars = c('age', "ethnicity", 'gender',
-                                            "education", "marital",
-                                            "citizen", "household_size",
-                                            "family_PIR", "work_status",
-                                            "work_situation",
+  k <- tableone::svyCreateTableOne(vars = c('age', "BMI", "PA_sedentary",
+                                            "PA_moderate", "PA_vigorous",
+                                            "DPQ_total",
+                                            'gender', "marital", 
+                                            "education", "ethnicity",
+                                            "ann_household_income",
                                             "family_pov_level",
                                             "asthma", "arthritis",
                                             "angina", "stroke",
                                             "diabetes", "hypertension",
-                                            "BMI","PA_vigorous",
-                                            "PA_moderate", "PA_sedentary",
                                             "smoking", "alcohol",
-                                            "DPQ_total", "dep_category"),
+                                            "dep_category"),
                                    data = sub.y,
                                    includeNA = T,
                                    test = F, addOverall = F)
@@ -164,9 +163,7 @@ for (i in 1:15) {
     k$CatTable[[1]][[12]][,6],
     k$CatTable[[1]][[13]][,6],
     k$CatTable[[1]][[14]][,6],
-    k$CatTable[[1]][[15]][,6],
-    k$CatTable[[1]][[16]][,6],
-    k$CatTable[[1]][[17]][,6]
+    k$CatTable[[1]][[15]][,6]
   )
   
 }
@@ -175,10 +172,34 @@ means_survey <- rubin_mean(average = means_list)
 SDs_survey <- rubin_se(average = means_list, standard_error = ses_list)*sqrt(nrow(sub.y))
 cat_survey <- rubin_mean(average = cat_list)
 
+round(means_survey,1)
+round(SDs_survey,1)
+round(cat_survey,1)[2] # sex: female
+round(cat_survey,1)[3:8] # marital
+round(cat_survey,1)[9:13] # education
+round(cat_survey,1)[14:17] # ethnicity
+round(cat_survey,1)[18:20] # income
+round(cat_survey,1)[21:23] # family POV
+round(cat_survey,1)[24] # asthma: yes
+round(cat_survey,1)[26] # arthritis : yes
+round(cat_survey,1)[28] # angina : yes
+round(cat_survey,1)[30] # stroke : yes
+round(cat_survey,1)[32] # diabetes : yes
+round(cat_survey,1)[35] # hypertension  : yes
+round(cat_survey,1)[37:40] # smoking
+round(cat_survey,1)[41:43] # alcohol
+round(cat_survey,1)[44:46] # depression category
+
 
 
 
 # COMPARING NUMERIC PER CLUSTER
+
+# P value collection
+p_list <- list()
+
+# 'age', "BMI", "PA_sedentary", "PA_moderate", "PA_vigorous", "DPQ_total"
+
 for (i in 1:15) {
   filename <- paste0("cluster_merged_",i,".rds")
   df <- readRDS(filename)
@@ -189,16 +210,47 @@ for (i in 1:15) {
   # subsetting data
   sub.y <- subset(nhanes.y, (df$depressed == 1))
   
-  tt<-svyttest(age ~ cluster_membership, sub.y)
-  tt
-  confint(tt, level=0.9)
-  
+  # ANOVA
   survey_glm <- svyglm(age ~ cluster_membership, sub.y)
   anova_res <- aov(survey_glm)
-  p_val <- summary(anova_res)[[1]]$'Pr(>F)'[[1]]
+  p_list[[i]] <- summary(anova_res)[[1]]$'Pr(>F)'[[1]]
 
 }
 
+median(unlist(p_list))
 
 
+
+# COMPARING CATEGORICAL PER CLUSTER
+
+# P value collection
+p_list <- list()
+
+# 'gender', "marital", 
+# "education", "ethnicity",
+# "ann_household_income",
+# "family_pov_level",
+# "asthma", "arthritis",
+# "angina", "stroke",
+# "diabetes", "hypertension",
+# "smoking", "alcohol",
+# "dep_category"
+
+for (i in 1:15) {
+  filename <- paste0("cluster_merged_",i,".rds")
+  df <- readRDS(filename)
+  
+  # survey design
+  nhanes.y <- svydesign(data=df, id=~SDMVPSU, strata=~SDMVSTRA, weights=~survey_weight, nest=TRUE)
+  
+  # subsetting data
+  sub.y <- subset(nhanes.y, (df$depressed == 1))
+  
+  # chi squared
+  tbl <- svychisq(~dep_category + cluster_membership, sub.y)
+  p_list[[i]] <- as.numeric(tbl$p.value)
+
+}
+
+median(unlist(p_list))
 
