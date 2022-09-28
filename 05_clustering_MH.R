@@ -264,8 +264,8 @@ df_depressed <- df_depressed[ , !names(df_depressed) %in% var_exclude]
 df_all <- rbind(df_depressed, df_excluded)
 filename <- paste0("cluster_merged_",j,".rds")
 saveRDS(df_all, filename)
-stata_filename <- paste0("cluster_merged_",j,".dta")
-write.dta(df_all, stata_filename)
+# stata_filename <- paste0("cluster_merged_",j,".dta")
+# write.dta(df_all, stata_filename)
 }
 
 
