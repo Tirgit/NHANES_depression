@@ -262,6 +262,23 @@ var_exclude <- c("DPQ010_d","DPQ020_d","DPQ030_d","DPQ040_d",
 df_depressed <- df_depressed[ , !names(df_depressed) %in% var_exclude]
 
 df_all <- rbind(df_depressed, df_excluded)
+
+# recoding income
+df_all$ann_household_income <- as.character(df_all$ann_household_income)
+df_all$ann_household_income[df_all$ann_household_income == "10,000-14,999" | 
+                            df_all$ann_household_income == "5,000-9,999" |
+                            df_all$ann_household_income == "15,000-19,999" |
+                            df_all$ann_household_income == "0-4,999"] <- "Under 20,000"
+df_all$ann_household_income[df_all$ann_household_income == "25,000-34,999" | 
+                            df_all$ann_household_income == "20,000-24,999" |
+                            df_all$ann_household_income == "45,000-54,999" |
+                            df_all$ann_household_income == "65,000-74,999" |
+                            df_all$ann_household_income == "35,000-44,999" |
+                            df_all$ann_household_income == "55,000-64,999" |
+                            df_all$ann_household_income == "75,000-99,999" |
+                            df_all$ann_household_income == "20,000 and over"] <- "20,000 - 100,000"
+df_all$ann_household_income <- as.factor(df_all$ann_household_income)
+
 filename <- paste0("cluster_merged_",j,".rds")
 saveRDS(df_all, filename)
 # stata_filename <- paste0("cluster_merged_",j,".dta")
