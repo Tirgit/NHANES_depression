@@ -67,7 +67,7 @@ library(dplyr)
 # ## BLOOD PRESSURE
 # download.file(bp_file, tf <- tempfile(), mode="wb")
 # loaded_file <- foreign::read.xport(tf)
-# keep_vars <- c("SEQN", "BPQ020")
+# keep_vars <- c("SEQN", "BPQ020", "BPQ080")
 # bloodpressure <- loaded_file[,keep_vars]
 # 
 # ## BMI
@@ -109,7 +109,7 @@ library(dplyr)
 #                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
 #                               "DPQ060", "DPQ070", "DPQ080", "DPQ090",
 #                               "asthma", "arthritis", "angina", "stroke",
-#                               "diabetes", "hypertension", "BMI", "smoking_ever", "smoking_now", "alcohol_ever", "alcohol_quantity")
+#                               "diabetes", "hypertension", "hyperlipidemia", "BMI", "smoking_ever", "smoking_now", "alcohol_ever", "alcohol_quantity")
 # 
 # rm(demo_file, occ_file, dep_file, mcq_file, diab_file, bp_file, bmi_file, smoking_file, alcohol_file, loaded_file,
 #   demo, occ, depression, medical, diabetes, bloodpressure, bmi, smoking, alcohol)
@@ -165,7 +165,8 @@ depression <- loaded_file[,keep_vars]
 ## MEDICAL QUESTIONNARIE
 download.file(mcq_file, tf <- tempfile(), mode="wb")
 loaded_file <- foreign::read.xport(tf)
-keep_vars <- c("SEQN", "MCQ010", "MCQ160A", "MCQ160D", "MCQ160F")
+keep_vars <- c("SEQN", "MCQ010", "MCQ160A", "MCQ160B", "MCQ160C", "MCQ160D", "MCQ160E", 
+               "MCQ160F", "MCQ160K", "MCQ160L", "MCQ160M", "MCQ220")
 medical <- loaded_file[,keep_vars]
 
 ## DIABETES
@@ -177,7 +178,7 @@ diabetes <- loaded_file[,keep_vars]
 ## BLOOD PRESSURE
 download.file(bp_file, tf <- tempfile(), mode="wb")
 loaded_file <- foreign::read.xport(tf)
-keep_vars <- c("SEQN", "BPQ020")
+keep_vars <- c("SEQN", "BPQ020", "BPQ080")
 bloodpressure <- loaded_file[,keep_vars]
 
 ## BMI
@@ -228,9 +229,12 @@ colnames(full_2007_2008) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "s
                               "work_status", "work_situation", "reason_not_working", "family_pov_index", "family_pov_level",
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
                               "DPQ060", "DPQ070", "DPQ080", "DPQ090",
-                              "asthma", "arthritis", "angina", "stroke",
-                              "diabetes", "hypertension", "BMI", "smoking_ever", "smoking_now", "alcohol_ever", "alcohol_quantity",
+                              "asthma", "arthritis", "heart_failure", "CHD",
+                              "angina", "heart_attack", "stroke", "bronchitis", "liver_condition",
+                              "thyroid_condition", "cancer",
+                              "diabetes", "hypertension", "hyperlipidemia", "BMI", "smoking_ever", "smoking_now", "alcohol_ever", "alcohol_quantity",
                               "PA_vigorous", "PA_transportation", "PA_moderate", "PA_sedentary")
+
 
 rm(demo_file, occ_file, dep_file, mcq_file, diab_file, bp_file, bmi_file, smoking_file, alcohol_file, loaded_file,
    demo, occ, depression, medical, diabetes, bloodpressure, bmi, smoking, alcohol, income, inc_file, pa_file, physical_activity)
@@ -283,7 +287,8 @@ depression <- loaded_file[,keep_vars]
 ## MEDICAL QUESTIONNARIE
 download.file(mcq_file, tf <- tempfile(), mode="wb")
 loaded_file <- foreign::read.xport(tf)
-keep_vars <- c("SEQN", "MCQ010", "MCQ160A", "MCQ160D", "MCQ160F")
+keep_vars <- c("SEQN", "MCQ010", "MCQ160A", "MCQ160B", "MCQ160C", "MCQ160D", "MCQ160E", 
+               "MCQ160F", "MCQ160K", "MCQ160L", "MCQ160M", "MCQ220")
 medical <- loaded_file[,keep_vars]
 
 ## DIABETES
@@ -295,7 +300,7 @@ diabetes <- loaded_file[,keep_vars]
 ## BLOOD PRESSURE
 download.file(bp_file, tf <- tempfile(), mode="wb")
 loaded_file <- foreign::read.xport(tf)
-keep_vars <- c("SEQN", "BPQ020")
+keep_vars <- c("SEQN", "BPQ020", "BPQ080")
 bloodpressure <- loaded_file[,keep_vars]
 
 ## BMI
@@ -343,8 +348,10 @@ colnames(full_2009_2010) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "s
                               "work_status", "work_situation", "reason_not_working", "family_pov_index", "family_pov_level",
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
                               "DPQ060", "DPQ070", "DPQ080", "DPQ090",
-                              "asthma", "arthritis", "angina", "stroke",
-                              "diabetes", "hypertension", "BMI", "smoking_ever", "smoking_now", "alcohol_ever", "alcohol_quantity",
+                              "asthma", "arthritis", "heart_failure", "CHD",
+                              "angina", "heart_attack", "stroke", "bronchitis", "liver_condition",
+                              "thyroid_condition", "cancer",
+                              "diabetes", "hypertension", "hyperlipidemia", "BMI", "smoking_ever", "smoking_now", "alcohol_ever", "alcohol_quantity",
                               "PA_vigorous", "PA_transportation", "PA_moderate", "PA_sedentary")
 
 rm(demo_file, occ_file, dep_file, mcq_file, diab_file, bp_file, bmi_file, smoking_file, alcohol_file, loaded_file,
@@ -400,7 +407,8 @@ depression <- loaded_file[,keep_vars]
 ## MEDICAL QUESTIONNARIE
 download.file(mcq_file, tf <- tempfile(), mode="wb")
 loaded_file <- foreign::read.xport(tf)
-keep_vars <- c("SEQN", "MCQ010", "MCQ160A", "MCQ160D", "MCQ160F")
+keep_vars <- c("SEQN", "MCQ010", "MCQ160A", "MCQ160B", "MCQ160C", "MCQ160D", "MCQ160E", 
+               "MCQ160F", "MCQ160K", "MCQ160L", "MCQ160M", "MCQ220")
 medical <- loaded_file[,keep_vars]
 
 ## DIABETES
@@ -412,7 +420,7 @@ diabetes <- loaded_file[,keep_vars]
 ## BLOOD PRESSURE
 download.file(bp_file, tf <- tempfile(), mode="wb")
 loaded_file <- foreign::read.xport(tf)
-keep_vars <- c("SEQN", "BPQ020")
+keep_vars <- c("SEQN", "BPQ020", "BPQ080")
 bloodpressure <- loaded_file[,keep_vars]
 
 ## BMI
@@ -460,8 +468,10 @@ colnames(full_2011_2012) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "s
                               "work_status", "work_situation", "reason_not_working", "family_pov_index", "family_pov_level",
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
                               "DPQ060", "DPQ070", "DPQ080", "DPQ090",
-                              "asthma", "arthritis", "angina", "stroke",
-                              "diabetes", "hypertension", "BMI", "smoking_ever", "smoking_now", "alcohol_ever", "alcohol_quantity",
+                              "asthma", "arthritis", "heart_failure", "CHD",
+                              "angina", "heart_attack", "stroke", "bronchitis", "liver_condition",
+                              "thyroid_condition", "cancer",
+                              "diabetes", "hypertension", "hyperlipidemia", "BMI", "smoking_ever", "smoking_now", "alcohol_ever", "alcohol_quantity",
                               "PA_vigorous", "PA_transportation", "PA_moderate", "PA_sedentary")
 
 rm(demo_file, occ_file, dep_file, mcq_file, diab_file, bp_file, bmi_file, smoking_file, alcohol_file, loaded_file,
@@ -516,7 +526,8 @@ depression <- loaded_file[,keep_vars]
 ## MEDICAL QUESTIONNARIE
 download.file(mcq_file, tf <- tempfile(), mode="wb")
 loaded_file <- foreign::read.xport(tf)
-keep_vars <- c("SEQN", "MCQ010", "MCQ160A", "MCQ160D", "MCQ160F")
+keep_vars <- c("SEQN", "MCQ010", "MCQ160A", "MCQ160B", "MCQ160C", "MCQ160D", "MCQ160E", 
+               "MCQ160F", "MCQ160K", "MCQ160L", "MCQ160M", "MCQ220")
 medical <- loaded_file[,keep_vars]
 
 ## DIABETES
@@ -528,7 +539,7 @@ diabetes <- loaded_file[,keep_vars]
 ## BLOOD PRESSURE
 download.file(bp_file, tf <- tempfile(), mode="wb")
 loaded_file <- foreign::read.xport(tf)
-keep_vars <- c("SEQN", "BPQ020")
+keep_vars <- c("SEQN", "BPQ020", "BPQ080")
 bloodpressure <- loaded_file[,keep_vars]
 
 ## BMI
@@ -576,8 +587,10 @@ colnames(full_2013_2014) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "s
                               "work_status", "work_situation", "reason_not_working", "family_pov_index", "family_pov_level",
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
                               "DPQ060", "DPQ070", "DPQ080", "DPQ090",
-                              "asthma", "arthritis", "angina", "stroke",
-                              "diabetes", "hypertension", "BMI", "smoking_ever", "smoking_now", "alcohol_ever", "alcohol_quantity",
+                              "asthma", "arthritis", "heart_failure", "CHD",
+                              "angina", "heart_attack", "stroke", "bronchitis", "liver_condition",
+                              "thyroid_condition", "cancer",
+                              "diabetes", "hypertension", "hyperlipidemia", "BMI", "smoking_ever", "smoking_now", "alcohol_ever", "alcohol_quantity",
                               "PA_vigorous", "PA_transportation", "PA_moderate", "PA_sedentary")
 
 rm(demo_file, occ_file, dep_file, mcq_file, diab_file, bp_file, bmi_file, smoking_file, alcohol_file, loaded_file,
@@ -632,7 +645,8 @@ depression <- loaded_file[,keep_vars]
 ## MEDICAL QUESTIONNARIE
 download.file(mcq_file, tf <- tempfile(), mode="wb")
 loaded_file <- foreign::read.xport(tf)
-keep_vars <- c("SEQN", "MCQ010", "MCQ160A", "MCQ160D", "MCQ160F")
+keep_vars <- c("SEQN", "MCQ010", "MCQ160A", "MCQ160B", "MCQ160C", "MCQ160D", "MCQ160E", 
+               "MCQ160F", "MCQ160K", "MCQ160L", "MCQ160M", "MCQ220")
 medical <- loaded_file[,keep_vars]
 
 ## DIABETES
@@ -644,7 +658,7 @@ diabetes <- loaded_file[,keep_vars]
 ## BLOOD PRESSURE
 download.file(bp_file, tf <- tempfile(), mode="wb")
 loaded_file <- foreign::read.xport(tf)
-keep_vars <- c("SEQN", "BPQ020")
+keep_vars <- c("SEQN", "BPQ020", "BPQ080")
 bloodpressure <- loaded_file[,keep_vars]
 
 ## BMI
@@ -693,8 +707,10 @@ colnames(full_2015_2016) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "s
                               "work_status", "work_situation", "reason_not_working", "family_pov_index", "family_pov_level",
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
                               "DPQ060", "DPQ070", "DPQ080", "DPQ090",
-                              "asthma", "arthritis", "angina", "stroke",
-                              "diabetes", "hypertension", "BMI", "smoking_ever", "smoking_now", "alcohol_ever", "alcohol_quantity",
+                              "asthma", "arthritis", "heart_failure", "CHD",
+                              "angina", "heart_attack", "stroke", "bronchitis", "liver_condition",
+                              "thyroid_condition", "cancer",
+                              "diabetes", "hypertension", "hyperlipidemia", "BMI", "smoking_ever", "smoking_now", "alcohol_ever", "alcohol_quantity",
                               "PA_vigorous", "PA_transportation", "PA_moderate", "PA_sedentary")
 
 rm(demo_file, occ_file, dep_file, mcq_file, diab_file, bp_file, bmi_file, smoking_file, alcohol_file, loaded_file,
@@ -749,7 +765,8 @@ depression <- loaded_file[,keep_vars]
 ## MEDICAL QUESTIONNARIE
 download.file(mcq_file, tf <- tempfile(), mode="wb")
 loaded_file <- foreign::read.xport(tf)
-keep_vars <- c("SEQN", "MCQ010", "MCQ160A", "MCQ160D", "MCQ160F")
+keep_vars <- c("SEQN", "MCQ010", "MCQ160A", "MCQ160B", "MCQ160C", "MCQ160D", "MCQ160E", 
+               "MCQ160F", "MCQ160K", "MCQ160L", "MCQ160M", "MCQ220")
 medical <- loaded_file[,keep_vars]
 
 ## DIABETES
@@ -761,7 +778,7 @@ diabetes <- loaded_file[,keep_vars]
 ## BLOOD PRESSURE
 download.file(bp_file, tf <- tempfile(), mode="wb")
 loaded_file <- foreign::read.xport(tf)
-keep_vars <- c("SEQN", "BPQ020")
+keep_vars <- c("SEQN", "BPQ020", "BPQ080")
 bloodpressure <- loaded_file[,keep_vars]
 
 ## BMI
@@ -810,8 +827,10 @@ colnames(full_2017_2018) <- c("SEQN","survey_weight", "SDMVPSU", "SDMVSTRA" , "s
                               "work_status", "work_situation", "reason_not_working", "family_pov_index", "family_pov_level",
                               "DPQ010", "DPQ020", "DPQ030", "DPQ040", "DPQ050", 
                               "DPQ060", "DPQ070", "DPQ080", "DPQ090",
-                              "asthma", "arthritis", "angina", "stroke",
-                              "diabetes", "hypertension", "BMI", "smoking_ever", "smoking_now", "alcohol_ever", "alcohol_quantity",
+                              "asthma", "arthritis", "heart_failure", "CHD",
+                              "angina", "heart_attack", "stroke", "bronchitis", "liver_condition",
+                              "thyroid_condition", "cancer",
+                              "diabetes", "hypertension", "hyperlipidemia", "BMI", "smoking_ever", "smoking_now", "alcohol_ever", "alcohol_quantity",
                               "PA_vigorous", "PA_transportation", "PA_moderate", "PA_sedentary")
 
 rm(demo_file, occ_file, dep_file, mcq_file, diab_file, bp_file, bmi_file, smoking_file, alcohol_file, loaded_file,
