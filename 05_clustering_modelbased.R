@@ -44,22 +44,10 @@ df_sev <-  df[df$DPQ_total >= 20,]
 df_depressed <- df[df$DPQ_total >= 10,]
 
 
-res <- VarSelCluster(df_depressed[,dpq_vars], gvals = 3,
+
+res <- VarSelCluster(df_depressed[,dpq_vars], gvals = 6,
                              vbleSelec = FALSE, crit.varsel = "BIC")
 print(res)
-
-res <- VarSelCluster(df_depressed[,dpq_vars], gvals = 4,
-                             vbleSelec = FALSE, crit.varsel = "BIC")
-print(res)
-
-res <- VarSelCluster(df_depressed[,dpq_vars], gvals = 5,
-                             vbleSelec = FALSE, crit.varsel = "BIC")
-print(res)
-
-
-
-
-
 
 
 
@@ -78,9 +66,38 @@ plot(x=res, y="DPQ080")
 plot(x=res, y="DPQ090")
 
 
-coef(res_4)
+
+
+coef(res)
 
 
 
-predict(res_4, newdata = x[1:3,])
+data(heart)
+ztrue <- heart[,"Class"]
+x <- heart[,-13]
+# Add a missing value artificially (just to show that it works!)
+x[1,1] <- NA
+
+# Cluster analysis without variable selection
+res_without <- VarSelCluster(x, gvals = 1:3, vbleSelec = FALSE, crit.varsel = "BIC")
+
+# Cluster analysis with variable selection (with parallelisation)
+res_with <- VarSelCluster(x, gvals = 1:3, nbcores = 4, crit.varsel = "BIC")
+BIC(res_without)
+BIC(res_with)
+fitted(res_with)
+
+summary(res_without)
+head(fitted(res_without, type="probability"))
+
+res_with <- VarSelCluster(x, gvals = 1, nbcores = 4, crit.varsel = "BIC")
+print(res_with)
+
+res_with <- VarSelCluster(x, gvals = 2, nbcores = 4, crit.varsel = "BIC")
+print(res_with)
+
+
+res_with <- VarSelCluster(x, gvals = 3, nbcores = 4, crit.varsel = "BIC")
+print(res_with)
+
 
