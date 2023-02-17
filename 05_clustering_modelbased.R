@@ -5,6 +5,8 @@ setwd("~/GitHub/NHANES_depression/Data")
 library(dplyr)
 library(tidyLPA)
 library(VarSelLCM)
+library(ggplot2)
+library(dendextend)
 
 # Depression questions
 
@@ -67,37 +69,32 @@ plot(x=res, y="DPQ090")
 
 
 
+DPQ1_p <- t(coeffs@paramCategorical@alpha$DPQ010)
+DPQ2_p <- t(coeffs@paramCategorical@alpha$DPQ020)
+DPQ3_p <- t(coeffs@paramCategorical@alpha$DPQ030)
+DPQ4_p <- t(coeffs@paramCategorical@alpha$DPQ040)
+DPQ5_p <- t(coeffs@paramCategorical@alpha$DPQ050)
+DPQ6_p <- t(coeffs@paramCategorical@alpha$DPQ060)
+DPQ7_p <- t(coeffs@paramCategorical@alpha$DPQ070)
+DPQ8_p <- t(coeffs@paramCategorical@alpha$DPQ080)
+DPQ9_p <- t(coeffs@paramCategorical@alpha$DPQ090)
 
-coef(res)
+DPQ_p <- as.data.frame(rbind(DPQ1_p,DPQ2_p,DPQ3_p,DPQ4_p,DPQ5_p,DPQ6_p,DPQ7_p,DPQ8_p,DPQ9_p))
+colnames(DPQ_p) <- c("Cluster 1", "Cluster 2","Cluster 3",
+                     "Cluster 4","Cluster 5","Cluster 6",)
+DPQ_p$Question <- c("Q1:0", "Q1:1", "Q1:2", "Q1:3",
+                    "Q2:0", "Q2:1", "Q2:2", "Q2:3",
+                    "Q3:0", "Q3:1", "Q3:2", "Q3:3",
+                    "Q4:0", "Q4:1", "Q4:2", "Q4:3",
+                    "Q5:0", "Q5:1", "Q5:2", "Q5:3",
+                    "Q6:0", "Q6:1", "Q6:2", "Q6:3",
+                    "Q7:0", "Q7:1", "Q7:2", "Q7:3",
+                    "Q8:0", "Q8:1", "Q8:2", "Q8:3",
+                    "Q9:0", "Q9:1", "Q9:2", "Q9:3")
 
-
-
-data(heart)
-ztrue <- heart[,"Class"]
-x <- heart[,-13]
-# Add a missing value artificially (just to show that it works!)
-x[1,1] <- NA
-
-# Cluster analysis without variable selection
-res_without <- VarSelCluster(x, gvals = 1:3, vbleSelec = FALSE, crit.varsel = "BIC")
-
-# Cluster analysis with variable selection (with parallelisation)
-res_with <- VarSelCluster(x, gvals = 1:3, nbcores = 4, crit.varsel = "BIC")
-BIC(res_without)
-BIC(res_with)
-fitted(res_with)
-
-summary(res_without)
-head(fitted(res_without, type="probability"))
-
-res_with <- VarSelCluster(x, gvals = 1, nbcores = 4, crit.varsel = "BIC")
-print(res_with)
-
-res_with <- VarSelCluster(x, gvals = 2, nbcores = 4, crit.varsel = "BIC")
-print(res_with)
+# include overall frequency, and add results for chi squared test
 
 
-res_with <- VarSelCluster(x, gvals = 3, nbcores = 4, crit.varsel = "BIC")
-print(res_with)
+
 
 

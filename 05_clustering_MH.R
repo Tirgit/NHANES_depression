@@ -69,7 +69,7 @@ head(round(eigenvalues, 2), 10)
 fviz_screeplot(res.mca)
 
 # run variable clustering excluding the target variable (churn) 
-variable_tree <- hclustvar(X.quali = df_depressed[,21:29])
+variable_tree <- hclustvar(X.quali = df_depressed[,dpq_vars])
 print(variable_tree)
 #plot the dendrogram of variable groups
 plot(variable_tree)
