@@ -9,6 +9,7 @@ library(ggplot2)
 library(dendextend)
 library(pheatmap)
 library(lavaan)
+library(forcats)
 
 # Depression questions
 
@@ -38,12 +39,6 @@ df <- readRDS("clean_1.rds")
 df <- df[!is.na(df$DPQ_total),]
 table(df$depressed, useNA = "always")
 
-df_non <- df[df$DPQ_total <= 4,]
-df_mild <- df[df$DPQ_total >= 5 & df$DPQ_total <= 9,]
-df_mod <- df[df$DPQ_total >= 10 & df$DPQ_total <= 14,]
-df_modsev <- df[df$DPQ_total >= 15 & df$DPQ_total <= 19,]
-df_sev <-  df[df$DPQ_total >= 20,]
-
 # df_depressed <- df
 df_depressed <- df[df$DPQ_total >= 10,]
 
@@ -53,62 +48,32 @@ df_depressed <- df[df$DPQ_total >= 10,]
 # print(res)
 
 # g = 6 is the cluster with the best performance
+set.seed(9365)
 res <- VarSelCluster(df_depressed[,dpq_vars], gvals =6,
                              vbleSelec = FALSE, crit.varsel = "BIC")
 print(res)
 
-
 summary(res)
 table(fitted(res))
 head(fitted(res, type="probability"),30)
-plot(res)
-plot(x=res, y="DPQ010")
-plot(x=res, y="DPQ020")
-plot(x=res, y="DPQ030")
-plot(x=res, y="DPQ040")
-plot(x=res, y="DPQ050")
-plot(x=res, y="DPQ060")
-plot(x=res, y="DPQ070")
-plot(x=res, y="DPQ080")
-plot(x=res, y="DPQ090")
-
-coeffs <- res@param
-DPQ1_p <- t(coeffs@paramCategorical@alpha$DPQ010)
-DPQ2_p <- t(coeffs@paramCategorical@alpha$DPQ020)
-DPQ3_p <- t(coeffs@paramCategorical@alpha$DPQ030)
-DPQ4_p <- t(coeffs@paramCategorical@alpha$DPQ040)
-DPQ5_p <- t(coeffs@paramCategorical@alpha$DPQ050)
-DPQ6_p <- t(coeffs@paramCategorical@alpha$DPQ060)
-DPQ7_p <- t(coeffs@paramCategorical@alpha$DPQ070)
-DPQ8_p <- t(coeffs@paramCategorical@alpha$DPQ080)
-DPQ9_p <- t(coeffs@paramCategorical@alpha$DPQ090)
-
-DPQ_p <- as.data.frame(rbind(DPQ1_p,DPQ2_p,DPQ3_p,DPQ4_p,DPQ5_p,DPQ6_p,DPQ7_p,DPQ8_p,DPQ9_p))
-colnames(DPQ_p) <- c("Cluster 1", "Cluster 2","Cluster 3",
-                     "Cluster 4","Cluster 5","Cluster 6")
-rownames(DPQ_p) <- 1:nrow(DPQ_p)
-DPQ_p$Question <- c("Q1:0", "Q1:1", "Q1:2", "Q1:3",
-                    "Q2:0", "Q2:1", "Q2:2", "Q2:3",
-                    "Q3:0", "Q3:1", "Q3:2", "Q3:3",
-                    "Q4:0", "Q4:1", "Q4:2", "Q4:3",
-                    "Q5:0", "Q5:1", "Q5:2", "Q5:3",
-                    "Q6:0", "Q6:1", "Q6:2", "Q6:3",
-                    "Q7:0", "Q7:1", "Q7:2", "Q7:3",
-                    "Q8:0", "Q8:1", "Q8:2", "Q8:3",
-                    "Q9:0", "Q9:1", "Q9:2", "Q9:3")
-
-# include overall frequency, and add results for chi squared test
-
-
-sum(DPQ_p[1:4,6])
-
-
+# plot(res)
+# plot(x=res, y="DPQ010")
+# plot(x=res, y="DPQ020")
+# plot(x=res, y="DPQ030")
+# plot(x=res, y="DPQ040")
+# plot(x=res, y="DPQ050")
+# plot(x=res, y="DPQ060")
+# plot(x=res, y="DPQ070")
+# plot(x=res, y="DPQ080")
+# plot(x=res, y="DPQ090")
 
 # extract cluster membership
 cluster_membership <- fitted(res)
 df_depressed <- cbind(df_depressed, cluster_membership)
 
-# chi square test to test frequencies vs. expected based on global
+
+
+# CHI SQUARED TESTS TO TEST OBSERVED VS EXPECTED (iterate over the variables DPQ010-DPQ090)
 # create a contingency table
 tab <- table(df_depressed$DPQ090, df_depressed$cluster_membership)
 tab
@@ -138,9 +103,7 @@ p_values*216
 
 
 
-
-
-
+# VISUALIZATION AND PROPORTIONS 
 x <- table(df_depressed$DPQ_total, df_depressed$cluster_membership)
 props <- prop.table(x, margin = 1) #margin definition 1: by row, 2: by column 
 colnames(props) <- c("Cluster 1", "Cluster 2", "Cluster 3", 
@@ -189,92 +152,142 @@ tiff("H:/BACKUP/Projects/Joan_Aina_projects/NHANES_depression/cluster_deplevel_2
 p
 dev.off()
 
-# DICHOTOMIZE AS SCORE 3
-df_depressed$DPQ010_d <- ifelse(df_depressed$DPQ010 == 3, 1, 0)
-df_depressed$DPQ020_d <- ifelse(df_depressed$DPQ020 == 3, 1, 0)
-df_depressed$DPQ030_d <- ifelse(df_depressed$DPQ030 == 3, 1, 0)
-df_depressed$DPQ040_d <- ifelse(df_depressed$DPQ040 == 3, 1, 0)
-df_depressed$DPQ050_d <- ifelse(df_depressed$DPQ050 == 3, 1, 0)
-df_depressed$DPQ060_d <- ifelse(df_depressed$DPQ060 == 3, 1, 0)
-df_depressed$DPQ070_d <- ifelse(df_depressed$DPQ070 == 3, 1, 0)
-df_depressed$DPQ080_d <- ifelse(df_depressed$DPQ080 == 3, 1, 0)
-df_depressed$DPQ090_d <- ifelse(df_depressed$DPQ090 == 3, 1, 0)
 
-# # DICHOTOMIZE AS SCORE 2 or 3
-# df_depressed$DPQ010_d <- ifelse(df_depressed$DPQ010 == 3 | df_depressed$DPQ010 == 2, 1, 0)
-# df_depressed$DPQ020_d <- ifelse(df_depressed$DPQ020 == 3 | df_depressed$DPQ020 == 2, 1, 0)
-# df_depressed$DPQ030_d <- ifelse(df_depressed$DPQ030 == 3 | df_depressed$DPQ030 == 2, 1, 0)
-# df_depressed$DPQ040_d <- ifelse(df_depressed$DPQ040 == 3 | df_depressed$DPQ040 == 2, 1, 0)
-# df_depressed$DPQ050_d <- ifelse(df_depressed$DPQ050 == 3 | df_depressed$DPQ050 == 2, 1, 0)
-# df_depressed$DPQ060_d <- ifelse(df_depressed$DPQ060 == 3 | df_depressed$DPQ060 == 2, 1, 0)
-# df_depressed$DPQ070_d <- ifelse(df_depressed$DPQ070 == 3 | df_depressed$DPQ070 == 2, 1, 0)
-# df_depressed$DPQ080_d <- ifelse(df_depressed$DPQ080 == 3 | df_depressed$DPQ080 == 2, 1, 0)
-# df_depressed$DPQ090_d <- ifelse(df_depressed$DPQ090 == 3 | df_depressed$DPQ090 == 2, 1, 0)
-# 
-# # DICHOTOMIZE AS SCORE 1 or 2 or 3
-# df_depressed$DPQ010_d <- ifelse(df_depressed$DPQ010 == 0, 0, 1)
-# df_depressed$DPQ020_d <- ifelse(df_depressed$DPQ020 == 0, 0, 1)
-# df_depressed$DPQ030_d <- ifelse(df_depressed$DPQ030 == 0, 0, 1)
-# df_depressed$DPQ040_d <- ifelse(df_depressed$DPQ040 == 0, 0, 1)
-# df_depressed$DPQ050_d <- ifelse(df_depressed$DPQ050 == 0, 0, 1)
-# df_depressed$DPQ060_d <- ifelse(df_depressed$DPQ060 == 0, 0, 1)
-# df_depressed$DPQ070_d <- ifelse(df_depressed$DPQ070 == 0, 0, 1)
-# df_depressed$DPQ080_d <- ifelse(df_depressed$DPQ080 == 0, 0, 1)
-# df_depressed$DPQ090_d <- ifelse(df_depressed$DPQ090 == 0, 0, 1)
+# EXPLORATION OF PRESCRIPTION MEDICATIONS
+df_meds <- readRDS("meds_df.rds")
+df_meds$RXDDCN1A[df_meds$RXDDRUG == 77777 | df_meds$RXDDRUG == 99999] <- "REFUSED/MISSING"
 
-# props <- cbind(
-# prop.table(table(df_depressed$DPQ_total, df_depressed$DPQ010_d), 1)[,2],
-# prop.table(table(df_depressed$DPQ_total, df_depressed$DPQ020_d), 1)[,2],
-# prop.table(table(df_depressed$DPQ_total, df_depressed$DPQ030_d), 1)[,2],
-# prop.table(table(df_depressed$DPQ_total, df_depressed$DPQ040_d), 1)[,2],
-# prop.table(table(df_depressed$DPQ_total, df_depressed$DPQ050_d), 1)[,2],
-# prop.table(table(df_depressed$DPQ_total, df_depressed$DPQ060_d), 1)[,2],
-# prop.table(table(df_depressed$DPQ_total, df_depressed$DPQ070_d), 1)[,2],
-# prop.table(table(df_depressed$DPQ_total, df_depressed$DPQ080_d), 1)[,2],
-# prop.table(table(df_depressed$DPQ_total, df_depressed$DPQ090_d), 1)[,2]
-# )
-# colnames(props) <- c("DPQ10","DPQ20","DPQ30",
-#                      "DPQ40","DPQ50","DPQ60",
-#                      "DPQ70","DPQ80","DPQ90")
-# 
-# 
-# p <- pheatmap(props, cluster_rows = F, cluster_cols = F,
-#          legend = F, annotation_names_row = T,
-#          annotation_names_col = T, angle_col=45,
-#          display_numbers = T)
-# 
-# tiff("H:/BACKUP/Projects/Joan_Aina_projects/NHANES_depression/PHQ_DPQ_dich.tiff", units="in", width=5, height=4, res=300, compression = 'lzw')
-# p
-# dev.off()
+# left join will only keep those SEQN IDs that are in df_depressed
+# but will create multiple rows for each med they are taking
+df_dep_med <- left_join(df_depressed, df_meds, by = "SEQN")
+# check that it is the same IDs included
+# length(unique(df_depressed$SEQN))
+# length(unique(df_dep_med$SEQN))
+# sum(unique(df_depressed$SEQN) == unique(df_dep_med$SEQN))
 
+# how many people do not use meds? n=820
+table(df_dep_med$RXDUSE)
 
+# tabulate number of meds
+counted_data <- df_dep_med[df_dep_med$RXDUSE == 1,] %>%
+  group_by(SEQN) %>%
+  summarize(n_obs = n())
+colnames(counted_data) <- c("SEQN", "n_meds")
+table(counted_data$n_meds)
 
-props <- cbind(
-  prop.table(table(df_depressed$cluster_membership, df_depressed$DPQ010_d), 1)[,2],
-  prop.table(table(df_depressed$cluster_membership, df_depressed$DPQ020_d), 1)[,2],
-  prop.table(table(df_depressed$cluster_membership, df_depressed$DPQ030_d), 1)[,2],
-  prop.table(table(df_depressed$cluster_membership, df_depressed$DPQ040_d), 1)[,2],
-  prop.table(table(df_depressed$cluster_membership, df_depressed$DPQ050_d), 1)[,2],
-  prop.table(table(df_depressed$cluster_membership, df_depressed$DPQ060_d), 1)[,2],
-  prop.table(table(df_depressed$cluster_membership, df_depressed$DPQ070_d), 1)[,2],
-  prop.table(table(df_depressed$cluster_membership, df_depressed$DPQ080_d), 1)[,2],
-  prop.table(table(df_depressed$cluster_membership, df_depressed$DPQ090_d), 1)[,2]
-)
-colnames(props) <- c("DPQ10","DPQ20","DPQ30",
-                     "DPQ40","DPQ50","DPQ60",
-                     "DPQ70","DPQ80","DPQ90")
+# histogram of number of meds used by cluster
+df_dep_nmed <- left_join(df_depressed, counted_data, by = "SEQN")
+df_dep_nmed$n_meds[is.na(df_dep_nmed$n_meds)] <- 0
+table(df_dep_nmed$n_meds)
 
+breaks <- c(-1, 0.9, 1.9, 2.9, 3.9, 4.9, 5.9, 50)
+labels <- c("0", "1", "2", "3", "4", "5", "6 or more")
 
-p <- pheatmap(props, cluster_rows = F, cluster_cols = F,
-              legend = F, annotation_names_row = T,
-              annotation_names_col = T, angle_col=45,
-              display_numbers = T)
+# Bin x into categories and convert to factor
+df_dep_nmed$n_med_cat <- cut(df_dep_nmed$n_meds, breaks = breaks, labels = labels)
+df_dep_nmed$n_med_cat <- as.factor(df_dep_nmed$n_med_cat)
+df_dep_nmed$cluster_membership <- as.factor(df_dep_nmed$cluster_membership)
 
-tiff("H:/BACKUP/Projects/Joan_Aina_projects/NHANES_depression/cluster_DPQ.tiff", units="in", width=5, height=4, res=300, compression = 'lzw')
+# plot
+p <- ggplot(df_dep_nmed, aes(x = cluster_membership, fill = n_med_cat)) +
+  geom_bar(alpha = 0.9, position = "fill") +
+  labs(x = "Cluster", y = "Count", fill = "Number of\nunique\nprescription\nmedications") +
+  theme_classic()
+
+tiff("H:/BACKUP/Projects/Joan_Aina_projects/NHANES_depression/cluster_n_meds.tiff", units="in", width=5, height=4, res=300, compression = 'lzw')
 p
 dev.off()
 
-# loop to remerge with the rest of the individuals
+
+# visualization of categories per cluster, level 1, only those with medication
+df_dep_med_onlyuse <- df_dep_med[!is.na(df_dep_med$RXDDCN1A),]
+
+df_dep_norep <- distinct(df_dep_med_onlyuse, SEQN, RXDDCN1A, .keep_all = TRUE)
+
+cluster_counts <- df_dep_norep %>% 
+  group_by(cluster_membership) %>% 
+  summarize(n_unique = n_distinct(SEQN))
+
+count_data <- df_dep_norep %>% 
+  group_by(cluster_membership, RXDDCN1A) %>%
+  summarize(n = n())
+
+
+new_row <- data.frame(cluster_membership = 2, RXDDCN1A = "ALTERNATIVE MEDICINES", n = 0.000001)
+count_data <- rbind(count_data, new_row)
+new_row <- data.frame(cluster_membership = 3, RXDDCN1A = "ALTERNATIVE MEDICINES", n = 0.000001)
+count_data <- rbind(count_data, new_row)
+new_row <- data.frame(cluster_membership = 1, RXDDCN1A = "BIOLOGICALS", n = 0.000001)
+count_data <- rbind(count_data, new_row)
+new_row <- data.frame(cluster_membership = 3, RXDDCN1A = "BIOLOGICALS", n = 0.000001)
+count_data <- rbind(count_data, new_row)
+new_row <- data.frame(cluster_membership = 4, RXDDCN1A = "BIOLOGICALS", n = 0.000001)
+count_data <- rbind(count_data, new_row)
+new_row <- data.frame(cluster_membership = 5, RXDDCN1A = "BIOLOGICALS", n = 0.000001)
+count_data <- rbind(count_data, new_row)
+new_row <- data.frame(cluster_membership = 6, RXDDCN1A = "BIOLOGICALS", n = 0.000001)
+count_data <- rbind(count_data, new_row)
+new_row <- data.frame(cluster_membership = 6, RXDDCN1A = "IMMUNOLOGIC AGENTS", n = 0.000001)
+count_data <- rbind(count_data, new_row)
+
+count_data$Proportion <- NA
+
+
+for (cluster_n in 1:6) {
+  count_data$Proportion[count_data$cluster_membership == cluster_n] <- 
+    count_data$n[count_data$cluster_membership == cluster_n]/cluster_counts$n_unique[cluster_n]
+}
+
+colnames(count_data) <- c("Cluster", "Medication", "n", "Proportion")
+ 
+count_data$Cluster <- as.character(count_data$Cluster)
+
+count_data$Cluster[count_data$Cluster == "1"] <- "Cluster 1"
+count_data$Cluster[count_data$Cluster == "2"] <- "Cluster 2"
+count_data$Cluster[count_data$Cluster == "3"] <- "Cluster 3"
+count_data$Cluster[count_data$Cluster == "4"] <- "Cluster 4"
+count_data$Cluster[count_data$Cluster == "5"] <- "Cluster 5"
+count_data$Cluster[count_data$Cluster == "6"] <- "Cluster 6"
+
+count_data$Medication <- factor(count_data$Medication, 
+                                levels = sort(unique(count_data$Medication)))
+
+clusnames <- c("Cluster 1", "Cluster 2","Cluster 3","Cluster 4","Cluster 5","Cluster 6")
+
+for (i in clusnames) {
+p <- ggplot(count_data[count_data$Cluster == i,], aes(x = Proportion, y = Medication, fill = Medication)) +
+  geom_bar(stat = "identity", position = "dodge", width = 0.8) +
+  labs(x = "", y = "", fill = NULL) +
+  theme(axis.text = element_blank()) +
+  theme(axis.ticks.y = element_blank(),
+        axis.text.x = element_text(margin = margin(t = 10))) +
+  scale_x_continuous(limits = c(0, 1), expand = c(0, 0))
+
+filename <- paste0("H:/BACKUP/Projects/Joan_Aina_projects/NHANES_depression/",i,"_meds.tiff")
+tiff(filename, units="in", width=10, height=10, res=300, compression = 'lzw')
+print(p)
+dev.off()
+}
+
+
+
+
+p <- ggplot(count_data, aes(x = Proportion, y = Medication, fill = Medication)) +
+  geom_bar(stat = "identity", position = "dodge", width = 0.8) +
+  facet_wrap(~ Cluster, ncol = 1, scales = "free") +
+  labs(x = "", y = "", fill = NULL) +
+  theme(axis.text = element_blank()) +
+  theme(axis.ticks.y = element_blank(),
+        axis.text.x = element_text(margin = margin(t = 10))) +
+  scale_x_continuous(limits = c(0, 0.75), expand = c(0, 0))
+
+tiff("H:/BACKUP/Projects/Joan_Aina_projects/NHANES_depression/allcluster_meds.tiff", units="in", width=10, height=10, res=300, compression = 'lzw')
+print(p)
+dev.off()
+
+
+
+# LOOP TO REMERGE WITH THE REST OF INDIVIDUALS
 
 for (j in 1:15) {
   filename <- paste0("clean_",j,".rds")
@@ -282,10 +295,6 @@ for (j in 1:15) {
   df_excluded <- df[df$depressed == 0 | is.na(df$depressed),]
   df_excluded$cluster_membership <- NA
   df_excluded$dep_category <- NA
-  var_exclude <- c("DPQ010_d","DPQ020_d","DPQ030_d","DPQ040_d",
-                   "DPQ050_d","DPQ060_d","DPQ070_d","DPQ080_d","DPQ090_d")
-  df_depressed <- df_depressed[ , !names(df_depressed) %in% var_exclude]
-  
   df_all <- rbind(df_depressed, df_excluded)
   
   # recoding income

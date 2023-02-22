@@ -14,7 +14,7 @@ drugclasses_file <- paste0("https://wwwn.cdc.gov/nchs/nhanes/1999-2000/RXQ_DRUG.
 ## MEDICATIONS
 download.file(drugclasses_file, tf <- tempfile(), mode="wb")
 drugclasses <- foreign::read.xport(tf)
-keep_vars <- c("RXDDRGID", "RXDDCN1A")
+keep_vars <- c("RXDDRGID", "RXDDCN1A", "RXDDCN1B")
 drugclasses <- drugclasses[,keep_vars]
 
 ######################################
@@ -113,6 +113,6 @@ meds_df <- rbind(meds_2007_2008,
 # adding drug class
 merged <- left_join(meds_df, drugclasses, by = "RXDDRGID")
 
-saveRDS(meds_df, "meds_df.rds")
+saveRDS(merged, "meds_df.rds")
 
 
