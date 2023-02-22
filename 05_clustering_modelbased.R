@@ -212,6 +212,15 @@ count_data <- df_dep_norep %>%
   group_by(cluster_membership, RXDDCN1A) %>%
   summarize(n = n())
 
+# chi square for each medication (iterate over 1:18)
+cont_table <- xtabs(n ~ cluster_membership + RXDDCN1A, data = count_data)
+colnames(cont_table)
+for (n_med in 1:18) {
+print(colnames(cont_table)[n_med])
+chi_sq_test <- chisq.test(cont_table[,n_med])
+print(chi_sq_test)
+}
+
 
 new_row <- data.frame(cluster_membership = 2, RXDDCN1A = "ALTERNATIVE MEDICINES", n = 0.000001)
 count_data <- rbind(count_data, new_row)
