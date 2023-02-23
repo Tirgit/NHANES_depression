@@ -240,37 +240,56 @@ new_row <- data.frame(cluster_membership = 6, RXDDCN1A = "IMMUNOLOGIC AGENTS", n
 count_data <- rbind(count_data, new_row)
 
 count_data$Proportion <- NA
+count_data$lCI <- NA
+count_data$uCI <- NA
 
 
 for (cluster_n in 1:6) {
+  # calculate proportion
   count_data$Proportion[count_data$cluster_membership == cluster_n] <- 
     count_data$n[count_data$cluster_membership == cluster_n]/cluster_counts$n_unique[cluster_n]
+  
+  # calculate 95% CI lower bound
+  count_data$lCI[count_data$cluster_membership == cluster_n] <- count_data$Proportion[count_data$cluster_membership == cluster_n] - 1.96*(sqrt((count_data$Proportion[count_data$cluster_membership == cluster_n]*(1-count_data$Proportion[count_data$cluster_membership == cluster_n]))/cluster_counts$n_unique[cluster_n]))
+  
+  # calculate 95% CI upper bound
+  count_data$uCI[count_data$cluster_membership == cluster_n] <- count_data$Proportion[count_data$cluster_membership == cluster_n] + 1.96*(sqrt((count_data$Proportion[count_data$cluster_membership == cluster_n]*(1-count_data$Proportion[count_data$cluster_membership == cluster_n]))/cluster_counts$n_unique[cluster_n]))
 }
 
-colnames(count_data) <- c("Cluster", "Medication", "n", "Proportion")
+count_data$lCI[count_data$lCI < 0] <- 0
+count_data[101:108,3:6] <- 0
+
+colnames(count_data) <- c("Cluster", "Medication", "n", "Proportion", "lCI", "uCI")
  
 count_data$Cluster <- as.character(count_data$Cluster)
 
-count_data$Cluster[count_data$Cluster == "1"] <- "Cluster 1"
-count_data$Cluster[count_data$Cluster == "2"] <- "Cluster 2"
-count_data$Cluster[count_data$Cluster == "3"] <- "Cluster 3"
-count_data$Cluster[count_data$Cluster == "4"] <- "Cluster 4"
-count_data$Cluster[count_data$Cluster == "5"] <- "Cluster 5"
-count_data$Cluster[count_data$Cluster == "6"] <- "Cluster 6"
+count_data$Cluster[count_data$Cluster == "1"] <- "Uniform severe depression cluster"
+count_data$Cluster[count_data$Cluster == "2"] <- "Severe somatic symptom profile cluster"
+count_data$Cluster[count_data$Cluster == "3"] <- "Moderate somatic depression cluster"
+count_data$Cluster[count_data$Cluster == "4"] <- "Uniform moderately severe depression cluster"
+count_data$Cluster[count_data$Cluster == "5"] <- "Uniform moderate depression cluster"
+count_data$Cluster[count_data$Cluster == "6"] <- "Severe mental depression cluster"
 
 count_data$Medication <- factor(count_data$Medication, 
                                 levels = sort(unique(count_data$Medication)))
 
-clusnames <- c("Cluster 1", "Cluster 2","Cluster 3","Cluster 4","Cluster 5","Cluster 6")
+clusnames <- c("Uniform severe depression cluster", 
+               "Severe somatic symptom profile cluster",
+               "Moderate somatic depression cluster",
+               "Uniform moderately severe depression cluster",
+               "Uniform moderate depression cluster",
+               "Severe mental depression cluster")
 
 for (i in clusnames) {
 p <- ggplot(count_data[count_data$Cluster == i,], aes(x = Proportion, y = Medication, fill = Medication)) +
   geom_bar(stat = "identity", position = "dodge", width = 0.8) +
+  geom_errorbar(aes(xmin=lCI, xmax=uCI), width=.2) +
+  theme_minimal() +
   labs(x = "", y = "", fill = NULL) +
   theme(axis.text = element_blank()) +
   theme(axis.ticks.y = element_blank(),
         axis.text.x = element_text(margin = margin(t = 10))) +
-  scale_x_continuous(limits = c(0, 1), expand = c(0, 0))
+  scale_x_continuous(limits = c(0, 0.8), expand = c(0, 0))
 
 filename <- paste0("H:/BACKUP/Projects/Joan_Aina_projects/NHANES_depression/",i,"_meds.tiff")
 tiff(filename, units="in", width=10, height=10, res=300, compression = 'lzw')
@@ -278,19 +297,77 @@ print(p)
 dev.off()
 }
 
-
-
-
 p <- ggplot(count_data, aes(x = Proportion, y = Medication, fill = Medication)) +
   geom_bar(stat = "identity", position = "dodge", width = 0.8) +
+  geom_errorbar(aes(xmin=lCI, xmax=uCI), width=.2) +
+  theme_minimal() +
   facet_wrap(~ Cluster, ncol = 1, scales = "free") +
   labs(x = "", y = "", fill = NULL) +
   theme(axis.text = element_blank()) +
   theme(axis.ticks.y = element_blank(),
         axis.text.x = element_text(margin = margin(t = 10))) +
-  scale_x_continuous(limits = c(0, 0.75), expand = c(0, 0))
+  scale_x_continuous(limits = c(0, 0.8), expand = c(0, 0))
 
 tiff("H:/BACKUP/Projects/Joan_Aina_projects/NHANES_depression/allcluster_meds.tiff", units="in", width=10, height=10, res=300, compression = 'lzw')
+print(p)
+dev.off()
+
+
+# FOCUS ON 4 medication groups:
+
+p <- ggplot(count_data[count_data$Medication == "CARDIOVASCULAR AGENTS",], aes(x = Proportion, y = Cluster, fill = Cluster)) +
+  geom_bar(stat = "identity", position = "dodge", width = 0.8) +
+  geom_errorbar(aes(xmin=lCI, xmax=uCI), width=.2) +
+  theme_minimal() +
+  labs(x = "", y = "", fill = NULL) +
+  theme(axis.ticks.y = element_blank(),
+        axis.text = element_text(size = 20),
+        axis.text.y = element_blank()) +
+  scale_x_continuous(limits = c(0, 0.8), expand = c(0, 0))
+
+tiff("H:/BACKUP/Projects/Joan_Aina_projects/NHANES_depression/CVD_meds_cluster.tiff", units="in", width=10, height=10, res=300, compression = 'lzw')
+print(p)
+dev.off()
+
+p <- ggplot(count_data[count_data$Medication == "CENTRAL NERVOUS SYSTEM AGENTS",], aes(x = Proportion, y = Cluster, fill = Cluster)) +
+  geom_bar(stat = "identity", position = "dodge", width = 0.8) +
+  geom_errorbar(aes(xmin=lCI, xmax=uCI), width=.2) +
+  theme_minimal() +
+  labs(x = "", y = "", fill = NULL) +
+  theme(axis.ticks.y = element_blank(),
+        axis.text = element_text(size = 20),
+        axis.text.y = element_blank()) +
+  scale_x_continuous(limits = c(0, 0.8), expand = c(0, 0))
+
+tiff("H:/BACKUP/Projects/Joan_Aina_projects/NHANES_depression/CNS_meds_cluster.tiff", units="in", width=10, height=10, res=300, compression = 'lzw')
+print(p)
+dev.off()
+
+p <- ggplot(count_data[count_data$Medication == "METABOLIC AGENTS",], aes(x = Proportion, y = Cluster, fill = Cluster)) +
+  geom_bar(stat = "identity", position = "dodge", width = 0.8) +
+  geom_errorbar(aes(xmin=lCI, xmax=uCI), width=.2) +
+  theme_minimal() +
+  labs(x = "", y = "", fill = NULL) +
+  theme(axis.ticks.y = element_blank(),
+        axis.text = element_text(size = 20),
+        axis.text.y = element_blank()) +
+  scale_x_continuous(limits = c(0, 0.8), expand = c(0, 0))
+
+tiff("H:/BACKUP/Projects/Joan_Aina_projects/NHANES_depression/METABOLIC_meds_cluster.tiff", units="in", width=10, height=10, res=300, compression = 'lzw')
+print(p)
+dev.off()
+
+p <- ggplot(count_data[count_data$Medication == "PSYCHOTHERAPEUTIC AGENTS",], aes(x = Proportion, y = Cluster, fill = Cluster)) +
+  geom_bar(stat = "identity", position = "dodge", width = 0.8) +
+  geom_errorbar(aes(xmin=lCI, xmax=uCI), width=.2) +
+  theme_minimal() +
+  labs(x = "", y = "", fill = NULL) +
+  theme(axis.ticks.y = element_blank(),
+        axis.text = element_text(size = 20),
+        axis.text.y = element_blank()) +
+  scale_x_continuous(limits = c(0, 0.8), expand = c(0, 0))
+
+tiff("H:/BACKUP/Projects/Joan_Aina_projects/NHANES_depression/PSYCH_meds_cluster.tiff", units="in", width=10, height=10, res=300, compression = 'lzw')
 print(p)
 dev.off()
 
