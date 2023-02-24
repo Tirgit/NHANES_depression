@@ -53,8 +53,13 @@ for (i in 1:15) {
                                             "ann_household_income",
                                             "family_pov_level",
                                             "asthma", "arthritis",
-                                            "angina", "stroke",
+                                            "heart_failure", "CHD",
+                                            "angina", "heart_attack", 
+                                            "stroke", "bronchitis",
+                                            "liver_condition", "thyroid_condition",
+                                            "cancer",
                                             "diabetes", "hypertension",
+                                            "hyperlipidemia" ,
                                             "smoking", "alcohol",
                                             "dep_category"),
                                    data = sub.y,
@@ -80,8 +85,15 @@ for (i in 1:15) {
     k$CatTable[[1]][[12]][,6],
     k$CatTable[[1]][[13]][,6],
     k$CatTable[[1]][[14]][,6],
-    k$CatTable[[1]][[15]][,6]
-    )
+    k$CatTable[[1]][[15]][,6],
+    k$CatTable[[1]][[16]][,6],
+    k$CatTable[[1]][[17]][,6],
+    k$CatTable[[1]][[18]][,6],
+    k$CatTable[[1]][[19]][,6],
+    k$CatTable[[1]][[20]][,6],
+    k$CatTable[[1]][[21]][,6],
+    k$CatTable[[1]][[22]][,6],
+    k$CatTable[[1]][[23]][,6])
   
 }
 
@@ -99,13 +111,21 @@ round(cat_survey,1)[18:20] # income
 round(cat_survey,1)[21:23] # family POV
 round(cat_survey,1)[24] # asthma: yes
 round(cat_survey,1)[26] # arthritis : yes
-round(cat_survey,1)[28] # angina : yes
-round(cat_survey,1)[30] # stroke : yes
-round(cat_survey,1)[32] # diabetes : yes
-round(cat_survey,1)[35] # hypertension  : yes
-round(cat_survey,1)[37:40] # smoking
-round(cat_survey,1)[41:43] # alcohol
-round(cat_survey,1)[44:46] # depression category
+round(cat_survey,1)[28] # heart failure : yes
+round(cat_survey,1)[30] # CHD : yes
+round(cat_survey,1)[32] # angina : yes
+round(cat_survey,1)[34] # heart attack  : yes
+round(cat_survey,1)[36] # stroke  : yes
+round(cat_survey,1)[38] # bronchitis  : yes
+round(cat_survey,1)[40] # liver_condition  : yes
+round(cat_survey,1)[42] # thyroid_condition  : yes
+round(cat_survey,1)[44] # cancer  : yes
+round(cat_survey,1)[46:48] # diabetes : yes, no, borderline
+round(cat_survey,1)[49] # hypertension  : yes
+round(cat_survey,1)[51] # hypercholesterolemia  : yes
+round(cat_survey,1)[53:56] # smoking  : never, ex, sometimes, current
+round(cat_survey,1)[57:59] # alcohol : never, light, heavy
+round(cat_survey,1)[60:62] # depression category: mod, mod-sev, sev
 
 
 # DESCRIPTIVES PER CLUSTER
@@ -125,7 +145,7 @@ for (i in 1:15) {
   nhanes.y <- svydesign(data=df, id=~SDMVPSU, strata=~SDMVSTRA, weights=~survey_weight, nest=TRUE)
   
   # subsetting data
-  sub.y <- subset(nhanes.y, (df$cluster_membership == "4"))
+  sub.y <- subset(nhanes.y, (df$cluster_membership == "1"))
   
   # table creation
   k <- tableone::svyCreateTableOne(vars = c('age', "BMI", "PA_sedentary",
@@ -136,8 +156,13 @@ for (i in 1:15) {
                                             "ann_household_income",
                                             "family_pov_level",
                                             "asthma", "arthritis",
-                                            "angina", "stroke",
+                                            "heart_failure", "CHD",
+                                            "angina", "heart_attack", 
+                                            "stroke", "bronchitis",
+                                            "liver_condition", "thyroid_condition",
+                                            "cancer",
                                             "diabetes", "hypertension",
+                                            "hyperlipidemia" ,
                                             "smoking", "alcohol",
                                             "dep_category"),
                                    data = sub.y,
@@ -163,8 +188,15 @@ for (i in 1:15) {
     k$CatTable[[1]][[12]][,6],
     k$CatTable[[1]][[13]][,6],
     k$CatTable[[1]][[14]][,6],
-    k$CatTable[[1]][[15]][,6]
-  )
+    k$CatTable[[1]][[15]][,6],
+    k$CatTable[[1]][[16]][,6],
+    k$CatTable[[1]][[17]][,6],
+    k$CatTable[[1]][[18]][,6],
+    k$CatTable[[1]][[19]][,6],
+    k$CatTable[[1]][[20]][,6],
+    k$CatTable[[1]][[21]][,6],
+    k$CatTable[[1]][[22]][,6],
+    k$CatTable[[1]][[23]][,6])
   
 }
 
@@ -182,13 +214,21 @@ round(cat_survey,1)[18:20] # income
 round(cat_survey,1)[21:23] # family POV
 round(cat_survey,1)[24] # asthma: yes
 round(cat_survey,1)[26] # arthritis : yes
-round(cat_survey,1)[28] # angina : yes
-round(cat_survey,1)[30] # stroke : yes
-round(cat_survey,1)[32] # diabetes : yes
-round(cat_survey,1)[35] # hypertension  : yes
-round(cat_survey,1)[37:40] # smoking
-round(cat_survey,1)[41:43] # alcohol
-round(cat_survey,1)[44:46] # depression category
+round(cat_survey,1)[28] # heart failure : yes
+round(cat_survey,1)[30] # CHD : yes
+round(cat_survey,1)[32] # angina : yes
+round(cat_survey,1)[34] # heart attack  : yes
+round(cat_survey,1)[36] # stroke  : yes
+round(cat_survey,1)[38] # bronchitis  : yes
+round(cat_survey,1)[40] # liver_condition  : yes
+round(cat_survey,1)[42] # thyroid_condition  : yes
+round(cat_survey,1)[44] # cancer  : yes
+round(cat_survey,1)[46:48] # diabetes : yes, no, borderline
+round(cat_survey,1)[49] # hypertension  : yes
+round(cat_survey,1)[51] # hypercholesterolemia  : yes
+round(cat_survey,1)[53:56] # smoking  : never, ex, sometimes, current
+round(cat_survey,1)[57:59] # alcohol : never, light, heavy
+round(cat_survey,1)[60:62] # depression category: mod, mod-sev, sev
 
 
 
@@ -231,8 +271,13 @@ p_list <- list()
 # "ann_household_income",
 # "family_pov_level",
 # "asthma", "arthritis",
-# "angina", "stroke",
+# "heart_failure", "CHD",
+# "angina", "heart_attack", 
+# "stroke", "bronchitis",
+# "liver_condition", "thyroid_condition",
+# "cancer",
 # "diabetes", "hypertension",
+# "hyperlipidemia" ,
 # "smoking", "alcohol",
 # "dep_category"
 
