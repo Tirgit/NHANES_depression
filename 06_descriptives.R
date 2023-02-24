@@ -101,31 +101,31 @@ means_survey <- rubin_mean(average = means_list)
 SDs_survey <- rubin_se(average = means_list, standard_error = ses_list)*sqrt(nrow(sub.y))
 cat_survey <- rubin_mean(average = cat_list)
 
-round(means_survey,1)
-round(SDs_survey,1)
-round(cat_survey,1)[2] # sex: female
-round(cat_survey,1)[3:8] # marital
-round(cat_survey,1)[9:13] # education
-round(cat_survey,1)[14:17] # ethnicity
-round(cat_survey,1)[18:20] # income
-round(cat_survey,1)[21:23] # family POV
-round(cat_survey,1)[24] # asthma: yes
-round(cat_survey,1)[26] # arthritis : yes
-round(cat_survey,1)[28] # heart failure : yes
-round(cat_survey,1)[30] # CHD : yes
-round(cat_survey,1)[32] # angina : yes
-round(cat_survey,1)[34] # heart attack  : yes
-round(cat_survey,1)[36] # stroke  : yes
-round(cat_survey,1)[38] # bronchitis  : yes
-round(cat_survey,1)[40] # liver_condition  : yes
-round(cat_survey,1)[42] # thyroid_condition  : yes
-round(cat_survey,1)[44] # cancer  : yes
-round(cat_survey,1)[46:48] # diabetes : yes, no, borderline
-round(cat_survey,1)[49] # hypertension  : yes
-round(cat_survey,1)[51] # hypercholesterolemia  : yes
-round(cat_survey,1)[53:56] # smoking  : never, ex, sometimes, current
-round(cat_survey,1)[57:59] # alcohol : never, light, heavy
-round(cat_survey,1)[60:62] # depression category: mod, mod-sev, sev
+c(round(means_survey,1))
+c(round(SDs_survey,1))
+c(round(cat_survey,1)[2], # sex: female
+round(cat_survey,1)[3:8], # marital
+round(cat_survey,1)[9:13], # education
+round(cat_survey,1)[14:17], # ethnicity
+round(cat_survey,1)[18:20], # income
+round(cat_survey,1)[21:23], # family POV
+round(cat_survey,1)[24], # asthma: yes
+round(cat_survey,1)[26], # arthritis : yes
+round(cat_survey,1)[28], # heart failure : yes
+round(cat_survey,1)[30], # CHD : yes
+round(cat_survey,1)[32], # angina : yes
+round(cat_survey,1)[34], # heart attack  : yes
+round(cat_survey,1)[36], # stroke  : yes
+round(cat_survey,1)[38], # bronchitis  : yes
+round(cat_survey,1)[40], # liver_condition  : yes
+round(cat_survey,1)[42], # thyroid_condition  : yes
+round(cat_survey,1)[44], # cancer  : yes
+round(cat_survey,1)[46], # diabetes : yes
+round(cat_survey,1)[49], # hypertension  : yes
+round(cat_survey,1)[51], # hypercholesterolemia  : yes
+round(cat_survey,1)[53:56], # smoking  : never, ex, sometimes, current
+round(cat_survey,1)[57:59], # alcohol : never, light, heavy
+round(cat_survey,1)[60:62]) # depression category: mod, mod-sev, sev
 
 
 # DESCRIPTIVES PER CLUSTER
@@ -145,7 +145,7 @@ for (i in 1:15) {
   nhanes.y <- svydesign(data=df, id=~SDMVPSU, strata=~SDMVSTRA, weights=~survey_weight, nest=TRUE)
   
   # subsetting data
-  sub.y <- subset(nhanes.y, (df$cluster_membership == "1"))
+  sub.y <- subset(nhanes.y, (df$cluster_membership == "6"))
   
   # table creation
   k <- tableone::svyCreateTableOne(vars = c('age', "BMI", "PA_sedentary",
@@ -204,42 +204,41 @@ means_survey <- rubin_mean(average = means_list)
 SDs_survey <- rubin_se(average = means_list, standard_error = ses_list)*sqrt(nrow(sub.y))
 cat_survey <- rubin_mean(average = cat_list)
 
-round(means_survey,1)
-round(SDs_survey,1)
-round(cat_survey,1)[2] # sex: female
-round(cat_survey,1)[3:8] # marital
-round(cat_survey,1)[9:13] # education
-round(cat_survey,1)[14:17] # ethnicity
-round(cat_survey,1)[18:20] # income
-round(cat_survey,1)[21:23] # family POV
-round(cat_survey,1)[24] # asthma: yes
-round(cat_survey,1)[26] # arthritis : yes
-round(cat_survey,1)[28] # heart failure : yes
-round(cat_survey,1)[30] # CHD : yes
-round(cat_survey,1)[32] # angina : yes
-round(cat_survey,1)[34] # heart attack  : yes
-round(cat_survey,1)[36] # stroke  : yes
-round(cat_survey,1)[38] # bronchitis  : yes
-round(cat_survey,1)[40] # liver_condition  : yes
-round(cat_survey,1)[42] # thyroid_condition  : yes
-round(cat_survey,1)[44] # cancer  : yes
-round(cat_survey,1)[46:48] # diabetes : yes, no, borderline
-round(cat_survey,1)[49] # hypertension  : yes
-round(cat_survey,1)[51] # hypercholesterolemia  : yes
-round(cat_survey,1)[53:56] # smoking  : never, ex, sometimes, current
-round(cat_survey,1)[57:59] # alcohol : never, light, heavy
-round(cat_survey,1)[60:62] # depression category: mod, mod-sev, sev
-
+nrow(sub.y)
+c(round(means_survey,1))
+c(round(SDs_survey,1))
+c(round(cat_survey,1)[2], # sex: female
+  round(cat_survey,1)[3:8], # marital
+  round(cat_survey,1)[9:13], # education
+  round(cat_survey,1)[14:17], # ethnicity
+  round(cat_survey,1)[18:20], # income
+  round(cat_survey,1)[21:23], # family POV
+  round(cat_survey,1)[24], # asthma: yes
+  round(cat_survey,1)[26], # arthritis : yes
+  round(cat_survey,1)[28], # heart failure : yes
+  round(cat_survey,1)[30], # CHD : yes
+  round(cat_survey,1)[32], # angina : yes
+  round(cat_survey,1)[34], # heart attack  : yes
+  round(cat_survey,1)[36], # stroke  : yes
+  round(cat_survey,1)[38], # bronchitis  : yes
+  round(cat_survey,1)[40], # liver_condition  : yes
+  round(cat_survey,1)[42], # thyroid_condition  : yes
+  round(cat_survey,1)[44], # cancer  : yes
+  round(cat_survey,1)[46], # diabetes : yes
+  round(cat_survey,1)[49], # hypertension  : yes
+  round(cat_survey,1)[51], # hypercholesterolemia  : yes
+  round(cat_survey,1)[53:56], # smoking  : never, ex, sometimes, current
+  round(cat_survey,1)[57:59], # alcohol : never, light, heavy
+  round(cat_survey,1)[60:62]) # depression category: mod, mod-sev, sev
 
 
 
 # COMPARING NUMERIC PER CLUSTER
 
-# P value collection
-p_list <- list()
-
-# 'age', "BMI", "PA_sedentary", "PA_moderate", "PA_vigorous", "DPQ_total"
-
+varlist <- c("age", "BMI", "PA_sedentary", "PA_moderate", "PA_vigorous", "DPQ_total")
+for (variable_in_loop in varlist) {
+  # P value collection
+  p_list <- list()
 for (i in 1:15) {
   filename <- paste0("cluster_merged_",i,".rds")
   df <- readRDS(filename)
@@ -251,36 +250,38 @@ for (i in 1:15) {
   sub.y <- subset(nhanes.y, (df$depressed == 1))
   
   # ANOVA
-  survey_glm <- svyglm(age ~ cluster_membership, sub.y)
+  pasted_formula <- paste0(variable_in_loop, " ~ cluster_membership")
+  form_loop <- as.formula(pasted_formula)
+  survey_glm <- svyglm(form_loop, sub.y)
   anova_res <- aov(survey_glm)
   p_list[[i]] <- summary(anova_res)[[1]]$'Pr(>F)'[[1]]
 
 }
-
-median(unlist(p_list))
-
+print(variable_in_loop)
+print(median(unlist(p_list)))
+}
 
 
 # COMPARING CATEGORICAL PER CLUSTER
 
-# P value collection
-p_list <- list()
+varlist <- c("gender", "marital",
+"education", "ethnicity",
+"ann_household_income",
+"family_pov_level",
+"asthma", "arthritis",
+"heart_failure", "CHD",
+"angina", "heart_attack",
+"stroke", "bronchitis",
+"liver_condition", "thyroid_condition",
+"cancer",
+"diabetes", "hypertension",
+"hyperlipidemia" ,
+"smoking", "alcohol",
+"dep_category")
 
-# 'gender', "marital", 
-# "education", "ethnicity",
-# "ann_household_income",
-# "family_pov_level",
-# "asthma", "arthritis",
-# "heart_failure", "CHD",
-# "angina", "heart_attack", 
-# "stroke", "bronchitis",
-# "liver_condition", "thyroid_condition",
-# "cancer",
-# "diabetes", "hypertension",
-# "hyperlipidemia" ,
-# "smoking", "alcohol",
-# "dep_category"
-
+for (variable_in_loop in varlist) {
+  # P value collection
+  p_list <- list()
 for (i in 1:15) {
   filename <- paste0("cluster_merged_",i,".rds")
   df <- readRDS(filename)
@@ -292,10 +293,14 @@ for (i in 1:15) {
   sub.y <- subset(nhanes.y, (df$depressed == 1))
   
   # chi squared
-  tbl <- svychisq(~dep_category + cluster_membership, sub.y)
+  pasted_formula <- paste0("~",variable_in_loop, " + cluster_membership")
+  form_loop <- as.formula(pasted_formula)
+  tbl <- svychisq(form_loop, sub.y)
   p_list[[i]] <- as.numeric(tbl$p.value)
 
 }
+  print(variable_in_loop)
+  print(median(unlist(p_list)))
+}
 
-median(unlist(p_list))
 
